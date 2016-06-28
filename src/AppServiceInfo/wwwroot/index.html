@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>App Service Info</title>
+    <link href="//ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1>App Service Info</h1>
+            <p class="lead">Azure App Service のランタイム情報を返す API</p>
+        </div>
+
+        <h3>Platform</h3>
+        <dl class="dl-horizontal" data-bind="with: platform">
+            <dt>OS Version</dt>
+            <dd data-bind="text: osVersion"></dd>
+            <dt>App Service Version</dt>
+            <dd data-bind="text: appServiceVersion"></dd>
+            <dt>Kudu Version</dt>
+            <dd data-bind="text: kuduVersion"></dd>
+            <dt>Processor Name</dt>
+            <dd data-bind="text: processorName"></dd>
+            <dt>Last Reimage</dt>
+            <dd data-bind="text: new Date(lastReimage)"></dd>
+        </dl>
+
+        <hr />
+
+        <h3>Runtime</h3>
+        <dl class="dl-horizontal" data-bind="with: runtime">
+            <dt>.NET Framework</dt>
+            <dd>
+                <!-- ko foreach: dotnet -->
+                <span class="label label-primary" data-bind="text: version"></span>
+                <!-- /ko -->
+            </dd>
+            <dt>.NET Core</dt>
+            <dd>
+                <!-- ko foreach: dotnetCore -->
+                <span class="label label-primary" data-bind="text: version"></span>
+                <!-- /ko -->
+            </dd>
+            <dt>Go</dt>
+            <dd>
+                <!-- ko foreach: go -->
+                <span class="label label-primary" data-bind="text: version"></span>
+                <!-- /ko -->
+            </dd>
+            <dt>Java</dt>
+            <dd>
+                <!-- ko foreach: java -->
+                <span class="label label-primary" data-bind="text: version"></span>
+                <!-- /ko -->
+            </dd>
+            <dt>Node.js</dt>
+            <dd>
+                <!-- ko foreach: node -->
+                <span class="label label-primary" data-bind="text: version"></span>
+                <!-- /ko -->
+            </dd>
+            <dt>NPM</dt>
+            <dd>
+                <!-- ko foreach: npm -->
+                <span class="label label-primary" data-bind="text: version"></span>
+                <!-- /ko -->
+            </dd>
+            <dt>PHP</dt>
+            <dd>
+                <!-- ko foreach: php -->
+                <span class="label label-primary" data-bind="text: version"></span>
+                <!-- /ko -->
+            </dd>
+            <dt>Python</dt>
+            <dd>
+                <!-- ko foreach: python -->
+                <span class="label label-primary" data-bind="text: version"></span>
+                <!-- /ko -->
+            </dd>
+        </dl>
+
+        <hr />
+
+        <h3>Miscellaneous</h3>
+        <dl class="dl-horizontal" data-bind="with: misc">
+            <dt>Bower</dt>
+            <dd>
+                <!-- ko foreach: bower -->
+                <span class="label label-primary" data-bind="text: version"></span>
+                <!-- /ko -->
+            </dd>
+            <dt>Grunt</dt>
+            <dd>
+                <!-- ko foreach: grunt -->
+                <span class="label label-primary" data-bind="text: version"></span>
+                <!-- /ko -->
+            </dd>
+            <dt>Gulp</dt>
+            <dd>
+                <!-- ko foreach: gulp -->
+                <span class="label label-primary" data-bind="text: version"></span>
+                <!-- /ko -->
+            </dd>
+            <dt>F#</dt>
+            <dd>
+                <!-- ko foreach: fsharp -->
+                <span class="label label-primary" data-bind="text: version"></span>
+                <!-- /ko -->
+            </dd>
+            <dt>MySQL</dt>
+            <dd>
+                <!-- ko foreach: mysql -->
+                <span class="label label-primary" data-bind="text: version"></span>
+                <!-- /ko -->
+            </dd>
+            <dt>TypeScript</dt>
+            <dd>
+                <!-- ko foreach: typeScript -->
+                <span class="label label-primary" data-bind="text: version"></span>
+                <!-- /ko -->
+            </dd>
+        </dl>
+
+        <hr />
+
+        <h3>Site Extensions</h3>
+        <dl class="dl-horizontal">
+            <dt>Pre installed</dt>
+            <dd>
+                <!-- ko foreach: siteextensions -->
+                <span class="label" data-bind="text: name, css: { 'label-default': !enabled, 'label-primary': enabled }"></span>
+                <!-- /ko -->
+            </dd>
+        </dl>
+
+        <hr />
+
+        <h3>Swagger API</h3>
+        <p>
+            http://appserviceinfo.azurewebsites.net/swagger/docs/v1
+        </p>
+
+        <hr />
+
+        <footer>
+            <p>&copy; 2016 @shibayan</p>
+        </footer>
+    </div>
+
+    <script src="//ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.2.min.js"></script>
+    <script src="//ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <script src="//ajax.aspnetcdn.com/ajax/knockout/knockout-3.4.0.js"></script>
+    <script>
+        function AppViewModel() {
+            var self = this;
+
+            self.platform = ko.observable();
+            self.runtime = ko.observable();
+            self.misc = ko.observable();
+            self.siteextensions = ko.observableArray();
+
+            self.loadDefaults = function () {
+                $.ajax({ type: "GET", url: "api/platform" }).done(self.platform);
+                $.ajax({ type: "GET", url: "api/runtime" }).done(self.runtime);
+                $.ajax({ type: "GET", url: "api/misc" }).done(self.misc);
+                $.ajax({ type: "GET", url: "api/siteextension" }).done(self.siteextensions);
+            }
+
+            self.loadDefaults();
+        }
+
+        ko.applyBindings(new AppViewModel());
+    </script>
+</body>
+</html>
