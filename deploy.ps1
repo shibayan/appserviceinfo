@@ -84,15 +84,15 @@ if ($MSBUILD_PATH -eq $null) {
 # Deployment
 # ----------
 
-echo "Handling ASP.NET Core Web Application deployment."
+echo "Handling ASP.NET Core Web Application deployment with MSBuild."
 
 # 1. Restore nuget packages
-nuget.exe restore  -packagesavemode nuspec
+nuget.exe restore "$DEPLOYMENT_SOURCE\AppServiceInfo.sln" -packagesavemode nuspec
 exitWithMessageOnError "NuGet restore failed"
 
 # 2. Build and publish
-dotnet publish "C:\Users\shibayan\Documents\GitHub\appserviceinfo\src\AppServiceInfo" --output "$DEPLOYMENT_TEMP" --configuration Release
-exitWithMessageOnError "dotnet publish failed"
+& "$MSBUILD_PATH" "$DEPLOYMENT_SOURCE\AppServiceInfo.sln" /nologo /verbosity:m /p:deployOnBuild=True`;AutoParameterizationWebConfigConnectionStrings=false`;Configuration=Release;UseSharedCompilation=false`;publishUrl="$DEPLOYMENT_TEMP" $SCM_BUILD_ARGS
+exitWithMessageOnError "MSBuild failed"
 
 # 3. KuduSync
 & $KUDU_SYNC_CMD -v 50 -f "$DEPLOYMENT_TEMP" -t "$DEPLOYMENT_TARGET" -n "$NEXT_MANIFEST_PATH" -p "$PREVIOUS_MANIFEST_PATH" -i ".git;.hg;.deployment;deploy.ps1"
