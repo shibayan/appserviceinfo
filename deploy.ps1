@@ -91,7 +91,7 @@ nuget.exe restore "$DEPLOYMENT_SOURCE\AppServiceInfo.sln" -packagesavemode nuspe
 exitWithMessageOnError "NuGet restore failed"
 
 # 2. Build and publish
-& "$MSBUILD_PATH" "$DEPLOYMENT_SOURCE\AppServiceInfo.sln" /nologo /verbosity:m /p:deployOnBuild=True`;AutoParameterizationWebConfigConnectionStrings=false`;Configuration=Release;UseSharedCompilation=false`;publishUrl="$DEPLOYMENT_TEMP" $SCM_BUILD_ARGS
+& "$MSBUILD_PATH" "$DEPLOYMENT_SOURCE\AppServiceInfo.sln" /nologo /verbosity:m /p:deployOnBuild=True`;AutoParameterizationWebConfigConnectionStrings=false`;Configuration=Release`;UseSharedCompilation=false`;publishUrl="$DEPLOYMENT_TEMP" $SCM_BUILD_ARGS
 exitWithMessageOnError "MSBuild failed"
 
 # 3. KuduSync
