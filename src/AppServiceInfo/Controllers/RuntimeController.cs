@@ -70,6 +70,11 @@ namespace AppServiceInfo.Controllers
 
         private static string GetDotnet45Version(int releaseKey)
         {
+            if (releaseKey >= 394806)
+            {
+                return "4.6.2";
+            }
+
             if (releaseKey >= 394254)
             {
                 return "4.6.1";
