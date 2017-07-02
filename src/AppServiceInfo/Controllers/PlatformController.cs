@@ -24,7 +24,8 @@ namespace AppServiceInfo.Controllers
                 OsVersion = RuntimeInformation.OSDescription,
                 AppServiceVersion = GetAppServiceVersion(),
                 KuduVersion = GetKuduVersion(),
-                LastReimage = DateTime.Parse(lastReimage)
+                LastReimage = DateTime.Parse(lastReimage),
+                CurrentStampname = Environment.GetEnvironmentVariable("WEBSITE_CURRENT_STAMPNAME")
             };
 
             using (var processorKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Default).OpenSubKey(@"HARDWARE\DESCRIPTION\System\CentralProcessor\0"))

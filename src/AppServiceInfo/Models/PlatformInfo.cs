@@ -20,5 +20,8 @@ namespace AppServiceInfo.Models
 
         [JsonProperty("lastReimage")]
         public DateTime LastReimage { get; set; }
+
+        [JsonProperty("currentStampname")]
+        public string CurrentStampname { get; set; }
     }
 }
