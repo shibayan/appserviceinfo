@@ -6,7 +6,7 @@
     <AssemblyName>AppServiceInfo</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>AppServiceInfo</PackageId>
-    <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
+    <AssetTargetFallback>$(AssetTargetFallback);dotnet5.6;portable-net45+win8</AssetTargetFallback>
   </PropertyGroup>
 
   <ItemGroup>
