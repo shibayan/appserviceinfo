@@ -19,7 +19,6 @@ namespace AppServiceInfo.Controllers
             {
                 Dotnet = GetDotnetVersions(),
                 DotnetCore = GetDotnetCoreVersions(),
-                Go = GetGoVersions(),
                 Java = GetJavaVersions(),
                 Node = GetNodeVersions(),
                 Npm = GetNpmVersions(),
@@ -113,19 +112,6 @@ namespace AppServiceInfo.Controllers
             var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), "dotnet", @"shared\Microsoft.NETCore.App");
 
             var list = Directory.EnumerateDirectories(dotnetCoreDirectory)
-                                .Select(x => new VersionInfo
-                                {
-                                    Version = Path.GetFileName(x)
-                                });
-
-            return list;
-        }
-
-        private static IEnumerable<VersionInfo> GetGoVersions()
-        {
-            var goDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramW6432"), "Go");
-
-            var list = Directory.EnumerateDirectories(goDirectory)
                                 .Select(x => new VersionInfo
                                 {
                                     Version = Path.GetFileName(x)
