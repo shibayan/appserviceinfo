@@ -16,15 +16,15 @@ namespace AppServiceInfo.Controllers
     {
         public IActionResult Get()
         {
-            var rootDirectory = Path.GetPathRoot(Environment.GetEnvironmentVariable("ProgramFiles"));
-            var lastReimage = System.IO.File.ReadAllText(Path.Combine(rootDirectory, "lastreimage.txt"));
+            //var rootDirectory = Path.GetPathRoot(Environment.GetEnvironmentVariable("ProgramFiles"));
+            //var lastReimage = System.IO.File.ReadAllText(Path.Combine(rootDirectory, "lastreimage.txt"));
 
             var info = new PlatformInfo
             {
                 OsVersion = RuntimeInformation.OSDescription,
                 AppServiceVersion = GetAppServiceVersion(),
                 KuduVersion = GetKuduVersion(),
-                LastReimage = DateTime.Parse(lastReimage),
+                LastReimage = DateTime.Now,
                 CurrentStampname = Environment.GetEnvironmentVariable("WEBSITE_CURRENT_STAMPNAME")
             };
 
