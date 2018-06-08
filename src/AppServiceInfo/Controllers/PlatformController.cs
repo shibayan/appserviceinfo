@@ -16,9 +16,6 @@ namespace AppServiceInfo.Controllers
     {
         public IActionResult Get()
         {
-            //var rootDirectory = Path.GetPathRoot(Environment.GetEnvironmentVariable("ProgramFiles"));
-            //var lastReimage = System.IO.File.ReadAllText(Path.Combine(rootDirectory, "lastreimage.txt"));
-
             var info = new PlatformInfo
             {
                 OsVersion = RuntimeInformation.OSDescription,
