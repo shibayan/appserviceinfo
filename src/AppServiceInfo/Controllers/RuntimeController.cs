@@ -129,6 +129,11 @@ namespace AppServiceInfo.Controllers
         {
             var javaDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), "Java");
 
+            if (!Directory.Exists(javaDirectory))
+            {
+                return Enumerable.Empty<VersionInfo>();
+            }
+
             var list = Directory.EnumerateDirectories(javaDirectory)
                                 .Where(x => x.Contains("jdk"))
                                 .Select(x => new VersionInfo
