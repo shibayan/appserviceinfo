@@ -10,9 +10,11 @@ using Microsoft.Win32;
 
 namespace AppServiceInfo.Controllers
 {
+    [ApiController]
     [Route("api/runtime")]
     public class RuntimeController : Controller
     {
+        [HttpGet]
         public IActionResult Get()
         {
             var data = new RuntimeInfo

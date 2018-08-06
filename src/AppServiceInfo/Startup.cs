@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using Swashbuckle.AspNetCore.Swagger;
+
 namespace AppServiceInfo
 {
     public class Startup
@@ -20,6 +22,11 @@ namespace AppServiceInfo
         {
             services.AddMvc()
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "App Service Info API", Version = "v1" });
+            });
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -35,6 +42,9 @@ namespace AppServiceInfo
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "App Service Info API V1"); });
 
             app.UseMvc();
         }

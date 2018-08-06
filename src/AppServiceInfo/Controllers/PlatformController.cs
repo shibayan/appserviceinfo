@@ -11,9 +11,11 @@ using Microsoft.Win32;
 
 namespace AppServiceInfo.Controllers
 {
+    [ApiController]
     [Route("api/platform")]
     public class PlatformController : Controller
     {
+        [HttpGet]
         public IActionResult Get()
         {
             var info = new PlatformInfo

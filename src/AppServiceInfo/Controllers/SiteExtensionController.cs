@@ -9,9 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppServiceInfo.Controllers
 {
+    [ApiController]
     [Route("api/siteextension")]
     public class SiteExtensionController : Controller
     {
+        [HttpGet]
         public IActionResult Get()
         {
             var siteExtensionDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), "SiteExtensions");

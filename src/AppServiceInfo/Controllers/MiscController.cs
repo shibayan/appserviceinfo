@@ -9,9 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppServiceInfo.Controllers
 {
+    [ApiController]
     [Route("api/misc")]
     public class MiscController : Controller
     {
+        [HttpGet]
         public IActionResult Get()
         {
             var data = new MiscInfo
