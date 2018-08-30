@@ -23,7 +23,7 @@ namespace AppServiceInfo.Controllers
                 OsVersion = RuntimeInformation.OSDescription,
                 AppServiceVersion = GetAppServiceVersion(),
                 KuduVersion = GetKuduVersion(),
-                LastReimage = DateTime.Now,
+                LastReimage = GetLastReimage(),
                 CurrentStampname = Environment.GetEnvironmentVariable("WEBSITE_CURRENT_STAMPNAME")
             };
 
@@ -57,6 +57,18 @@ namespace AppServiceInfo.Controllers
             {
                 return null;
             }
+        }
+
+        private static DateTime? GetLastReimage()
+        {
+            var file = Directory.GetFiles(@"D:\WebsitesInstall").FirstOrDefault();
+
+            if (file == null)
+            {
+                return null;
+            }
+
+            return new FileInfo(file).CreationTimeUtc;
         }
     }
 }

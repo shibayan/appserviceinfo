@@ -19,7 +19,7 @@ namespace AppServiceInfo.Models
         public string ProcessorName { get; set; }
 
         [JsonProperty("lastReimage")]
-        public DateTime LastReimage { get; set; }
+        public DateTime? LastReimage { get; set; }
 
         [JsonProperty("currentStampname")]
         public string CurrentStampname { get; set; }
