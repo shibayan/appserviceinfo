@@ -11,7 +11,7 @@ namespace AppServiceInfo.Controllers
 {
     [ApiController]
     [Route("api/siteextension")]
-    public class SiteExtensionController : Controller
+    public class SiteExtensionController : ControllerBase
     {
         [HttpGet]
         public IActionResult Get()

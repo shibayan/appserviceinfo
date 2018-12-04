@@ -13,7 +13,7 @@ namespace AppServiceInfo.Controllers
 {
     [ApiController]
     [Route("api/platform")]
-    public class PlatformController : Controller
+    public class PlatformController : ControllerBase
     {
         [HttpGet]
         public IActionResult Get()

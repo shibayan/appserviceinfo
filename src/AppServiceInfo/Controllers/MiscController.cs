@@ -11,7 +11,7 @@ namespace AppServiceInfo.Controllers
 {
     [ApiController]
     [Route("api/misc")]
-    public class MiscController : Controller
+    public class MiscController : ControllerBase
     {
         [HttpGet]
         public IActionResult Get()

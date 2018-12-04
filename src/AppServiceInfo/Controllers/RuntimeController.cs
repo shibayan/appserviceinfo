@@ -12,7 +12,7 @@ namespace AppServiceInfo.Controllers
 {
     [ApiController]
     [Route("api/runtime")]
-    public class RuntimeController : Controller
+    public class RuntimeController : ControllerBase
     {
         [HttpGet]
         public IActionResult Get()
