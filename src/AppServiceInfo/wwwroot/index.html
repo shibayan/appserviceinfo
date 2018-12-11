@@ -43,31 +43,31 @@
           <dl>
             <dt>.NET Framework</dt>
             <dd>
-              <span v-for="item in runtime.dotnet">{{ item.version }}</span>
+              <span v-for="item in runtime.dotnet" class="tag is-primary">{{ item.version }}</span>
             </dd>
             <dt>.NET Core</dt>
             <dd>
-              <span v-for="item in runtime.dotnetCore">{{ item.version }}</span>
+              <span v-for="item in runtime.dotnetCore" class="tag is-primary">{{ item.version }}</span>
             </dd>
             <dt>Java</dt>
             <dd>
-              <span v-for="item in runtime.java">{{ item.version }}</span>
+              <span v-for="item in runtime.java" class="tag is-primary">{{ item.version }}</span>
             </dd>
             <dt>Node.js</dt>
             <dd>
-              <span v-for="item in runtime.node">{{ item.version }}</span>
+              <span v-for="item in runtime.node" class="tag is-primary">{{ item.version }}</span>
             </dd>
             <dt>NPM</dt>
             <dd>
-              <span v-for="item in runtime.npm">{{ item.version }}</span>
+              <span v-for="item in runtime.npm" class="tag is-primary">{{ item.version }}</span>
             </dd>
             <dt>PHP</dt>
             <dd>
-              <span v-for="item in runtime.php">{{ item.version }}</span>
+              <span v-for="item in runtime.php" class="tag is-primary">{{ item.version }}</span>
             </dd>
             <dt>Python</dt>
             <dd>
-              <span v-for="item in runtime.python">{{ item.version }}</span>
+              <span v-for="item in runtime.python" class="tag is-primary">{{ item.version }}</span>
             </dd>
           </dl>
         </div>
@@ -79,27 +79,27 @@
           <dl>
             <dt>Bower</dt>
             <dd>
-              <span v-for="item in misc.bower">{{ item.version }}</span>
+              <span v-for="item in misc.bower" class="tag is-primary">{{ item.version }}</span>
             </dd>
             <dt>Grunt</dt>
             <dd>
-              <span v-for="item in misc.grunt">{{ item.version }}</span>
+              <span v-for="item in misc.grunt" class="tag is-primary">{{ item.version }}</span>
             </dd>
             <dt>Gulp</dt>
             <dd>
-              <span v-for="item in misc.gulp">{{ item.version }}</span>
+              <span v-for="item in misc.gulp" class="tag is-primary">{{ item.version }}</span>
             </dd>
             <dt>F#</dt>
             <dd>
-              <span v-for="item in misc.fsharp">{{ item.version }}</span>
+              <span v-for="item in misc.fsharp" class="tag is-primary">{{ item.version }}</span>
             </dd>
             <dt>MySQL</dt>
             <dd>
-              <span v-for="item in misc.mysql">{{ item.version }}</span>
+              <span v-for="item in misc.mysql" class="tag is-primary">{{ item.version }}</span>
             </dd>
             <dt>TypeScript</dt>
             <dd>
-              <span v-for="item in misc.typeScript">{{ item.version }}</span>
+              <span v-for="item in misc.typeScript" class="tag is-primary">{{ item.version }}</span>
             </dd>
           </dl>
         </div>
@@ -112,7 +112,7 @@
           <dl>
             <dt>Pre installed</dt>
             <dd>
-              <span v-for="item in siteextensions" :class="{ 'label-default': !item.enabled, 'label-primary': item.enabled }">{{ item.name }}</span>
+              <span v-for="item in siteextensions" class="tag" :class="{ 'is-primary': item.enabled }">{{ item.name }}</span>
             </dd>
           </dl>
         </div>
