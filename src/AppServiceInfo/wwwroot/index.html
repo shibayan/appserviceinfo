@@ -112,7 +112,7 @@
           <dl>
             <dt>Pre installed</dt>
             <dd>
-              <span v-for="item in siteextensions" :class="{ 'label-default': !enabled, 'label-primary': enabled }">{{ item.name }}</span>
+              <span v-for="item in siteextensions" :class="{ 'label-default': !item.enabled, 'label-primary': item.enabled }">{{ item.name }}</span>
             </dd>
           </dl>
         </div>
