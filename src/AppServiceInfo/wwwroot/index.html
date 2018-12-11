@@ -1,173 +1,166 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>App Service Info</title>
-    <link href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>App Service Info</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 </head>
 <body>
+  <section class="section">
     <div class="container">
-        <div class="page-header">
-            <h1>App Service Info</h1>
-        </div>
+      <h1 class="title">App Service Info</h1>
 
-        <h3>Platform</h3>
-        <dl class="dl-horizontal" data-bind="with: platform">
+      <hr />
+
+      <div id="app">
+
+        <h4 class="title is-4">Platform</h4>
+
+        <div class="content">
+          <dl>
             <dt>OS Version</dt>
-            <dd data-bind="text: osVersion"></dd>
+            <dd>{{ platform.osVersion }}</dd>
             <dt>App Service Version</dt>
-            <dd data-bind="text: appServiceVersion"></dd>
+            <dd>{{ platform.appServiceVersion }}</dd>
             <dt>Kudu Version</dt>
-            <dd data-bind="text: kuduVersion"></dd>
+            <dd>{{ platform.kuduVersion }}</dd>
             <dt>Processor Name</dt>
-            <dd data-bind="text: processorName"></dd>
+            <dd>{{ platform.processorName }}</dd>
             <dt>Last Reimage</dt>
-            <dd data-bind="text: new Date(lastReimage)"></dd>
+            <dd>{{ new Date(platform.lastReimage)}}</dd>
             <dt>Current Stampname</dt>
-            <dd data-bind="text: currentStampname"></dd>
-        </dl>
+            <dd>{{ platform.currentStampname }}</dd>
+          </dl>
+        </div>
 
         <hr />
 
-        <h3>Runtime</h3>
-        <dl class="dl-horizontal" data-bind="with: runtime">
+        <h4 class="title is-4">Runtime</h4>
+
+        <div class="content">
+          <dl>
             <dt>.NET Framework</dt>
             <dd>
-                <!-- ko foreach: dotnet -->
-                <span class="label label-primary" data-bind="text: version"></span>
-                <!-- /ko -->
+              <span v-for="item in runtime.dotnet">{{ item.version }}</span>
             </dd>
             <dt>.NET Core</dt>
             <dd>
-                <!-- ko foreach: dotnetCore -->
-                <span class="label label-primary" data-bind="text: version"></span>
-                <!-- /ko -->
+              <span v-for="item in runtime.dotnetCore">{{ item.version }}</span>
             </dd>
             <dt>Java</dt>
             <dd>
-                <!-- ko foreach: java -->
-                <span class="label label-primary" data-bind="text: version"></span>
-                <!-- /ko -->
+              <span v-for="item in runtime.java">{{ item.version }}</span>
             </dd>
             <dt>Node.js</dt>
             <dd>
-                <!-- ko foreach: node -->
-                <span class="label label-primary" data-bind="text: version"></span>
-                <!-- /ko -->
+              <span v-for="item in runtime.node">{{ item.version }}</span>
             </dd>
             <dt>NPM</dt>
             <dd>
-                <!-- ko foreach: npm -->
-                <span class="label label-primary" data-bind="text: version"></span>
-                <!-- /ko -->
+              <span v-for="item in runtime.npm">{{ item.version }}</span>
             </dd>
             <dt>PHP</dt>
             <dd>
-                <!-- ko foreach: php -->
-                <span class="label label-primary" data-bind="text: version"></span>
-                <!-- /ko -->
+              <span v-for="item in runtime.php">{{ item.version }}</span>
             </dd>
             <dt>Python</dt>
             <dd>
-                <!-- ko foreach: python -->
-                <span class="label label-primary" data-bind="text: version"></span>
-                <!-- /ko -->
+              <span v-for="item in runtime.python">{{ item.version }}</span>
             </dd>
-        </dl>
-
+          </dl>
+        </div>
         <hr />
 
-        <h3>Miscellaneous</h3>
-        <dl class="dl-horizontal" data-bind="with: misc">
+        <h4 class="title is-4">Miscellaneous</h4>
+
+        <div class="content">
+          <dl>
             <dt>Bower</dt>
             <dd>
-                <!-- ko foreach: bower -->
-                <span class="label label-primary" data-bind="text: version"></span>
-                <!-- /ko -->
+              <span v-for="item in misc.bower">{{ item.version }}</span>
             </dd>
             <dt>Grunt</dt>
             <dd>
-                <!-- ko foreach: grunt -->
-                <span class="label label-primary" data-bind="text: version"></span>
-                <!-- /ko -->
+              <span v-for="item in misc.grunt">{{ item.version }}</span>
             </dd>
             <dt>Gulp</dt>
             <dd>
-                <!-- ko foreach: gulp -->
-                <span class="label label-primary" data-bind="text: version"></span>
-                <!-- /ko -->
+              <span v-for="item in misc.gulp">{{ item.version }}</span>
             </dd>
             <dt>F#</dt>
             <dd>
-                <!-- ko foreach: fsharp -->
-                <span class="label label-primary" data-bind="text: version"></span>
-                <!-- /ko -->
+              <span v-for="item in misc.fsharp">{{ item.version }}</span>
             </dd>
             <dt>MySQL</dt>
             <dd>
-                <!-- ko foreach: mysql -->
-                <span class="label label-primary" data-bind="text: version"></span>
-                <!-- /ko -->
+              <span v-for="item in misc.mysql">{{ item.version }}</span>
             </dd>
             <dt>TypeScript</dt>
             <dd>
-                <!-- ko foreach: typeScript -->
-                <span class="label label-primary" data-bind="text: version"></span>
-                <!-- /ko -->
+              <span v-for="item in misc.typeScript">{{ item.version }}</span>
             </dd>
-        </dl>
+          </dl>
+        </div>
 
         <hr />
 
-        <h3>Site Extensions</h3>
-        <dl class="dl-horizontal">
+        <h4 class="title is-4">Site Extensions</h4>
+
+        <div class="content">
+          <dl>
             <dt>Pre installed</dt>
             <dd>
-                <!-- ko foreach: siteextensions -->
-                <span class="label" data-bind="text: name, css: { 'label-default': !enabled, 'label-primary': enabled }"></span>
-                <!-- /ko -->
+              <span v-for="item in siteextensions" :class="{ 'label-default': !enabled, 'label-primary': enabled }">{{ item.name }}</span>
             </dd>
-        </dl>
-
+          </dl>
+        </div>
         <hr />
 
-        <h3>Swagger API</h3>
+        <h4 class="title is-4">Swagger API</h4>
+
         <p>
-            https://appservice.info/swagger/v1/swagger.json
+          https://appservice.info/swagger/v1/swagger.json
         </p>
 
         <hr />
 
         <footer>
-            <p>&copy; 2016-2018 @shibayan</p>
+          <p>&copy; 2016-2018 @shibayan</p>
         </footer>
+      </div>
     </div>
-    <a href="https://github.com/shibayan/appserviceinfo"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.2.min.js"></script>
-    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"></script>
-    <script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.4.0.js"></script>
-    <script>
-        function AppViewModel() {
-            var self = this;
+  </section>
 
-            self.platform = ko.observable();
-            self.runtime = ko.observable();
-            self.misc = ko.observable();
-            self.siteextensions = ko.observableArray();
+  <a href="https://github.com/shibayan/appserviceinfo"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
 
-            self.loadDefaults = function () {
-                $.ajax({ type: "GET", url: "api/platform" }).done(self.platform);
-                $.ajax({ type: "GET", url: "api/runtime" }).done(self.runtime);
-                $.ajax({ type: "GET", url: "api/misc" }).done(self.misc);
-                $.ajax({ type: "GET", url: "api/siteextension" }).done(self.siteextensions);
-            }
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 
-            self.loadDefaults();
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        platform: {},
+        runtime: {},
+        misc: {},
+        siteextensions: []
+      },
+      methods: {
+        loadDefaults: function () {
+          var self = this;
+
+          axios.get("/api/platform", function (resp) { self.$set(self, "platform", resp.data); });
+          axios.get("/api/runtime", function (resp) { self.$set(self, "runtime", resp.data); });
+          axios.get("/api/misc", function (resp) { self.$set(self, "misc", resp.data); });
+          axios.get("/api/siteextension", function (resp) { self.$set(self, "siteextensions", resp.data); });
         }
-
-        ko.applyBindings(new AppViewModel());
-    </script>
+      },
+      beforeMount: function () {
+        this.loadDefaults();
+      }
+    });
+  </script>
 </body>
 </html>
