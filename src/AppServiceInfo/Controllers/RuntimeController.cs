@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -193,7 +194,9 @@ namespace AppServiceInfo.Controllers
             var list = Directory.EnumerateDirectories(rootDirectory, "Python*")
                                 .Select(x => new VersionInfo
                                 {
-                                    Version = System.IO.File.ReadLines(Path.Combine(x, "README.txt")).First().Substring(23)
+                                    Version = System.IO.File.Exists(Path.Combine(x, "README.txt"))
+                                        ? System.IO.File.ReadLines(Path.Combine(x, "README.txt")).First().Substring(23)
+                                        : FileVersionInfo.GetVersionInfo(Path.Combine(x, "pyhton.exe")).ProductVersion
                                 });
 
             return list;
