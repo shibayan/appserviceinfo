@@ -21,7 +21,7 @@ namespace AppServiceInfo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc()
-                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSwaggerGen(c =>
             {
