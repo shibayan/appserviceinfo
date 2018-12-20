@@ -196,7 +196,7 @@ namespace AppServiceInfo.Controllers
                                 {
                                     Version = System.IO.File.Exists(Path.Combine(x, "README.txt"))
                                         ? System.IO.File.ReadLines(Path.Combine(x, "README.txt")).First().Substring(23)
-                                        : FileVersionInfo.GetVersionInfo(Path.Combine(x, "pyhton.exe")).ProductVersion
+                                        : FileVersionInfo.GetVersionInfo(Path.Combine(x, "python.exe")).ProductVersion
                                 });
 
             return list;
