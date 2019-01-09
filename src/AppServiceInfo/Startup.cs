@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -22,6 +24,12 @@ namespace AppServiceInfo
         {
             services.AddMvc()
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddHsts(options =>
+            {
+                options.MaxAge = TimeSpan.FromDays(365);
+                options.IncludeSubDomains = true;
+            });
 
             services.AddSwaggerGen(c =>
             {
