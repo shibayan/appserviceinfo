@@ -7,27 +7,27 @@ namespace AppServiceInfo.Models
     public class RuntimeInfo
     {
         [JsonProperty("dotnet")]
-        public IEnumerable<VersionInfo> Dotnet { get; set; }
+        public IReadOnlyList<VersionInfo> Dotnet { get; set; }
 
         [JsonProperty("dotnetCore")]
-        public IEnumerable<VersionInfo> DotnetCore { get; set; }
+        public IReadOnlyList<VersionInfo> DotnetCore { get; set; }
 
         [JsonProperty("dotnetCore64")]
-        public IEnumerable<VersionInfo> DotnetCore64 { get; set; }
+        public IReadOnlyList<VersionInfo> DotnetCore64 { get; set; }
 
         [JsonProperty("java")]
-        public IEnumerable<VersionInfo> Java { get; set; }
+        public IReadOnlyList<VersionInfo> Java { get; set; }
 
         [JsonProperty("node")]
-        public IEnumerable<VersionInfo> Node { get; set; }
+        public IReadOnlyList<VersionInfo> Node { get; set; }
 
         [JsonProperty("npm")]
-        public IEnumerable<VersionInfo> Npm { get; set; }
+        public IReadOnlyList<VersionInfo> Npm { get; set; }
 
         [JsonProperty("php")]
-        public IEnumerable<VersionInfo> Php { get; set; }
+        public IReadOnlyList<VersionInfo> Php { get; set; }
 
         [JsonProperty("python")]
-        public IEnumerable<VersionInfo> Python { get; set; }
+        public IReadOnlyList<VersionInfo> Python { get; set; }
     }
 }

@@ -34,7 +34,7 @@ namespace AppServiceInfo.Controllers
             return Ok(data);
         }
 
-        private IEnumerable<VersionInfo> GetDotnetVersions()
+        private IReadOnlyList<VersionInfo> GetDotnetVersions()
         {
             var list = new List<VersionInfo>();
 
@@ -117,7 +117,7 @@ namespace AppServiceInfo.Controllers
             return "4.5";
         }
 
-        private static IEnumerable<VersionInfo> GetDotnetCoreVersions()
+        private static IReadOnlyList<VersionInfo> GetDotnetCoreVersions()
         {
             var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), "dotnet", @"shared\Microsoft.NETCore.App");
 
@@ -125,12 +125,14 @@ namespace AppServiceInfo.Controllers
                                 .Select(x => new VersionInfo
                                 {
                                     Version = Path.GetFileName(x)
-                                });
+                                })
+                                .OrderBy(x => x.Version)
+                                .ToArray();
 
             return list;
         }
 
-        private static IEnumerable<VersionInfo> GetDotnetCore64Versions()
+        private static IReadOnlyList<VersionInfo> GetDotnetCore64Versions()
         {
             var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles"), "dotnet", @"shared\Microsoft.NETCore.App");
 
@@ -138,18 +140,20 @@ namespace AppServiceInfo.Controllers
                                 .Select(x => new VersionInfo
                                 {
                                     Version = Path.GetFileName(x)
-                                });
+                                })
+                                .OrderBy(x => x.Version)
+                                .ToArray();
 
             return list;
         }
 
-        private static IEnumerable<VersionInfo> GetJavaVersions()
+        private static IReadOnlyList<VersionInfo> GetJavaVersions()
         {
             var javaDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles"), "Java");
 
             if (!Directory.Exists(javaDirectory))
             {
-                return Enumerable.Empty<VersionInfo>();
+                return new VersionInfo[0];
             }
 
             var list = Directory.EnumerateDirectories(javaDirectory)
@@ -157,7 +161,9 @@ namespace AppServiceInfo.Controllers
                                 .Select(x => new VersionInfo
                                 {
                                     Version = ExtractJavaVersion(Path.GetFileName(x))
-                                });
+                                })
+                                .OrderBy(x => x.Version)
+                                .ToArray();
 
             return list;
         }
@@ -177,7 +183,7 @@ namespace AppServiceInfo.Controllers
             return null;
         }
 
-        private static IEnumerable<VersionInfo> GetNodeVersions()
+        private static IReadOnlyList<VersionInfo> GetNodeVersions()
         {
             var nodeDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), "nodejs");
 
@@ -186,12 +192,14 @@ namespace AppServiceInfo.Controllers
                                 .Select(x => new VersionInfo
                                 {
                                     Version = Path.GetFileName(x)
-                                });
+                                })
+                                .OrderBy(x => x.Version)
+                                .ToArray();
 
             return list;
         }
 
-        private static IEnumerable<VersionInfo> GetNpmVersions()
+        private static IReadOnlyList<VersionInfo> GetNpmVersions()
         {
             var npmDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), "npm");
 
@@ -199,12 +207,14 @@ namespace AppServiceInfo.Controllers
                                 .Select(x => new VersionInfo
                                 {
                                     Version = Path.GetFileName(x)
-                                });
+                                })
+                                .OrderBy(x => x.Version)
+                                .ToArray();
 
             return list;
         }
 
-        private static IEnumerable<VersionInfo> GetPhpVersions()
+        private static IReadOnlyList<VersionInfo> GetPhpVersions()
         {
             var phpDirectory = Path.Combine(Environment.GetEnvironmentVariable("LOCAL_EXPANDED"), "Config");
 
@@ -212,12 +222,14 @@ namespace AppServiceInfo.Controllers
                                 .Select(x => new VersionInfo
                                 {
                                     Version = Path.GetFileName(x).Substring(4)
-                                });
+                                })
+                                .OrderBy(x => x.Version)
+                                .ToArray();
 
             return list;
         }
 
-        private static IEnumerable<VersionInfo> GetPythonVersions()
+        private static IReadOnlyList<VersionInfo> GetPythonVersions()
         {
             var rootDirectory = Path.GetPathRoot(Environment.GetEnvironmentVariable("ProgramW6432"));
 
@@ -227,7 +239,9 @@ namespace AppServiceInfo.Controllers
                                     Version = System.IO.File.Exists(Path.Combine(x, "README.txt"))
                                         ? System.IO.File.ReadLines(Path.Combine(x, "README.txt")).First().Substring(23)
                                         : FileVersionInfo.GetVersionInfo(Path.Combine(x, "python.exe")).ProductVersion
-                                });
+                                })
+                                .OrderBy(x => x.Version)
+                                .ToArray();
 
             return list;
         }

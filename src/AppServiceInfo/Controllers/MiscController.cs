@@ -29,7 +29,7 @@ namespace AppServiceInfo.Controllers
             return Ok(data);
         }
 
-        private static IEnumerable<VersionInfo> GetTypeScriptVersions()
+        private static IReadOnlyList<VersionInfo> GetTypeScriptVersions()
         {
             var typeScriptDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), @"Microsoft SDKs\TypeScript");
 
@@ -37,12 +37,14 @@ namespace AppServiceInfo.Controllers
                                 .Select(x => new VersionInfo
                                 {
                                     Version = Path.GetFileName(x)
-                                });
+                                })
+                                .OrderBy(x => x.Version)
+                                .ToArray();
 
             return list;
         }
 
-        private static IEnumerable<VersionInfo> GetFSharpVersions()
+        private static IReadOnlyList<VersionInfo> GetFSharpVersions()
         {
             var fsharpDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), @"Microsoft SDKs\F#");
 
@@ -51,12 +53,14 @@ namespace AppServiceInfo.Controllers
                                 .Select(x => new VersionInfo
                                 {
                                     Version = Path.GetFileName(x)
-                                });
+                                })
+                                .OrderBy(x => x.Version)
+                                .ToArray();
 
             return list;
         }
 
-        private static IEnumerable<VersionInfo> GetBowerVersions()
+        private static IReadOnlyList<VersionInfo> GetBowerVersions()
         {
             var bowerDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), @"bower");
 
@@ -64,12 +68,14 @@ namespace AppServiceInfo.Controllers
                                 .Select(x => new VersionInfo
                                 {
                                     Version = Path.GetFileName(x)
-                                });
+                                })
+                                .OrderBy(x => x.Version)
+                                .ToArray();
 
             return list;
         }
 
-        private static IEnumerable<VersionInfo> GetGruntVersions()
+        private static IReadOnlyList<VersionInfo> GetGruntVersions()
         {
             var gruntDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), @"grunt");
 
@@ -77,12 +83,14 @@ namespace AppServiceInfo.Controllers
                                 .Select(x => new VersionInfo
                                 {
                                     Version = Path.GetFileName(x)
-                                });
+                                })
+                                .OrderBy(x => x.Version)
+                                .ToArray();
 
             return list;
         }
 
-        private static IEnumerable<VersionInfo> GetGulpVersions()
+        private static IReadOnlyList<VersionInfo> GetGulpVersions()
         {
             var gulpDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), @"gulp");
 
@@ -90,12 +98,14 @@ namespace AppServiceInfo.Controllers
                                 .Select(x => new VersionInfo
                                 {
                                     Version = Path.GetFileName(x)
-                                });
+                                })
+                                .OrderBy(x => x.Version)
+                                .ToArray();
 
             return list;
         }
 
-        private static IEnumerable<VersionInfo> GetMySqlVersions()
+        private static IReadOnlyList<VersionInfo> GetMySqlVersions()
         {
             var mysqlDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), @"mysql");
 
@@ -104,7 +114,9 @@ namespace AppServiceInfo.Controllers
                                 .Select(x => new VersionInfo
                                 {
                                     Version = Path.GetFileName(x)
-                                });
+                                })
+                                .OrderBy(x => x.Version)
+                                .ToArray();
 
             return list;
         }
