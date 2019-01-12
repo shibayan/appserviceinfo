@@ -50,9 +50,13 @@
             <dd>
               <span v-for="item in runtime.dotnet" class="tag is-primary">{{ item.version }}</span>
             </dd>
-            <dt>.NET Core</dt>
+            <dt>.NET Core (x86)</dt>
             <dd>
               <span v-for="item in runtime.dotnetCore" class="tag is-primary">{{ item.version }}</span>
+            </dd>
+            <dt>.NET Core (x64)</dt>
+            <dd>
+              <span v-for="item in runtime.dotnetCore64" class="tag is-primary">{{ item.version }}</span>
             </dd>
             <dt>Java</dt>
             <dd>

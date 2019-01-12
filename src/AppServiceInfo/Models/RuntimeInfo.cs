@@ -12,6 +12,9 @@ namespace AppServiceInfo.Models
         [JsonProperty("dotnetCore")]
         public IEnumerable<VersionInfo> DotnetCore { get; set; }
 
+        [JsonProperty("dotnetCore64")]
+        public IEnumerable<VersionInfo> DotnetCore64 { get; set; }
+
         [JsonProperty("java")]
         public IEnumerable<VersionInfo> Java { get; set; }
 

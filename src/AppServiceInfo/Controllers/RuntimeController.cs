@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 using AppServiceInfo.Models;
 
@@ -128,9 +129,22 @@ namespace AppServiceInfo.Controllers
             return list;
         }
 
+        private static IEnumerable<VersionInfo> GetDotnetCore64Versions()
+        {
+            var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles"), "dotnet", @"shared\Microsoft.NETCore.App");
+
+            var list = Directory.EnumerateDirectories(dotnetCoreDirectory)
+                                .Select(x => new VersionInfo
+                                {
+                                    Version = Path.GetFileName(x)
+                                });
+
+            return list;
+        }
+
         private static IEnumerable<VersionInfo> GetJavaVersions()
         {
-            var javaDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), "Java");
+            var javaDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles"), "Java");
 
             if (!Directory.Exists(javaDirectory))
             {
@@ -138,13 +152,28 @@ namespace AppServiceInfo.Controllers
             }
 
             var list = Directory.EnumerateDirectories(javaDirectory)
-                                .Where(x => x.Contains("jdk"))
+                                .Where(x => x.Contains("jdk") || x.Contains("jre"))
                                 .Select(x => new VersionInfo
                                 {
-                                    Version = Path.GetFileName(x).Substring(3)
+                                    Version = ExtractJavaVersion(Path.GetFileName(x))
                                 });
 
             return list;
+        }
+
+        private static string ExtractJavaVersion(string directoryName)
+        {
+            if (directoryName.StartsWith("jdk") || directoryName.StartsWith("jre"))
+            {
+                return $"{directoryName.Substring(3)} (Oracle)";
+            }
+
+            if (directoryName.StartsWith("zulu"))
+            {
+                return Regex.Replace(directoryName, @"^.+?\-(jre|jdk)(\d+?)\.(\d+?)\.(\d+?)\-.*$", "1.$2.$3_$4 (Azul)");
+            }
+
+            return null;
         }
 
         private static IEnumerable<VersionInfo> GetNodeVersions()
