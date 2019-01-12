@@ -23,6 +23,7 @@ namespace AppServiceInfo.Controllers
             {
                 Dotnet = GetDotnetVersions(),
                 DotnetCore = GetDotnetCoreVersions(),
+                DotnetCore64 = GetDotnetCore64Versions(),
                 Java = GetJavaVersions(),
                 Node = GetNodeVersions(),
                 Npm = GetNpmVersions(),
