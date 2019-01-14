@@ -20,19 +20,23 @@ namespace AppServiceInfo.Controllers
         {
             var info = new PlatformInfo
             {
-                OsVersion = RuntimeInformation.OSDescription,
+                OsVersion = GetOSVersion(),
                 AppServiceVersion = GetAppServiceVersion(),
                 KuduVersion = GetKuduVersion(),
                 LastReimage = GetLastReimage(),
-                CurrentStampname = Environment.GetEnvironmentVariable("WEBSITE_CURRENT_STAMPNAME")
+                CurrentStampname = Environment.GetEnvironmentVariable("WEBSITE_CURRENT_STAMPNAME"),
+                ProcessorName = GetProcessorName()
             };
 
-            using (var processorKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Default).OpenSubKey(@"HARDWARE\DESCRIPTION\System\CentralProcessor\0"))
-            {
-                info.ProcessorName = (string)processorKey.GetValue("ProcessorNameString");
-            }
-
             return Ok(info);
+        }
+
+        private static string GetOSVersion()
+        {
+            using (var currentVersionKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Default).OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion"))
+            {
+                return $"{currentVersionKey.GetValue("ProductName")} (Build {currentVersionKey.GetValue("CurrentBuildNumber")}.{currentVersionKey.GetValue("UBR")})";
+            }
         }
 
         private static string GetKuduVersion()
@@ -40,7 +44,7 @@ namespace AppServiceInfo.Controllers
             var kuduDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), @"SiteExtensions\Kudu");
 
             return Directory.EnumerateDirectories(kuduDirectory)
-                            .Select(x => Path.GetFileName(x))
+                            .Select(Path.GetFileName)
                             .OrderByDescending(x => x)
                             .First();
         }
@@ -69,6 +73,14 @@ namespace AppServiceInfo.Controllers
             }
 
             return new FileInfo(file).CreationTimeUtc;
+        }
+
+        private static string GetProcessorName()
+        {
+            using (var processorKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Default).OpenSubKey(@"HARDWARE\DESCRIPTION\System\CentralProcessor\0"))
+            {
+                return (string)processorKey.GetValue("ProcessorNameString");
+            }
         }
     }
 }
