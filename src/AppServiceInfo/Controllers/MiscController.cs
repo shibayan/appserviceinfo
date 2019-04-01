@@ -34,10 +34,7 @@ namespace AppServiceInfo.Controllers
             var typeScriptDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), @"Microsoft SDKs\TypeScript");
 
             var list = Directory.EnumerateDirectories(typeScriptDirectory)
-                                .Select(x => new VersionInfo
-                                {
-                                    Version = Path.GetFileName(x)
-                                })
+                                .Select(x => new VersionInfo(Path.GetFileName(x)))
                                 .OrderBy(x => x.Version)
                                 .ToArray();
 
@@ -50,10 +47,7 @@ namespace AppServiceInfo.Controllers
 
             var list = Directory.EnumerateDirectories(fsharpDirectory)
                                 .Where(x => !x.Contains("Licenses"))
-                                .Select(x => new VersionInfo
-                                {
-                                    Version = Path.GetFileName(x)
-                                })
+                                .Select(x => new VersionInfo(Path.GetFileName(x)))
                                 .OrderBy(x => x.Version)
                                 .ToArray();
 
@@ -65,10 +59,7 @@ namespace AppServiceInfo.Controllers
             var bowerDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), @"bower");
 
             var list = Directory.EnumerateDirectories(bowerDirectory)
-                                .Select(x => new VersionInfo
-                                {
-                                    Version = Path.GetFileName(x)
-                                })
+                                .Select(x => new VersionInfo(Path.GetFileName(x)))
                                 .OrderBy(x => x.Version)
                                 .ToArray();
 
@@ -80,10 +71,7 @@ namespace AppServiceInfo.Controllers
             var gruntDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), @"grunt");
 
             var list = Directory.EnumerateDirectories(gruntDirectory)
-                                .Select(x => new VersionInfo
-                                {
-                                    Version = Path.GetFileName(x)
-                                })
+                                .Select(x => new VersionInfo(Path.GetFileName(x)))
                                 .OrderBy(x => x.Version)
                                 .ToArray();
 
@@ -95,10 +83,7 @@ namespace AppServiceInfo.Controllers
             var gulpDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), @"gulp");
 
             var list = Directory.EnumerateDirectories(gulpDirectory)
-                                .Select(x => new VersionInfo
-                                {
-                                    Version = Path.GetFileName(x)
-                                })
+                                .Select(x => new VersionInfo(Path.GetFileName(x)))
                                 .OrderBy(x => x.Version)
                                 .ToArray();
 
@@ -111,10 +96,7 @@ namespace AppServiceInfo.Controllers
 
             var list = Directory.EnumerateDirectories(mysqlDirectory)
                                 .Where(x => !x.Contains("Connector"))
-                                .Select(x => new VersionInfo
-                                {
-                                    Version = Path.GetFileName(x)
-                                })
+                                .Select(x => new VersionInfo(Path.GetFileName(x)))
                                 .OrderBy(x => x.Version)
                                 .ToArray();
 
