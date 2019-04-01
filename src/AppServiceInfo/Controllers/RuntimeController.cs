@@ -205,6 +205,7 @@ namespace AppServiceInfo.Controllers
             var phpDirectory = Path.Combine(Environment.GetEnvironmentVariable("LOCAL_EXPANDED"), "Config");
 
             var list = Directory.EnumerateDirectories(phpDirectory, "PHP-*")
+                                .Where(x => !x.Contains("x64"))
                                 .Select(x => new VersionInfo(Path.GetFileName(x).Substring(4)))
                                 .OrderBy(x => x.Version)
                                 .ToArray();
