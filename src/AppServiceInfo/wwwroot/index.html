@@ -121,7 +121,7 @@
           <dl v-for="item in siteextensions">
             <dt>{{ item.name }}</dt>
             <dd>
-              <span v-for="ver in site.versions" class="tag is-primary">{{ ver.version }}</span>
+              <span v-for="ver in item.versions" class="tag is-primary">{{ ver.version }}</span>
             </dd>
           </dl>
         </div>
