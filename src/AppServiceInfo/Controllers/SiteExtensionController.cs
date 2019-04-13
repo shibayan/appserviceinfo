@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -22,7 +23,8 @@ namespace AppServiceInfo.Controllers
                                 .Select(x => new SiteExtensionInfo
                                 {
                                     Name = Path.GetFileName(x),
-                                    Enabled = IsSiteExtensionEnabled(x)
+                                    Enabled = IsSiteExtensionEnabled(x),
+                                    Versions = GetSiteExtensionVersions(x)
                                 });
 
             return Ok(list);
@@ -50,6 +52,14 @@ namespace AppServiceInfo.Controllers
             }
 
             return isEnabled;
+        }
+
+        private static IList<VersionInfo> GetSiteExtensionVersions(string directory)
+        {
+            return Directory.EnumerateDirectories(directory)
+                            .Select(x => new VersionInfo(Path.GetFileName(x)))
+                            .OrderBy(x => x.Version)
+                            .ToArray();
         }
     }
 }

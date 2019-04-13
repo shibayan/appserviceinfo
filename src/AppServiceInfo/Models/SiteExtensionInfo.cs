@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+
+using Newtonsoft.Json;
 
 namespace AppServiceInfo.Models
 {
@@ -9,5 +11,8 @@ namespace AppServiceInfo.Models
 
         [JsonProperty("enabled")]
         public bool Enabled { get; set; }
+
+        [JsonProperty("versions")]
+        public IList<VersionInfo> Versions { get; set; }
     }
 }
