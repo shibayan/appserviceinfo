@@ -58,7 +58,7 @@ namespace AppServiceInfo.Controllers
         private static IList<VersionInfo> GetSiteExtensionVersions(string directory)
         {
             return Directory.EnumerateDirectories(directory)
-                            .Select(x => new VersionInfo(Path.GetFileName(x)))
+                            .Select(x => new VersionInfo(Path.GetFileName(x).Replace("-", ".").Replace("beta", "0"), Path.GetFileName(x)))
                             .OrderBy(x => x.Version)
                             .ToArray();
         }
