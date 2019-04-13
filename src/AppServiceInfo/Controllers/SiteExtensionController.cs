@@ -25,7 +25,8 @@ namespace AppServiceInfo.Controllers
                                     Name = Path.GetFileName(x),
                                     Enabled = IsSiteExtensionEnabled(x),
                                     Versions = GetSiteExtensionVersions(x)
-                                });
+                                })
+                                .ToArray();
 
             return Ok(list);
         }
