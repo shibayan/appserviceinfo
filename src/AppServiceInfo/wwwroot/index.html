@@ -118,11 +118,13 @@
         <h4 class="title is-4">Site Extensions</h4>
 
         <div class="content">
-          <dl v-for="item in siteextensions">
-            <dt>{{ item.name }}</dt>
-            <dd>
-              <span v-for="ver in item.versions" class="tag is-primary">{{ ver.version }}</span>
-            </dd>
+          <dl>
+            <template v-for="item in siteextensions">
+              <dt>{{ item.name }}</dt>
+              <dd>
+                <span v-for="ver in item.versions" class="tag is-primary">{{ ver.version }}</span>
+              </dd>
+            </template>
           </dl>
         </div>
         <hr />
