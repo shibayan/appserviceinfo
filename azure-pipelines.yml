@@ -1,0 +1,57 @@
+trigger:
+- master
+
+variables:
+  buildConfiguration: 'Release'
+
+stages:
+- stage: Build
+  jobs:
+  - job: Test_Build
+    condition: not(startsWith(variables['Build.SourceBranch'], 'refs/heads/master'))
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet build $(buildConfiguration)'
+
+  - job: Publish_Build
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/master')
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Publish
+      inputs:
+        command: publish
+        publishWebProjects: True
+        arguments: '--configuration $(BuildConfiguration) --output $(System.DefaultWorkingDirectory)/publish'
+        zipAfterPublish: True
+
+    - publish: publish
+      artifact: webapp
+      displayName: 'Publish artifacts'
+
+- stage: Publish
+  dependsOn:
+  - Build
+  condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/master')
+  jobs:
+  - job: Publish_Nupkg
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+    - checkout: none
+
+    - download: current
+      artifact: webapp
+      displayName: 'Download artifact'
+
+    - task: AzureWebApp@1
+      inputs:
+        azureSubscription: 'Visual Studio Enterprise'
+        appType: 'webApp'
+        appName: 'appserviceinfo'
+        package: '$(Pipeline.Workspace)/**/*.zip'
+        deploymentMethod: 'runFromPackage'
+      displayName: 'Deploy to Web App'
