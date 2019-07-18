@@ -8,7 +8,7 @@ stages:
 - stage: Build
   jobs:
   - job: Test_Build
-    condition: not(startsWith(variables['Build.SourceBranch'], 'refs/heads/master'))
+    condition: not(eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     pool:
       vmImage: 'windows-2019'
     steps:
@@ -16,7 +16,7 @@ stages:
       displayName: 'dotnet build $(buildConfiguration)'
 
   - job: Publish_Build
-    condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/master')
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
     pool:
       vmImage: 'windows-2019'
     steps:
@@ -35,7 +35,7 @@ stages:
 - stage: Publish
   dependsOn:
   - Build
-  condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/master')
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
   jobs:
   - job: Publish_Nupkg
     pool:
