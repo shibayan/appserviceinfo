@@ -27,6 +27,9 @@ namespace AppServiceInfo.Models
         [JsonProperty("php")]
         public IReadOnlyList<VersionInfo> Php { get; set; }
 
+        [JsonProperty("php64")]
+        public IReadOnlyList<VersionInfo> Php64 { get; set; }
+
         [JsonProperty("python")]
         public IReadOnlyList<VersionInfo> Python { get; set; }
     }

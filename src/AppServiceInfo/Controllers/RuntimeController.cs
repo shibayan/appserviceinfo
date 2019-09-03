@@ -28,6 +28,7 @@ namespace AppServiceInfo.Controllers
                 Node = GetNodeVersions(),
                 Npm = GetNpmVersions(),
                 Php = GetPhpVersions(),
+                Php64 = GetPhp64Versions(),
                 Python = GetPythonVersions()
             };
 
@@ -211,6 +212,19 @@ namespace AppServiceInfo.Controllers
 
             var list = Directory.EnumerateDirectories(phpDirectory, "PHP-*")
                                 .Where(x => !x.Contains("x64"))
+                                .Select(x => new VersionInfo(Path.GetFileName(x).Substring(4)))
+                                .OrderBy(x => x.Version)
+                                .ToArray();
+
+            return list;
+        }
+        private static IReadOnlyList<VersionInfo> GetPhp64Versions()
+        {
+            var phpDirectory = Path.Combine(Environment.GetEnvironmentVariable("LOCAL_EXPANDED"), "Config");
+
+            var list = Directory.EnumerateDirectories(phpDirectory, "PHP-*")
+                                .Where(x => x.Contains("x64"))
+                                .Select(x => x.Replace("x64", ""))
                                 .Select(x => new VersionInfo(Path.GetFileName(x).Substring(4)))
                                 .OrderBy(x => x.Version)
                                 .ToArray();
