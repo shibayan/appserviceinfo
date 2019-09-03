@@ -26,6 +26,7 @@ namespace AppServiceInfo.Controllers
                                     Enabled = IsSiteExtensionEnabled(x),
                                     Versions = GetSiteExtensionVersions(x)
                                 })
+                                .Where(x => x.Versions.Count > 0)
                                 .ToArray();
 
             return Ok(list);
