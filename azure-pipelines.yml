@@ -2,7 +2,9 @@ trigger:
 - master
 
 variables:
-  buildConfiguration: 'Release'
+  BuildConfiguration: 'Release'
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  NUGET_XMLDOC_MODE: skip
 
 stages:
 - stage: Build
@@ -12,21 +14,31 @@ stages:
     pool:
       vmImage: 'windows-2019'
     steps:
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '3.0.100-preview9-014004'
+
     - task: DotNetCoreCLI@2
-      displayName: 'dotnet build $(buildConfiguration)'
+      displayName: 'dotnet build $(BuildConfiguration)'
 
   - job: Publish_Build
     condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
     pool:
       vmImage: 'windows-2019'
     steps:
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '3.0.100-preview9-014004'
+
     - task: DotNetCoreCLI@2
       displayName: Publish
       inputs:
         command: publish
-        publishWebProjects: True
-        arguments: '--configuration $(BuildConfiguration) --output $(System.DefaultWorkingDirectory)/publish'
-        zipAfterPublish: True
+        publishWebProjects: false
+        arguments: '-c $(BuildConfiguration) -r win-x64 -p:PublishReadyToRun=true --output $(System.DefaultWorkingDirectory)/publish'
+        zipAfterPublish: true
 
     - publish: publish
       artifact: webapp

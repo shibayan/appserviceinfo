@@ -10,8 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppServiceInfo.Controllers
 {
-    [ApiController]
     [Route("api/siteextension")]
+    [ApiController]
     public class SiteExtensionController : ControllerBase
     {
         [HttpGet]

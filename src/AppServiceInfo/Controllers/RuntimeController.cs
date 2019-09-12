@@ -12,8 +12,8 @@ using Microsoft.Win32;
 
 namespace AppServiceInfo.Controllers
 {
-    [ApiController]
     [Route("api/runtime")]
+    [ApiController]
     public class RuntimeController : ControllerBase
     {
         [HttpGet]

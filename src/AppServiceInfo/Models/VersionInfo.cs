@@ -1,6 +1,5 @@
 ﻿using System;
-
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AppServiceInfo.Models
 {
@@ -20,7 +19,7 @@ namespace AppServiceInfo.Models
         [JsonIgnore]
         public Version Version { get; set; }
 
-        [JsonProperty("version")]
+        [JsonPropertyName("version")]
         public string DisplayVersion { get; set; }
     }
 }

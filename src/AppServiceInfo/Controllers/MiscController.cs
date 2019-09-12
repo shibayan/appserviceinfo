@@ -9,8 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppServiceInfo.Controllers
 {
-    [ApiController]
     [Route("api/misc")]
+    [ApiController]
     public class MiscController : ControllerBase
     {
         [HttpGet]

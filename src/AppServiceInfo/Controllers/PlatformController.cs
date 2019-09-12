@@ -10,8 +10,8 @@ using Microsoft.Win32;
 
 namespace AppServiceInfo.Controllers
 {
-    [ApiController]
     [Route("api/platform")]
+    [ApiController]
     public class PlatformController : ControllerBase
     {
         [HttpGet]
