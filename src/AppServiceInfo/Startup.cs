@@ -19,6 +19,8 @@ namespace AppServiceInfo
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApplicationInsightsTelemetry();
+
             services.AddControllers();
 
             services.AddHsts(options =>
