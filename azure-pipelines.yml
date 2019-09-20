@@ -39,7 +39,7 @@ stages:
       inputs:
         command: publish
         publishWebProjects: false
-        arguments: '-c $(BuildConfiguration) -r win-x64 -p:PublishReadyToRun=true --output $(System.DefaultWorkingDirectory)/publish'
+        arguments: '-c $(BuildConfiguration) -r win-x64 -p:PublishReadyToRun=true --output $(Build.SourcesDirectory)/publish'
         zipAfterPublish: true
 
     - publish: publish
