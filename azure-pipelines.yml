@@ -17,7 +17,8 @@ stages:
     - task: UseDotNet@2
       inputs:
         packageType: 'sdk'
-        version: '3.0.100-preview9-014004'
+        version: '3.0.x'
+        includePreviewVersions: true
 
     - task: DotNetCoreCLI@2
       displayName: 'dotnet build $(BuildConfiguration)'
@@ -30,14 +31,15 @@ stages:
     - task: UseDotNet@2
       inputs:
         packageType: 'sdk'
-        version: '3.0.100-preview9-014004'
+        version: '3.0.x'
+        includePreviewVersions: true
 
     - task: DotNetCoreCLI@2
       displayName: Publish
       inputs:
         command: publish
         publishWebProjects: false
-        arguments: '-c $(BuildConfiguration) -r win-x64 --self-contained false -p:PublishReadyToRun=true --output $(System.DefaultWorkingDirectory)/publish'
+        arguments: '-c $(BuildConfiguration) -r win-x64 --self-contained false -p:PublishReadyToRun=true --output $(Build.SourcesDirectory)/publish'
         zipAfterPublish: true
 
     - publish: publish
