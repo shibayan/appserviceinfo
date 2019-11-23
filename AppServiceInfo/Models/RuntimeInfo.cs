@@ -14,6 +14,8 @@ namespace AppServiceInfo.Models
 
         public IReadOnlyList<VersionInfo> Node { get; set; }
 
+        public IReadOnlyList<VersionInfo> Node64 { get; set; }
+
         public IReadOnlyList<VersionInfo> Npm { get; set; }
 
         public IReadOnlyList<VersionInfo> Php { get; set; }

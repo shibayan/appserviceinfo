@@ -26,6 +26,7 @@ namespace AppServiceInfo.Controllers
                 DotnetCore64 = GetDotnetCore64Versions(),
                 Java = GetJavaVersions(),
                 Node = GetNodeVersions(),
+                Node64 = GetNode64Versions(),
                 Npm = GetNpmVersions(),
                 Php = GetPhpVersions(),
                 Php64 = GetPhp64Versions(),
@@ -184,6 +185,19 @@ namespace AppServiceInfo.Controllers
         private static IReadOnlyList<VersionInfo> GetNodeVersions()
         {
             var nodeDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), "nodejs");
+
+            var list = Directory.EnumerateDirectories(nodeDirectory)
+                                .Where(x => !x.EndsWith("node_modules"))
+                                .Select(x => new VersionInfo(Path.GetFileName(x)))
+                                .OrderBy(x => x.Version)
+                                .ToArray();
+
+            return list;
+        }
+
+        private static IReadOnlyList<VersionInfo> GetNode64Versions()
+        {
+            var nodeDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles"), "nodejs");
 
             var list = Directory.EnumerateDirectories(nodeDirectory)
                                 .Where(x => !x.EndsWith("node_modules"))
