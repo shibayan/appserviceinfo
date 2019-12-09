@@ -3,6 +3,7 @@ trigger:
 
 variables:
   BuildConfiguration: 'Release'
+  DotnetSdkVersion: '3.1.x'
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   NUGET_XMLDOC_MODE: skip
 
@@ -14,6 +15,12 @@ stages:
     pool:
       vmImage: 'windows-2019'
     steps:
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: $(dotnetSdkVersion)
+      displayName: 'Install .NET Core SDK $(DotnetSdkVersion)'
+
     - task: DotNetCoreCLI@2
       displayName: 'dotnet build $(BuildConfiguration)'
 
@@ -22,6 +29,12 @@ stages:
     pool:
       vmImage: 'windows-2019'
     steps:
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: $(dotnetSdkVersion)
+      displayName: 'Install .NET Core SDK $(DotnetSdkVersion)'
+
     - task: DotNetCoreCLI@2
       displayName: Publish
       inputs:
