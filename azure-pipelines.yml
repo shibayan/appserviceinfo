@@ -13,7 +13,7 @@ stages:
   - job: Test_Build
     condition: not(eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     pool:
-      vmImage: 'windows-2019'
+      vmImage: 'windows-latest'
     steps:
     - task: UseDotNet@2
       inputs:
@@ -27,7 +27,7 @@ stages:
   - job: Publish_Build
     condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
     pool:
-      vmImage: 'windows-2019'
+      vmImage: 'windows-latest'
     steps:
     - task: UseDotNet@2
       inputs:
@@ -54,7 +54,7 @@ stages:
   jobs:
   - job: Deploy_AppService
     pool:
-      vmImage: 'windows-2019'
+      vmImage: 'windows-latest'
     steps:
     - checkout: none
 
