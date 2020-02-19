@@ -32,10 +32,9 @@ namespace AppServiceInfo.Controllers
 
         private static string GetOSVersion()
         {
-            using (var currentVersionKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Default).OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion"))
-            {
-                return $"{currentVersionKey.GetValue("ProductName")} (Build {currentVersionKey.GetValue("CurrentBuildNumber")}.{currentVersionKey.GetValue("UBR")})";
-            }
+            using var currentVersionKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Default).OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
+
+            return $"{currentVersionKey.GetValue("ProductName")} (Build {currentVersionKey.GetValue("CurrentBuildNumber")}.{currentVersionKey.GetValue("UBR")})";
         }
 
         private static string GetKuduVersion()
@@ -76,10 +75,9 @@ namespace AppServiceInfo.Controllers
 
         private static string GetProcessorName()
         {
-            using (var processorKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Default).OpenSubKey(@"HARDWARE\DESCRIPTION\System\CentralProcessor\0"))
-            {
-                return (string)processorKey.GetValue("ProcessorNameString");
-            }
+            using var processorKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Default).OpenSubKey(@"HARDWARE\DESCRIPTION\System\CentralProcessor\0");
+
+            return (string)processorKey.GetValue("ProcessorNameString");
         }
     }
 }

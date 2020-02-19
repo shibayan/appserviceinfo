@@ -56,7 +56,7 @@ namespace AppServiceInfo.Controllers
 
         private static IReadOnlyList<VersionInfo> GetBowerVersions()
         {
-            var bowerDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), @"bower");
+            var bowerDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), "bower");
 
             var list = Directory.EnumerateDirectories(bowerDirectory)
                                 .Select(x => new VersionInfo(Path.GetFileName(x)))
@@ -68,7 +68,7 @@ namespace AppServiceInfo.Controllers
 
         private static IReadOnlyList<VersionInfo> GetGruntVersions()
         {
-            var gruntDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), @"grunt");
+            var gruntDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), "grunt");
 
             var list = Directory.EnumerateDirectories(gruntDirectory)
                                 .Select(x => new VersionInfo(Path.GetFileName(x)))
@@ -80,7 +80,7 @@ namespace AppServiceInfo.Controllers
 
         private static IReadOnlyList<VersionInfo> GetGulpVersions()
         {
-            var gulpDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), @"gulp");
+            var gulpDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), "gulp");
 
             var list = Directory.EnumerateDirectories(gulpDirectory)
                                 .Select(x => new VersionInfo(Path.GetFileName(x)))
@@ -92,7 +92,7 @@ namespace AppServiceInfo.Controllers
 
         private static IReadOnlyList<VersionInfo> GetMySqlVersions()
         {
-            var mysqlDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), @"mysql");
+            var mysqlDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), "mysql");
 
             var list = Directory.EnumerateDirectories(mysqlDirectory)
                                 .Where(x => !x.Contains("Connector"))
