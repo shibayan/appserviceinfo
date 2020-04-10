@@ -40,7 +40,7 @@ stages:
       inputs:
         command: publish
         publishWebProjects: false
-        arguments: '-c $(BuildConfiguration) -r win-x64 --self-contained false -p:PublishReadyToRun=true --output $(Build.SourcesDirectory)/publish'
+        arguments: '-c $(BuildConfiguration) -o $(Build.SourcesDirectory)/publish -r win-x64 --self-contained false -p:PublishReadyToRun=true'
         zipAfterPublish: true
 
     - publish: publish
@@ -59,7 +59,6 @@ stages:
     - checkout: none
 
     - download: current
-      artifact: webapp
       displayName: 'Download artifact'
 
     - task: AzureWebApp@1

@@ -34,6 +34,7 @@ namespace AppServiceInfo.Controllers
             var typeScriptDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), @"Microsoft SDKs\TypeScript");
 
             var list = Directory.EnumerateDirectories(typeScriptDirectory)
+                                .Where(x => !x.Contains("versions"))
                                 .Select(x => new VersionInfo(Path.GetFileName(x)))
                                 .OrderBy(x => x.Version)
                                 .ToArray();
