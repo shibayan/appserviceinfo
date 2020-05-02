@@ -1,6 +1,6 @@
 # App Service Info
 
-[![Build Status](https://dev.azure.com/shibayan/appserviceinfo/_apis/build/status/Build%20appserviceinfo?branchName=master)](https://dev.azure.com/shibayan/appserviceinfo/_build/latest?definitionId=22&branchName=master)
+![.github/workflows/azure.yml](https://github.com/shibayan/appserviceinfo/workflows/.github/workflows/azure.yml/badge.svg)
 
 This website to check the platform and runtime information of Azure App Service.
 
