@@ -1,6 +1,6 @@
 # App Service Info
 
-![.github/workflows/azure.yml](https://github.com/shibayan/appserviceinfo/workflows/.github/workflows/azure.yml/badge.svg)
+![Publish](https://github.com/shibayan/appserviceinfo/workflows/Publish/badge.svg)
 
 This website to check the platform and runtime information of Azure App Service.
 
