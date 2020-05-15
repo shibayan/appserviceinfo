@@ -65,9 +65,13 @@
             <dd>
               <span v-for="item in runtime.dotnetCore64" class="tag is-primary">{{ item.version }}</span>
             </dd>
-            <dt>Java</dt>
+            <dt>Java (Oracle)</dt>
             <dd>
-              <span v-for="item in runtime.java" class="tag is-primary">{{ item.version }}</span>
+              <span v-for="item in runtime.oracleJava" class="tag is-primary">{{ item.version }}</span>
+            </dd>
+            <dt>Java (Azul)</dt>
+            <dd>
+              <span v-for="item in runtime.azulJava" class="tag is-primary">{{ item.version }}</span>
             </dd>
             <dt>Node.js (x86)</dt>
             <dd>

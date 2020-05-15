@@ -10,7 +10,9 @@ namespace AppServiceInfo.Models
 
         public IReadOnlyList<VersionInfo> DotnetCore64 { get; set; }
 
-        public IReadOnlyList<VersionInfo> Java { get; set; }
+        public IReadOnlyList<VersionInfo> OracleJava { get; set; }
+
+        public IReadOnlyList<VersionInfo> AzulJava { get; set; }
 
         public IReadOnlyList<VersionInfo> Node { get; set; }
 

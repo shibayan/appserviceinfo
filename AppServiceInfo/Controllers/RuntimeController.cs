@@ -24,7 +24,8 @@ namespace AppServiceInfo.Controllers
                 Dotnet = GetDotnetVersions(),
                 DotnetCore = GetDotnetCoreVersions(),
                 DotnetCore64 = GetDotnetCore64Versions(),
-                Java = GetJavaVersions(),
+                OracleJava = GetOracleJavaVersions(),
+                AzulJava = GetAzulJavaVersions(),
                 Node = GetNodeVersions(),
                 Node64 = GetNode64Versions(),
                 Npm = GetNpmVersions(),
@@ -142,7 +143,7 @@ namespace AppServiceInfo.Controllers
             return list;
         }
 
-        private static IReadOnlyList<VersionInfo> GetJavaVersions()
+        private static IReadOnlyList<VersionInfo> GetOracleJavaVersions()
         {
             var javaDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles"), "Java");
 
@@ -152,34 +153,35 @@ namespace AppServiceInfo.Controllers
             }
 
             var list = Directory.EnumerateDirectories(javaDirectory)
-                                .Where(x => x.Contains("jdk") || x.Contains("jre"))
-                                .Select(x =>
-                                {
-                                    var (version, displayVersion) = ExtractJavaVersion(Path.GetFileName(x));
-
-                                    return new VersionInfo(version, displayVersion);
-                                })
+                                .Where(x => !x.Contains("zulu") && (x.Contains("jdk") || x.Contains("jre")))
+                                .Select(x => new VersionInfo(Path.GetFileName(x).Substring(3).Replace("_", ".")))
                                 .OrderBy(x => x.Version)
                                 .ToArray();
 
             return list;
         }
 
-        private static (string, string) ExtractJavaVersion(string directoryName)
+        private static IReadOnlyList<VersionInfo> GetAzulJavaVersions()
         {
-            if (directoryName.StartsWith("jdk") || directoryName.StartsWith("jre"))
+            var javaDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles"), "Java");
+
+            if (!Directory.Exists(javaDirectory))
             {
-                return (directoryName.Substring(3).Replace("_", "."), $"{directoryName.Substring(3)} (Oracle)");
+                return new VersionInfo[0];
             }
 
-            if (directoryName.StartsWith("zulu"))
-            {
-                var match = Regex.Match(directoryName, @"^.+?\-(jre|jdk)(\d+?)\.(\d+?)\.(\d+?)\-.*$");
+            var list = Directory.EnumerateDirectories(javaDirectory)
+                                .Where(x => x.Contains("zulu"))
+                                .Select(x =>
+                                {
+                                    var match = Regex.Match(Path.GetFileName(x), @"^.+?\-(jre|jdk)(\d+?)\.(\d+?)\.(\d+?)\-.*$");
 
-                return ($"1.{match.Groups[2].Value}.{match.Groups[3].Value}.{match.Groups[4].Value}", $"1.{match.Groups[2].Value}.{match.Groups[3].Value}_{match.Groups[4].Value} (Azul)");
-            }
+                                    return new VersionInfo($"1.{match.Groups[2].Value}.{match.Groups[3].Value}.{match.Groups[4].Value}");
+                                })
+                                .OrderBy(x => x.Version)
+                                .ToArray();
 
-            return (null, null);
+            return list;
         }
 
         private static IReadOnlyList<VersionInfo> GetNodeVersions()
