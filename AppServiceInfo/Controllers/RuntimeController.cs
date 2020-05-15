@@ -24,6 +24,8 @@ namespace AppServiceInfo.Controllers
                 Dotnet = GetDotnetVersions(),
                 DotnetCore = GetDotnetCoreVersions(),
                 DotnetCore64 = GetDotnetCore64Versions(),
+                DotnetCoreSdk = GetDotnetCoreSdkVersions(),
+                DotnetCoreSdk64 = GetDotnetCoreSdk64Versions(),
                 OracleJava = GetOracleJavaVersions(),
                 AzulJava = GetAzulJavaVersions(),
                 Node = GetNodeVersions(),
@@ -136,6 +138,32 @@ namespace AppServiceInfo.Controllers
             var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles"), "dotnet", @"shared\Microsoft.NETCore.App");
 
             var list = Directory.EnumerateDirectories(dotnetCoreDirectory)
+                                .Select(x => new VersionInfo(Path.GetFileName(x)))
+                                .OrderBy(x => x.Version)
+                                .ToArray();
+
+            return list;
+        }
+
+        private static IReadOnlyList<VersionInfo> GetDotnetCoreSdkVersions()
+        {
+            var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), "dotnet", "sdk");
+
+            var list = Directory.EnumerateDirectories(dotnetCoreDirectory)
+                                .Where(x => !x.EndsWith("NuGetFallbackFolder"))
+                                .Select(x => new VersionInfo(Path.GetFileName(x)))
+                                .OrderBy(x => x.Version)
+                                .ToArray();
+
+            return list;
+        }
+
+        private static IReadOnlyList<VersionInfo> GetDotnetCoreSdk64Versions()
+        {
+            var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles"), "dotnet", "sdk");
+
+            var list = Directory.EnumerateDirectories(dotnetCoreDirectory)
+                                .Where(x => !x.EndsWith("NuGetFallbackFolder"))
                                 .Select(x => new VersionInfo(Path.GetFileName(x)))
                                 .OrderBy(x => x.Version)
                                 .ToArray();
