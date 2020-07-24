@@ -7,13 +7,13 @@ on:
 env:
   AZURE_WEBAPP_NAME: appserviceinfo
   AZURE_WEBAPP_PACKAGE_PATH: dist
-  DOTNET_VERSION: 3.1.201
+  DOTNET_VERSION: 3.1.x
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
 
     - name: Use .NET Core ${{ env.DOTNET_VERSION }}
       uses: actions/setup-dotnet@v1
