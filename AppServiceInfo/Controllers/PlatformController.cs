@@ -21,6 +21,7 @@ namespace AppServiceInfo.Controllers
             {
                 OsVersion = GetOSVersion(),
                 AppServiceVersion = GetAppServiceVersion(),
+                MiddlewareModuleVersion = GetMiddlewareModuleVersion(),
                 KuduVersion = GetKuduVersion(),
                 LastReimage = GetLastReimage(),
                 CurrentStampname = Environment.GetEnvironmentVariable("WEBSITE_CURRENT_STAMPNAME"),
@@ -59,6 +60,16 @@ namespace AppServiceInfo.Controllers
             {
                 return null;
             }
+        }
+
+        private static string GetMiddlewareModuleVersion()
+        {
+            var middlewareDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), @"MiddlewareModules");
+
+            return Directory.EnumerateDirectories(middlewareDirectory)
+                            .Select(Path.GetFileName)
+                            .OrderByDescending(x => x)
+                            .First();
         }
 
         private static DateTime? GetLastReimage()
