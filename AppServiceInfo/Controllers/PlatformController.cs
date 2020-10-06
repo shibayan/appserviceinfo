@@ -74,7 +74,7 @@ namespace AppServiceInfo.Controllers
 
         private static DateTime? GetLastReimage()
         {
-            var file = Directory.GetFiles(@"C:\WebsitesInstall").FirstOrDefault();
+            var file = Directory.GetFiles($@"{Environment.GetEnvironmentVariable("SystemDrive")}\WebsitesInstall").FirstOrDefault();
 
             if (file == null)
             {
