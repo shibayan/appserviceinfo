@@ -52,7 +52,7 @@ namespace AppServiceInfo.Controllers
         {
             try
             {
-                var assemblyPath = @"D:\Program Files\Reference Assemblies\Microsoft\IIS\Microsoft.Web.Hosting.dll";
+                var assemblyPath = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles"), @"Reference Assemblies\Microsoft\IIS\Microsoft.Web.Hosting.dll");
 
                 return FileVersionInfo.GetVersionInfo(assemblyPath).ProductVersion;
             }
@@ -74,7 +74,7 @@ namespace AppServiceInfo.Controllers
 
         private static DateTime? GetLastReimage()
         {
-            var file = Directory.GetFiles(@"D:\WebsitesInstall").FirstOrDefault();
+            var file = Directory.GetFiles(@"C:\WebsitesInstall").FirstOrDefault();
 
             if (file == null)
             {
