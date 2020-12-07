@@ -112,39 +112,6 @@
 
         <hr />
 
-        <h4 class="title is-4">Miscellaneous</h4>
-
-        <div class="content">
-          <dl>
-            <dt>Bower</dt>
-            <dd>
-              <span v-for="item in misc.bower" class="tag is-primary">{{ item.version }}</span>
-            </dd>
-            <dt>Grunt</dt>
-            <dd>
-              <span v-for="item in misc.grunt" class="tag is-primary">{{ item.version }}</span>
-            </dd>
-            <dt>Gulp</dt>
-            <dd>
-              <span v-for="item in misc.gulp" class="tag is-primary">{{ item.version }}</span>
-            </dd>
-            <dt>F#</dt>
-            <dd>
-              <span v-for="item in misc.fSharp" class="tag is-primary">{{ item.version }}</span>
-            </dd>
-            <dt>MySQL</dt>
-            <dd>
-              <span v-for="item in misc.mySql" class="tag is-primary">{{ item.version }}</span>
-            </dd>
-            <dt>TypeScript</dt>
-            <dd>
-              <span v-for="item in misc.typeScript" class="tag is-primary">{{ item.version }}</span>
-            </dd>
-          </dl>
-        </div>
-
-        <hr />
-
         <h4 class="title is-4">Site Extensions</h4>
 
         <div class="content">
@@ -168,7 +135,7 @@
         <hr />
 
         <footer>
-          <p>&copy; 2019 <a href="https://shibayan.jp">@shibayan</a></p>
+          <p>&copy; 2020 <a href="https://shibayan.jp">@shibayan</a></p>
         </footer>
       </div>
     </div>
@@ -185,7 +152,6 @@
       data: {
         platform: {},
         runtime: {},
-        misc: {},
         siteextension: []
       },
       methods: {
@@ -193,12 +159,10 @@
           const [platform, runtime, misc, siteextension] = await Promise.all([
             axios.get("/api/platform"),
             axios.get("/api/runtime"),
-            axios.get("/api/misc"),
             axios.get("/api/siteextension")]);
 
           this.$set(this, "platform", platform.data);
           this.$set(this, "runtime", runtime.data);
-          this.$set(this, "misc", misc.data);
           this.$set(this, "siteextension", siteextension.data);
         }
       },
