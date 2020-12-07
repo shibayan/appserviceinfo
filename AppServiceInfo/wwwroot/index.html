@@ -156,7 +156,7 @@
         }
       },
       methods: {
-        loadDefaults: async function () {
+        async loadDefaults() {
           const [platform, runtime, siteextension] = await Promise.all([
             axios.get("/api/platform"),
             axios.get("/api/runtime"),
