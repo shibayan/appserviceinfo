@@ -162,9 +162,9 @@
             axios.get("/api/runtime"),
             axios.get("/api/siteextension")]);
 
-          this.$set(this, "platform", platform.data);
-          this.$set(this, "runtime", runtime.data);
-          this.$set(this, "siteextension", siteextension.data);
+          this.platform = platform.data;
+          this.runtime = runtime.data;
+          this.siteextension = siteextension.data;
         }
       },
       beforeMount() {
