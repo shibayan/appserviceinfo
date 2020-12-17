@@ -27,7 +27,5 @@ namespace AppServiceInfo.Models
         public IReadOnlyList<VersionInfo> Php { get; set; }
 
         public IReadOnlyList<VersionInfo> Php64 { get; set; }
-
-        public IReadOnlyList<VersionInfo> Python { get; set; }
     }
 }
