@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -32,8 +31,7 @@ namespace AppServiceInfo.Controllers
                 Node64 = GetNode64Versions(),
                 Npm = GetNpmVersions(),
                 Php = GetPhpVersions(),
-                Php64 = GetPhp64Versions(),
-                Python = GetPythonVersions()
+                Php64 = GetPhp64Versions()
             };
 
             return Ok(data);
@@ -270,20 +268,6 @@ namespace AppServiceInfo.Controllers
                                 .Where(x => x.Contains("x64"))
                                 .Select(x => x.Replace("x64", ""))
                                 .Select(x => new VersionInfo(Path.GetFileName(x).Substring(4)))
-                                .OrderBy(x => x.Version)
-                                .ToArray();
-
-            return list;
-        }
-
-        private static IReadOnlyList<VersionInfo> GetPythonVersions()
-        {
-            var rootDirectory = Path.GetPathRoot(Environment.GetEnvironmentVariable("ProgramW6432"));
-
-            var list = Directory.EnumerateDirectories(rootDirectory, "Python*")
-                                .Select(x => new VersionInfo(System.IO.File.Exists(Path.Combine(x, "README.txt"))
-                                    ? System.IO.File.ReadLines(Path.Combine(x, "README.txt")).First().Substring(23)
-                                    : FileVersionInfo.GetVersionInfo(Path.Combine(x, "python.exe")).ProductVersion))
                                 .OrderBy(x => x.Version)
                                 .ToArray();
 
