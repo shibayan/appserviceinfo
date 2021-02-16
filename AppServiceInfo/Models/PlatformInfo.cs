@@ -16,6 +16,8 @@ namespace AppServiceInfo.Models
 
         public DateTime? LastReimage { get; set; }
 
+        public DateTime? LastRapidUpdate { get; set; }
+
         public string CurrentStampname { get; set; }
     }
 }

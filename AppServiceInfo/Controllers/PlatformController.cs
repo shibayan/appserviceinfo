@@ -24,6 +24,7 @@ namespace AppServiceInfo.Controllers
                 MiddlewareModuleVersion = GetMiddlewareModuleVersion(),
                 KuduVersion = GetKuduVersion(),
                 LastReimage = GetLastReimage(),
+                LastRapidUpdate = GetLastRapidUpdate(),
                 CurrentStampname = Environment.GetEnvironmentVariable("WEBSITE_CURRENT_STAMPNAME"),
                 ProcessorName = GetProcessorName()
             };
@@ -75,6 +76,18 @@ namespace AppServiceInfo.Controllers
         private static DateTime? GetLastReimage()
         {
             var file = Directory.GetFiles($@"{Environment.GetEnvironmentVariable("SystemDrive")}\WebsitesInstall").FirstOrDefault();
+
+            if (file == null)
+            {
+                return null;
+            }
+
+            return new FileInfo(file).CreationTimeUtc;
+        }
+
+        private static DateTime? GetLastRapidUpdate()
+        {
+            var file = Directory.GetFiles($@"{Environment.GetEnvironmentVariable("SystemDrive")}\WebsitesInstall").LastOrDefault();
 
             if (file == null)
             {
