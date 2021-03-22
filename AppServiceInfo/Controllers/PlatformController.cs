@@ -75,26 +75,22 @@ namespace AppServiceInfo.Controllers
 
         private static DateTime? GetLastReimage()
         {
-            var file = Directory.GetFiles($@"{Environment.GetEnvironmentVariable("SystemDrive")}\WebsitesInstall").FirstOrDefault();
+            var file = Directory.GetFiles($@"{Environment.GetEnvironmentVariable("SystemDrive")}\WebsitesInstall")
+                                .Select(x => new FileInfo(x))
+                                .OrderByDescending(x => x.Length)
+                                .FirstOrDefault();
 
-            if (file == null)
-            {
-                return null;
-            }
-
-            return new FileInfo(file).CreationTimeUtc;
+            return file?.CreationTimeUtc;
         }
 
         private static DateTime? GetLastRapidUpdate()
         {
-            var file = Directory.GetFiles($@"{Environment.GetEnvironmentVariable("SystemDrive")}\WebsitesInstall").LastOrDefault();
+            var file = Directory.GetFiles($@"{Environment.GetEnvironmentVariable("SystemDrive")}\WebsitesInstall")
+                                .Select(x => new FileInfo(x))
+                                .OrderBy(x => x.Length)
+                                .FirstOrDefault();
 
-            if (file == null)
-            {
-                return null;
-            }
-
-            return new FileInfo(file).CreationTimeUtc;
+            return file?.CreationTimeUtc;
         }
 
         private static string GetProcessorName()
