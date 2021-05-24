@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 using AppServiceInfo.Models;
@@ -59,7 +60,7 @@ namespace AppServiceInfo.Controllers
         private static IList<VersionInfo> GetSiteExtensionVersions(string directory)
         {
             return Directory.EnumerateDirectories(directory)
-                            .Select(x => new VersionInfo(Path.GetFileName(x).Replace("-", ".").Replace("beta", "0"), Path.GetFileName(x)))
+                            .Select(x => new VersionInfo(Regex.Replace(Path.GetFileName(x), @"\-.*$", ""), Path.GetFileName(x)))
                             .OrderBy(x => x.Version)
                             .ToArray();
         }
