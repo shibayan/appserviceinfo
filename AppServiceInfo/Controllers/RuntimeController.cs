@@ -124,7 +124,7 @@ namespace AppServiceInfo.Controllers
             var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), "dotnet", @"shared\Microsoft.NETCore.App");
 
             var list = Directory.EnumerateDirectories(dotnetCoreDirectory)
-                                .Select(x => new VersionInfo(Path.GetFileName(x)))
+                                .Select(x => new VersionInfo(Regex.Replace(Path.GetFileName(x), @"\-.*$", "")))
                                 .OrderBy(x => x.Version)
                                 .ToArray();
 
@@ -136,7 +136,7 @@ namespace AppServiceInfo.Controllers
             var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles"), "dotnet", @"shared\Microsoft.NETCore.App");
 
             var list = Directory.EnumerateDirectories(dotnetCoreDirectory)
-                                .Select(x => new VersionInfo(Path.GetFileName(x)))
+                                .Select(x => new VersionInfo(Regex.Replace(Path.GetFileName(x), @"\-.*$", "")))
                                 .OrderBy(x => x.Version)
                                 .ToArray();
 
@@ -149,7 +149,7 @@ namespace AppServiceInfo.Controllers
 
             var list = Directory.EnumerateDirectories(dotnetCoreDirectory)
                                 .Where(x => !x.EndsWith("NuGetFallbackFolder"))
-                                .Select(x => new VersionInfo(Path.GetFileName(x)))
+                                .Select(x => new VersionInfo(Regex.Replace(Path.GetFileName(x), @"\-.*$", "")))
                                 .OrderBy(x => x.Version)
                                 .ToArray();
 
@@ -162,7 +162,7 @@ namespace AppServiceInfo.Controllers
 
             var list = Directory.EnumerateDirectories(dotnetCoreDirectory)
                                 .Where(x => !x.EndsWith("NuGetFallbackFolder"))
-                                .Select(x => new VersionInfo(Path.GetFileName(x)))
+                                .Select(x => new VersionInfo(Regex.Replace(Path.GetFileName(x), @"\-.*$", "")))
                                 .OrderBy(x => x.Version)
                                 .ToArray();
 
