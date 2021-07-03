@@ -5,7 +5,7 @@ on:
     branches: [ master ]
 
 env:
-  DOTNET_VERSION: 5.0.x
+  DOTNET_VERSION: 6.0.x
 
 jobs:
   build:
@@ -17,6 +17,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
+        include-prerelease: true
 
     - name: Build project
       run: dotnet build -c Release

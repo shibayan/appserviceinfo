@@ -7,7 +7,7 @@ on:
 env:
   AZURE_WEBAPP_NAME: appserviceinfo
   AZURE_WEBAPP_PACKAGE_PATH: dist
-  DOTNET_VERSION: 5.0.x
+  DOTNET_VERSION: 6.0.x
 
 jobs:
   build:
@@ -19,6 +19,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
+        include-prerelease: true
 
     - name: dotnet publish
       run: dotnet publish -c Release -r win-x64 --self-contained false -o ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
