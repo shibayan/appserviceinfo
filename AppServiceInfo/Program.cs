@@ -1,20 +1,36 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using System;
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace AppServiceInfo
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+var builder = WebApplication.CreateBuilder(args);
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
+builder.Services.AddApplicationInsightsTelemetry();
+
+builder.Services.AddControllers();
+
+builder.Services.AddHsts(options =>
+{
+    options.MaxAge = TimeSpan.FromDays(365);
+    options.IncludeSubDomains = true;
+});
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
 }
+else
+{
+    app.UseHsts();
+}
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
+app.MapControllers();
+
+app.Run();
