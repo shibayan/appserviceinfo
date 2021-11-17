@@ -27,6 +27,7 @@ namespace AppServiceInfo.Controllers
                 DotnetCoreSdk64 = GetDotnetCoreSdk64Versions(),
                 OracleJava = GetOracleJavaVersions(),
                 AzulJava = GetAzulJavaVersions(),
+                MicrosoftJava = GetMicrosoftJavaVersions(),
                 Node = GetNodeVersions(),
                 Node64 = GetNode64Versions(),
                 Npm = GetNpmVersions(),
@@ -179,7 +180,7 @@ namespace AppServiceInfo.Controllers
             }
 
             var list = Directory.EnumerateDirectories(javaDirectory)
-                                .Where(x => !x.Contains("zulu") && (x.Contains("jdk") || x.Contains("jre")))
+                                .Where(x => x.Contains("\\jdk") || x.Contains("\\jre"))
                                 .Select(x => new VersionInfo(Path.GetFileName(x).Substring(3).Replace("_", ".")))
                                 .OrderBy(x => x.Version)
                                 .ToArray();
@@ -197,10 +198,33 @@ namespace AppServiceInfo.Controllers
             }
 
             var list = Directory.EnumerateDirectories(javaDirectory)
-                                .Where(x => x.Contains("zulu"))
+                                .Where(x => x.Contains("\\zulu"))
                                 .Select(x =>
                                 {
                                     var match = Regex.Match(Path.GetFileName(x), @"^.+?\-(jre|jdk)(\d+?)\.(\d+?)\.(\d+?)\-.*$");
+
+                                    return new VersionInfo($"1.{match.Groups[2].Value}.{match.Groups[3].Value}.{match.Groups[4].Value}");
+                                })
+                                .OrderBy(x => x.Version)
+                                .ToArray();
+
+            return list;
+        }
+
+        private static IReadOnlyList<VersionInfo> GetMicrosoftJavaVersions()
+        {
+            var javaDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles"), "Java");
+
+            if (!Directory.Exists(javaDirectory))
+            {
+                return new VersionInfo[0];
+            }
+
+            var list = Directory.EnumerateDirectories(javaDirectory)
+                                .Where(x => x.Contains("\\microsoft"))
+                                .Select(x =>
+                                {
+                                    var match = Regex.Match(Path.GetFileName(x), @"^.+?\-(jdk)\-(\d+?)\.(\d+?)\.(\d+?)\..*$");
 
                                     return new VersionInfo($"1.{match.Groups[2].Value}.{match.Groups[3].Value}.{match.Groups[4].Value}");
                                 })

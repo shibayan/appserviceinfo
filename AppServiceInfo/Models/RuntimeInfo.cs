@@ -18,6 +18,8 @@ namespace AppServiceInfo.Models
 
         public IReadOnlyList<VersionInfo> AzulJava { get; set; }
 
+        public IReadOnlyList<VersionInfo> MicrosoftJava { get; set; }
+
         public IReadOnlyList<VersionInfo> Node { get; set; }
 
         public IReadOnlyList<VersionInfo> Node64 { get; set; }
