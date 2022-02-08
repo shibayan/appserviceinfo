@@ -8,9 +8,9 @@ namespace AppServiceInfo.Models
 
         public string AppServiceVersion { get; set; }
 
-        public string MiddlewareModuleVersion { get; set; }
-
         public string KuduVersion { get; set; }
+
+        public string MiddlewareModuleVersion { get; set; }
 
         public string ProcessorName { get; set; }
 
