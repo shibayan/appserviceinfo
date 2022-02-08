@@ -78,10 +78,10 @@ namespace AppServiceInfo.Controllers
             var file = Directory.GetFiles($@"{Environment.GetEnvironmentVariable("SystemDrive")}\WebsitesInstall")
                                 .Select(x => new FileInfo(x))
                                 .Where(x => x.Length > 1024 * 1024)
-                                .OrderByDescending(x => x.CreationTimeUtc)
+                                .OrderByDescending(x => x.LastWriteTimeUtc)
                                 .FirstOrDefault();
 
-            return file?.CreationTimeUtc;
+            return file?.LastWriteTimeUtc;
         }
 
         private static DateTime? GetLastRapidUpdate()
@@ -89,10 +89,10 @@ namespace AppServiceInfo.Controllers
             var file = Directory.GetFiles($@"{Environment.GetEnvironmentVariable("SystemDrive")}\WebsitesInstall")
                                 .Select(x => new FileInfo(x))
                                 .Where(x => x.Length < 1024 * 1024)
-                                .OrderByDescending(x => x.CreationTimeUtc)
+                                .OrderByDescending(x => x.LastWriteTimeUtc)
                                 .FirstOrDefault();
 
-            return file?.CreationTimeUtc;
+            return file?.LastWriteTimeUtc;
         }
 
         private static string GetProcessorName()
