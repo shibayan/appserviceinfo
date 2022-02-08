@@ -21,8 +21,8 @@ namespace AppServiceInfo.Controllers
             {
                 OsVersion = GetOSVersion(),
                 AppServiceVersion = GetAppServiceVersion(),
-                MiddlewareModuleVersion = GetMiddlewareModuleVersion(),
                 KuduVersion = GetKuduVersion(),
+                MiddlewareModuleVersion = GetMiddlewareModuleVersion(),
                 LastReimage = GetLastReimage(),
                 LastRapidUpdate = GetLastRapidUpdate(),
                 CurrentStampname = Environment.GetEnvironmentVariable("WEBSITE_CURRENT_STAMPNAME"),
@@ -39,16 +39,6 @@ namespace AppServiceInfo.Controllers
             return $"{currentVersionKey.GetValue("ProductName")} (Build {currentVersionKey.GetValue("CurrentBuildNumber")}.{currentVersionKey.GetValue("UBR")})";
         }
 
-        private static string GetKuduVersion()
-        {
-            var kuduDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), @"SiteExtensions\Kudu");
-
-            return Directory.EnumerateDirectories(kuduDirectory)
-                            .Select(Path.GetFileName)
-                            .OrderByDescending(x => x)
-                            .First();
-        }
-
         private static string GetAppServiceVersion()
         {
             try
@@ -63,21 +53,32 @@ namespace AppServiceInfo.Controllers
             }
         }
 
+        private static string GetKuduVersion()
+        {
+            var kuduDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), @"SiteExtensions\Kudu");
+
+            return Directory.EnumerateDirectories(kuduDirectory)
+                            .Select(Path.GetFileName)
+                            .OrderByDescending(x => x)
+                            .First();
+        }
+
         private static string GetMiddlewareModuleVersion()
         {
             var middlewareDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), @"MiddlewareModules");
 
             return Directory.EnumerateDirectories(middlewareDirectory)
-                            .Select(Path.GetFileName)
+                            .Select(x => new Version(Path.GetFileName(x)))
                             .OrderByDescending(x => x)
-                            .First();
+                            .First().ToString();
         }
 
         private static DateTime? GetLastReimage()
         {
             var file = Directory.GetFiles($@"{Environment.GetEnvironmentVariable("SystemDrive")}\WebsitesInstall")
                                 .Select(x => new FileInfo(x))
-                                .OrderByDescending(x => x.Length)
+                                .Where(x => x.Length > 1024 * 1024)
+                                .OrderByDescending(x => x.CreationTimeUtc)
                                 .FirstOrDefault();
 
             return file?.CreationTimeUtc;
@@ -87,7 +88,8 @@ namespace AppServiceInfo.Controllers
         {
             var file = Directory.GetFiles($@"{Environment.GetEnvironmentVariable("SystemDrive")}\WebsitesInstall")
                                 .Select(x => new FileInfo(x))
-                                .OrderBy(x => x.Length)
+                                .Where(x => x.Length < 1024 * 1024)
+                                .OrderBy(x => x.CreationTimeUtc)
                                 .FirstOrDefault();
 
             return file?.CreationTimeUtc;
