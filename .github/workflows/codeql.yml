@@ -3,8 +3,14 @@ name: "CodeQL"
 on:
   push:
     branches: [ master ]
+    paths:
+      - .github/workflows/codeql.yml
+      - AppServiceInfo/**
   pull_request:
     branches: [ master ]
+    paths:
+      - .github/workflows/codeql.yml
+      - AppServiceInfo/**
 
 jobs:
   analyze:
