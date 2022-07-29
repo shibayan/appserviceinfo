@@ -9,293 +9,259 @@ using AppServiceInfo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Win32;
 
-namespace AppServiceInfo.Controllers
+namespace AppServiceInfo.Controllers;
+
+[Route("api/runtime")]
+[ApiController]
+public class RuntimeController : ControllerBase
 {
-    [Route("api/runtime")]
-    [ApiController]
-    public class RuntimeController : ControllerBase
+    [HttpGet]
+    public IActionResult Get()
     {
-        [HttpGet]
-        public IActionResult Get()
+        var data = new RuntimeInfo
         {
-            var data = new RuntimeInfo
-            {
-                Dotnet = GetDotnetVersions(),
-                DotnetCore = GetDotnetCoreVersions(),
-                DotnetCore64 = GetDotnetCore64Versions(),
-                DotnetCoreSdk = GetDotnetCoreSdkVersions(),
-                DotnetCoreSdk64 = GetDotnetCoreSdk64Versions(),
-                OracleJava = GetOracleJavaVersions(),
-                AzulJava = GetAzulJavaVersions(),
-                MicrosoftJava = GetMicrosoftJavaVersions(),
-                Node = GetNodeVersions(),
-                Node64 = GetNode64Versions(),
-                Npm = GetNpmVersions(),
-                Php = GetPhpVersions(),
-                Php64 = GetPhp64Versions()
-            };
+            Dotnet = GetDotnetVersions(),
+            DotnetCore = GetDotnetCoreVersions(),
+            DotnetCore64 = GetDotnetCore64Versions(),
+            DotnetCoreSdk = GetDotnetCoreSdkVersions(),
+            DotnetCoreSdk64 = GetDotnetCoreSdk64Versions(),
+            OracleJava = GetOracleJavaVersions(),
+            AzulJava = GetAzulJavaVersions(),
+            MicrosoftJava = GetMicrosoftJavaVersions(),
+            Node = GetNodeVersions(),
+            Node64 = GetNode64Versions(),
+            Npm = GetNpmVersions(),
+            Php = GetPhpVersions(),
+            Php64 = GetPhp64Versions()
+        };
 
-            return Ok(data);
-        }
+        return Ok(data);
+    }
 
-        private IReadOnlyList<VersionInfo> GetDotnetVersions()
+    private static IReadOnlyList<VersionInfo> GetDotnetVersions()
+    {
+        var list = new List<VersionInfo>();
+
+        using (var ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\")!)
         {
-            var list = new List<VersionInfo>();
-
-            using (var ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\"))
+            foreach (var versionKeyName in ndpKey.GetSubKeyNames().Where(x => x.StartsWith("v")))
             {
-                foreach (var versionKeyName in ndpKey.GetSubKeyNames().Where(x => x.StartsWith("v")))
+                var versionKey = ndpKey.OpenSubKey(versionKeyName)!;
+
+                var version = (string)versionKey.GetValue("Version");
+
+                if (version == null)
                 {
-                    var versionKey = ndpKey.OpenSubKey(versionKeyName);
-
-                    var version = (string)versionKey.GetValue("Version");
-
-                    if (version == null)
-                    {
-                        continue;
-                    }
-
-                    list.Add(new VersionInfo(versionKeyName.Substring(1)));
+                    continue;
                 }
-            }
 
-            using (var ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\"))
-            {
-                if (ndpKey?.GetValue("Release") != null)
-                {
-                    list.Add(new VersionInfo(GetDotnet45Version((int)ndpKey.GetValue("Release"))));
-                }
+                list.Add(new VersionInfo(versionKeyName[1..]));
             }
-
-            return list;
         }
 
-        private static string GetDotnet45Version(int releaseKey)
+        using (var ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\"))
         {
-            if (releaseKey >= 528040)
+            if (ndpKey?.GetValue("Release") != null)
             {
-                return "4.8";
+                list.Add(new VersionInfo(GetDotnet45Version((int)ndpKey.GetValue("Release")!)));
             }
-
-            if (releaseKey >= 461808)
-            {
-                return "4.7.2";
-            }
-
-            if (releaseKey >= 461308)
-            {
-                return "4.7.1";
-            }
-
-            if (releaseKey >= 460798)
-            {
-                return "4.7";
-            }
-
-            if (releaseKey >= 394802)
-            {
-                return "4.6.2";
-            }
-
-            if (releaseKey >= 394254)
-            {
-                return "4.6.1";
-            }
-
-            if (releaseKey >= 393295)
-            {
-                return "4.6";
-            }
-
-            if (releaseKey >= 379893)
-            {
-                return "4.5.2";
-            }
-
-            if (releaseKey >= 378675)
-            {
-                return "4.5.1";
-            }
-
-            return "4.5";
         }
 
-        private static IReadOnlyList<VersionInfo> GetDotnetCoreVersions()
+        return list;
+    }
+
+    private static string GetDotnet45Version(int releaseKey)
+    {
+        return releaseKey switch
         {
-            var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), "dotnet", @"shared\Microsoft.NETCore.App");
+            >= 528040 => "4.8",
+            >= 461808 => "4.7.2",
+            >= 461308 => "4.7.1",
+            >= 460798 => "4.7",
+            >= 394802 => "4.6.2",
+            >= 394254 => "4.6.1",
+            >= 393295 => "4.6",
+            >= 379893 => "4.5.2",
+            >= 378675 => "4.5.1",
+            _ => "4.5"
+        };
+    }
 
-            var list = Directory.EnumerateDirectories(dotnetCoreDirectory)
-                                .Select(x => new VersionInfo(Regex.Replace(Path.GetFileName(x), @"\-.*$", ""), Path.GetFileName(x)))
-                                .OrderBy(x => x.Version)
-                                .ToArray();
+    private static IReadOnlyList<VersionInfo> GetDotnetCoreVersions()
+    {
+        var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)")!, "dotnet", @"shared\Microsoft.NETCore.App");
 
-            return list;
-        }
+        var list = Directory.EnumerateDirectories(dotnetCoreDirectory)
+                            .Select(x => new VersionInfo(Regex.Replace(Path.GetFileName(x), @"\-.*$", ""), Path.GetFileName(x)))
+                            .OrderBy(x => x.Version)
+                            .ToArray();
 
-        private static IReadOnlyList<VersionInfo> GetDotnetCore64Versions()
+        return list;
+    }
+
+    private static IReadOnlyList<VersionInfo> GetDotnetCore64Versions()
+    {
+        var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles")!, "dotnet", @"shared\Microsoft.NETCore.App");
+
+        var list = Directory.EnumerateDirectories(dotnetCoreDirectory)
+                            .Select(x => new VersionInfo(Regex.Replace(Path.GetFileName(x), @"\-.*$", ""), Path.GetFileName(x)))
+                            .OrderBy(x => x.Version)
+                            .ToArray();
+
+        return list;
+    }
+
+    private static IReadOnlyList<VersionInfo> GetDotnetCoreSdkVersions()
+    {
+        var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)")!, "dotnet", "sdk");
+
+        var list = Directory.EnumerateDirectories(dotnetCoreDirectory)
+                            .Where(x => !x.EndsWith("NuGetFallbackFolder"))
+                            .Select(x => new VersionInfo(Regex.Replace(Path.GetFileName(x), @"\-.*$", ""), Path.GetFileName(x)))
+                            .OrderBy(x => x.Version)
+                            .ToArray();
+
+        return list;
+    }
+
+    private static IReadOnlyList<VersionInfo> GetDotnetCoreSdk64Versions()
+    {
+        var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles")!, "dotnet", "sdk");
+
+        var list = Directory.EnumerateDirectories(dotnetCoreDirectory)
+                            .Where(x => !x.EndsWith("NuGetFallbackFolder"))
+                            .Select(x => new VersionInfo(Regex.Replace(Path.GetFileName(x), @"\-.*$", ""), Path.GetFileName(x)))
+                            .OrderBy(x => x.Version)
+                            .ToArray();
+
+        return list;
+    }
+
+    private static IReadOnlyList<VersionInfo> GetOracleJavaVersions()
+    {
+        var javaDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles")!, "Java");
+
+        if (!Directory.Exists(javaDirectory))
         {
-            var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles"), "dotnet", @"shared\Microsoft.NETCore.App");
-
-            var list = Directory.EnumerateDirectories(dotnetCoreDirectory)
-                                .Select(x => new VersionInfo(Regex.Replace(Path.GetFileName(x), @"\-.*$", ""), Path.GetFileName(x)))
-                                .OrderBy(x => x.Version)
-                                .ToArray();
-
-            return list;
+            return Array.Empty<VersionInfo>();
         }
 
-        private static IReadOnlyList<VersionInfo> GetDotnetCoreSdkVersions()
+        var list = Directory.EnumerateDirectories(javaDirectory)
+                            .Where(x => x.Contains("\\jdk") || x.Contains("\\jre"))
+                            .Select(x => new VersionInfo(Path.GetFileName(x)[3..].Replace("_", ".")))
+                            .OrderBy(x => x.Version)
+                            .ToArray();
+
+        return list;
+    }
+
+    private static IReadOnlyList<VersionInfo> GetAzulJavaVersions()
+    {
+        var javaDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles")!, "Java");
+
+        if (!Directory.Exists(javaDirectory))
         {
-            var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), "dotnet", "sdk");
-
-            var list = Directory.EnumerateDirectories(dotnetCoreDirectory)
-                                .Where(x => !x.EndsWith("NuGetFallbackFolder"))
-                                .Select(x => new VersionInfo(Regex.Replace(Path.GetFileName(x), @"\-.*$", ""), Path.GetFileName(x)))
-                                .OrderBy(x => x.Version)
-                                .ToArray();
-
-            return list;
+            return Array.Empty<VersionInfo>();
         }
 
-        private static IReadOnlyList<VersionInfo> GetDotnetCoreSdk64Versions()
+        var list = Directory.EnumerateDirectories(javaDirectory)
+                            .Where(x => x.Contains("\\zulu"))
+                            .Select(x =>
+                            {
+                                var match = Regex.Match(Path.GetFileName(x), @"^.+?\-(jre|jdk)(\d+?)\.(\d+?)\.(\d+?)\-.*$");
+
+                                return new VersionInfo($"1.{match.Groups[2].Value}.{match.Groups[3].Value}.{match.Groups[4].Value}");
+                            })
+                            .OrderBy(x => x.Version)
+                            .ToArray();
+
+        return list;
+    }
+
+    private static IReadOnlyList<VersionInfo> GetMicrosoftJavaVersions()
+    {
+        var javaDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles")!, "Java");
+
+        if (!Directory.Exists(javaDirectory))
         {
-            var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles"), "dotnet", "sdk");
-
-            var list = Directory.EnumerateDirectories(dotnetCoreDirectory)
-                                .Where(x => !x.EndsWith("NuGetFallbackFolder"))
-                                .Select(x => new VersionInfo(Regex.Replace(Path.GetFileName(x), @"\-.*$", ""), Path.GetFileName(x)))
-                                .OrderBy(x => x.Version)
-                                .ToArray();
-
-            return list;
+            return Array.Empty<VersionInfo>();
         }
 
-        private static IReadOnlyList<VersionInfo> GetOracleJavaVersions()
-        {
-            var javaDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles"), "Java");
+        var list = Directory.EnumerateDirectories(javaDirectory)
+                            .Where(x => x.Contains("\\microsoft"))
+                            .Select(x =>
+                            {
+                                var match = Regex.Match(Path.GetFileName(x), @"^.+?\-(jdk)\-(\d+?)\.(\d+?)\.(\d+?)\..*$");
 
-            if (!Directory.Exists(javaDirectory))
-            {
-                return new VersionInfo[0];
-            }
+                                return new VersionInfo($"1.{match.Groups[2].Value}.{match.Groups[3].Value}.{match.Groups[4].Value}");
+                            })
+                            .OrderBy(x => x.Version)
+                            .ToArray();
 
-            var list = Directory.EnumerateDirectories(javaDirectory)
-                                .Where(x => x.Contains("\\jdk") || x.Contains("\\jre"))
-                                .Select(x => new VersionInfo(Path.GetFileName(x).Substring(3).Replace("_", ".")))
-                                .OrderBy(x => x.Version)
-                                .ToArray();
+        return list;
+    }
 
-            return list;
-        }
+    private static IReadOnlyList<VersionInfo> GetNodeVersions()
+    {
+        var nodeDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)")!, "nodejs");
 
-        private static IReadOnlyList<VersionInfo> GetAzulJavaVersions()
-        {
-            var javaDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles"), "Java");
+        var list = Directory.EnumerateDirectories(nodeDirectory)
+                            .Where(x => !x.EndsWith("node_modules"))
+                            .Select(x => new VersionInfo(Path.GetFileName(x)))
+                            .OrderBy(x => x.Version)
+                            .ToArray();
 
-            if (!Directory.Exists(javaDirectory))
-            {
-                return new VersionInfo[0];
-            }
+        return list;
+    }
 
-            var list = Directory.EnumerateDirectories(javaDirectory)
-                                .Where(x => x.Contains("\\zulu"))
-                                .Select(x =>
-                                {
-                                    var match = Regex.Match(Path.GetFileName(x), @"^.+?\-(jre|jdk)(\d+?)\.(\d+?)\.(\d+?)\-.*$");
+    private static IReadOnlyList<VersionInfo> GetNode64Versions()
+    {
+        var nodeDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles")!, "nodejs");
 
-                                    return new VersionInfo($"1.{match.Groups[2].Value}.{match.Groups[3].Value}.{match.Groups[4].Value}");
-                                })
-                                .OrderBy(x => x.Version)
-                                .ToArray();
+        var list = Directory.EnumerateDirectories(nodeDirectory)
+                            .Where(x => !x.EndsWith("node_modules"))
+                            .Select(x => new VersionInfo(Path.GetFileName(x)))
+                            .OrderBy(x => x.Version)
+                            .ToArray();
 
-            return list;
-        }
+        return list;
+    }
 
-        private static IReadOnlyList<VersionInfo> GetMicrosoftJavaVersions()
-        {
-            var javaDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles"), "Java");
+    private static IReadOnlyList<VersionInfo> GetNpmVersions()
+    {
+        var npmDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)")!, "npm");
 
-            if (!Directory.Exists(javaDirectory))
-            {
-                return new VersionInfo[0];
-            }
+        var list = Directory.EnumerateDirectories(npmDirectory)
+                            .Select(x => new VersionInfo(Path.GetFileName(x)))
+                            .OrderBy(x => x.Version)
+                            .ToArray();
 
-            var list = Directory.EnumerateDirectories(javaDirectory)
-                                .Where(x => x.Contains("\\microsoft"))
-                                .Select(x =>
-                                {
-                                    var match = Regex.Match(Path.GetFileName(x), @"^.+?\-(jdk)\-(\d+?)\.(\d+?)\.(\d+?)\..*$");
+        return list;
+    }
 
-                                    return new VersionInfo($"1.{match.Groups[2].Value}.{match.Groups[3].Value}.{match.Groups[4].Value}");
-                                })
-                                .OrderBy(x => x.Version)
-                                .ToArray();
+    private static IReadOnlyList<VersionInfo> GetPhpVersions()
+    {
+        var phpDirectory = Path.Combine(Environment.GetEnvironmentVariable("LOCAL_EXPANDED")!, "Config");
 
-            return list;
-        }
+        var list = Directory.EnumerateDirectories(phpDirectory, "PHP-*")
+                            .Where(x => !x.Contains("x64"))
+                            .Select(x => new VersionInfo(Path.GetFileName(x)[4..]))
+                            .OrderBy(x => x.Version)
+                            .ToArray();
 
-        private static IReadOnlyList<VersionInfo> GetNodeVersions()
-        {
-            var nodeDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), "nodejs");
+        return list;
+    }
+    private static IReadOnlyList<VersionInfo> GetPhp64Versions()
+    {
+        var phpDirectory = Path.Combine(Environment.GetEnvironmentVariable("LOCAL_EXPANDED")!, "Config");
 
-            var list = Directory.EnumerateDirectories(nodeDirectory)
-                                .Where(x => !x.EndsWith("node_modules"))
-                                .Select(x => new VersionInfo(Path.GetFileName(x)))
-                                .OrderBy(x => x.Version)
-                                .ToArray();
+        var list = Directory.EnumerateDirectories(phpDirectory, "PHP-*")
+                            .Where(x => x.Contains("x64"))
+                            .Select(x => x.Replace("x64", ""))
+                            .Select(x => new VersionInfo(Path.GetFileName(x)[4..]))
+                            .OrderBy(x => x.Version)
+                            .ToArray();
 
-            return list;
-        }
-
-        private static IReadOnlyList<VersionInfo> GetNode64Versions()
-        {
-            var nodeDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles"), "nodejs");
-
-            var list = Directory.EnumerateDirectories(nodeDirectory)
-                                .Where(x => !x.EndsWith("node_modules"))
-                                .Select(x => new VersionInfo(Path.GetFileName(x)))
-                                .OrderBy(x => x.Version)
-                                .ToArray();
-
-            return list;
-        }
-
-        private static IReadOnlyList<VersionInfo> GetNpmVersions()
-        {
-            var npmDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), "npm");
-
-            var list = Directory.EnumerateDirectories(npmDirectory)
-                                .Select(x => new VersionInfo(Path.GetFileName(x)))
-                                .OrderBy(x => x.Version)
-                                .ToArray();
-
-            return list;
-        }
-
-        private static IReadOnlyList<VersionInfo> GetPhpVersions()
-        {
-            var phpDirectory = Path.Combine(Environment.GetEnvironmentVariable("LOCAL_EXPANDED"), "Config");
-
-            var list = Directory.EnumerateDirectories(phpDirectory, "PHP-*")
-                                .Where(x => !x.Contains("x64"))
-                                .Select(x => new VersionInfo(Path.GetFileName(x).Substring(4)))
-                                .OrderBy(x => x.Version)
-                                .ToArray();
-
-            return list;
-        }
-        private static IReadOnlyList<VersionInfo> GetPhp64Versions()
-        {
-            var phpDirectory = Path.Combine(Environment.GetEnvironmentVariable("LOCAL_EXPANDED"), "Config");
-
-            var list = Directory.EnumerateDirectories(phpDirectory, "PHP-*")
-                                .Where(x => x.Contains("x64"))
-                                .Select(x => x.Replace("x64", ""))
-                                .Select(x => new VersionInfo(Path.GetFileName(x).Substring(4)))
-                                .OrderBy(x => x.Version)
-                                .ToArray();
-
-            return list;
-        }
+        return list;
     }
 }

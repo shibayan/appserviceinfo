@@ -13,16 +13,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Use .NET Core ${{ env.DOTNET_VERSION }}
+    - name: Use .NET ${{ env.DOTNET_VERSION }}
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
-
-    - name: Workaround for dotnet-format
-      run: dotnet tool install -g dotnet-format --version "6.*" --add-source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet6/nuget/v3/index.json
 
     - name: Build project
       run: dotnet build -c Release
 
     - name: Lint C# code
-      run: dotnet-format --verify-no-changes --verbosity detailed --no-restore
+      run: dotnet format --verify-no-changes --verbosity detailed --no-restore
