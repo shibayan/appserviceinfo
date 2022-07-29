@@ -3,6 +3,9 @@ name: Publish
 on:
   push:
     branches: [ master ]
+    paths:
+      - .github/workflows/publish.yml
+      - AppServiceInfo/**
 
 env:
   AZURE_WEBAPP_NAME: appserviceinfo

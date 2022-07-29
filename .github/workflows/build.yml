@@ -3,6 +3,10 @@ name: Build
 on:
   pull_request:
     branches: [ master ]
+    paths:
+      - .github/workflows/build.yml
+      - .editorconfig
+      - AppServiceInfo/**
 
 env:
   DOTNET_VERSION: 6.0.x
