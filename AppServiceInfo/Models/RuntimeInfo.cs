@@ -25,8 +25,4 @@ public class RuntimeInfo
     public IReadOnlyList<VersionInfo> Node64 { get; set; }
 
     public IReadOnlyList<VersionInfo> Npm { get; set; }
-
-    public IReadOnlyList<VersionInfo> Php { get; set; }
-
-    public IReadOnlyList<VersionInfo> Php64 { get; set; }
 }
