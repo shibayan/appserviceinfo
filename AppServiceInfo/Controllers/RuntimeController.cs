@@ -30,9 +30,7 @@ public class RuntimeController : ControllerBase
             MicrosoftJava = GetMicrosoftJavaVersions(),
             Node = GetNodeVersions(),
             Node64 = GetNode64Versions(),
-            Npm = GetNpmVersions(),
-            Php = GetPhpVersions(),
-            Php64 = GetPhp64Versions()
+            Npm = GetNpmVersions()
         };
 
         return Ok(data);
@@ -233,32 +231,6 @@ public class RuntimeController : ControllerBase
 
         var list = Directory.EnumerateDirectories(npmDirectory)
                             .Select(x => new VersionInfo(Path.GetFileName(x)))
-                            .OrderBy(x => x.Version)
-                            .ToArray();
-
-        return list;
-    }
-
-    private static IReadOnlyList<VersionInfo> GetPhpVersions()
-    {
-        var phpDirectory = Path.Combine(Environment.GetEnvironmentVariable("LOCAL_EXPANDED")!, "Config");
-
-        var list = Directory.EnumerateDirectories(phpDirectory, "PHP-*")
-                            .Where(x => !x.Contains("x64"))
-                            .Select(x => new VersionInfo(Path.GetFileName(x)[4..]))
-                            .OrderBy(x => x.Version)
-                            .ToArray();
-
-        return list;
-    }
-    private static IReadOnlyList<VersionInfo> GetPhp64Versions()
-    {
-        var phpDirectory = Path.Combine(Environment.GetEnvironmentVariable("LOCAL_EXPANDED")!, "Config");
-
-        var list = Directory.EnumerateDirectories(phpDirectory, "PHP-*")
-                            .Where(x => x.Contains("x64"))
-                            .Select(x => x.Replace("x64", ""))
-                            .Select(x => new VersionInfo(Path.GetFileName(x)[4..]))
                             .OrderBy(x => x.Version)
                             .ToArray();
 
