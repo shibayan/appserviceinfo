@@ -72,6 +72,7 @@ public class RuntimeController : ControllerBase
     {
         return releaseKey switch
         {
+            >= 533325 => "4.8.1",
             >= 528040 => "4.8",
             >= 461808 => "4.7.2",
             >= 461308 => "4.7.1",
