@@ -1,4 +1,4 @@
 resource "azurerm_resource_group" "default" {
-  name = "rg-graffias"
+  name     = "rg-graffias"
   location = var.location
 }

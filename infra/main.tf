@@ -9,8 +9,8 @@ terraform {
 }
 
 locals {
-  common_location = "japaneast"
-  backend_locations = [ "japaneast", "westus2", "eastus2" ]
+  common_location   = "japaneast"
+  backend_locations = ["japaneast", "westus2", "eastus2"]
 
   frontend_location = "eastasia"
 }
@@ -26,13 +26,13 @@ module "backend" {
 
   for_each = toset(local.backend_locations)
 
-  location = each.value
+  location            = each.value
   resource_group_name = module.common.resource_group_name
 }
 
 module "frontend" {
   source = "./modules/frontend"
-  
-  location = local.frontend_location
+
+  location            = local.frontend_location
   resource_group_name = module.common.resource_group_name
 }

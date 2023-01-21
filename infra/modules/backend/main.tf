@@ -24,6 +24,7 @@ resource "azurerm_windows_web_app" "default" {
     scm_minimum_tls_version = "1.2"
 
     application_stack {
+      current_stack  = "dotnet"
       dotnet_version = "v7.0"
     }
   }
