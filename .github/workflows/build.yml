@@ -3,6 +3,8 @@ name: Build
 on:
   pull_request:
     branches: [ master ]
+    paths:
+      - backend/**
 
 env:
   DOTNET_VERSION: 7.0.x
@@ -19,7 +21,7 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Build project
-      run: dotnet build -c Release
+      run: dotnet build ./backend -c Release
 
     - name: Lint C# code
-      run: dotnet format --verify-no-changes --verbosity detailed --no-restore
+      run: dotnet format ./backend --verify-no-changes --verbosity detailed --no-restore

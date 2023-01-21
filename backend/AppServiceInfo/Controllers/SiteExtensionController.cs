@@ -43,7 +43,7 @@ public class SiteExtensionController : ControllerBase
         {
             var document = XElement.Load(extensionPath);
 
-            isEnabled = (string)document.Element("version") != "disabled";
+            isEnabled = (string?)document.Element("version") != "disabled";
         }
 
         var environmentKey = $"{Path.GetFileName(directory)}_EXTENSION_VERSION";

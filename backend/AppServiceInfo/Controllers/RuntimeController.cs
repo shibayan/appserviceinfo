@@ -46,9 +46,9 @@ public class RuntimeController : ControllerBase
             {
                 var versionKey = ndpKey.OpenSubKey(versionKeyName)!;
 
-                var version = (string)versionKey.GetValue("Version");
+                var version = (string?)versionKey.GetValue("Version");
 
-                if (version == null)
+                if (version is null)
                 {
                     continue;
                 }
