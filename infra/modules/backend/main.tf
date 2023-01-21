@@ -32,6 +32,7 @@ resource "azurerm_windows_web_app" "default" {
     cors {
       allowed_origins = [
         "http://localhost:5173",
+        "https://gentle-smoke-0a4f64800.2.azurestaticapps.net",
         "https://appservice.info"
       ]
     }
