@@ -100,7 +100,7 @@ public class RuntimeController : ControllerBase
 
     private static IReadOnlyList<VersionInfo> GetDotnetCore64Versions()
     {
-        var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles")!, "dotnet", @"shared\Microsoft.NETCore.App");
+        var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramW6432")!, "dotnet", @"shared\Microsoft.NETCore.App");
 
         var list = Directory.EnumerateDirectories(dotnetCoreDirectory)
                             .Select(x => new VersionInfo(Regex.Replace(Path.GetFileName(x), @"\-.*$", ""), Path.GetFileName(x)))
@@ -125,7 +125,7 @@ public class RuntimeController : ControllerBase
 
     private static IReadOnlyList<VersionInfo> GetDotnetCoreSdk64Versions()
     {
-        var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles")!, "dotnet", "sdk");
+        var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramW6432")!, "dotnet", "sdk");
 
         var list = Directory.EnumerateDirectories(dotnetCoreDirectory)
                             .Where(x => !x.EndsWith("NuGetFallbackFolder"))
@@ -138,7 +138,7 @@ public class RuntimeController : ControllerBase
 
     private static IReadOnlyList<VersionInfo> GetOracleJavaVersions()
     {
-        var javaDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles")!, "Java");
+        var javaDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramW6432")!, "Java");
 
         if (!Directory.Exists(javaDirectory))
         {
@@ -156,7 +156,7 @@ public class RuntimeController : ControllerBase
 
     private static IReadOnlyList<VersionInfo> GetAzulJavaVersions()
     {
-        var javaDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles")!, "Java");
+        var javaDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramW6432")!, "Java");
 
         if (!Directory.Exists(javaDirectory))
         {
@@ -179,7 +179,7 @@ public class RuntimeController : ControllerBase
 
     private static IReadOnlyList<VersionInfo> GetMicrosoftJavaVersions()
     {
-        var javaDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles")!, "Java");
+        var javaDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramW6432")!, "Java");
 
         if (!Directory.Exists(javaDirectory))
         {
@@ -215,7 +215,7 @@ public class RuntimeController : ControllerBase
 
     private static IReadOnlyList<VersionInfo> GetNode64Versions()
     {
-        var nodeDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles")!, "nodejs");
+        var nodeDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramW6432")!, "nodejs");
 
         var list = Directory.EnumerateDirectories(nodeDirectory)
                             .Where(x => !x.EndsWith("node_modules"))

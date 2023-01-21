@@ -23,10 +23,10 @@ public class PlatformController : ControllerBase
             AppServiceVersion = GetAppServiceVersion(),
             KuduVersion = GetKuduVersion(),
             MiddlewareModuleVersion = GetMiddlewareModuleVersion(),
+            ProcessorName = GetProcessorName(),
             LastReimage = GetLastReimage(),
             LastRapidUpdate = GetLastRapidUpdate(),
-            CurrentStampname = Environment.GetEnvironmentVariable("WEBSITE_CURRENT_STAMPNAME") ?? "Unknown stampname",
-            ProcessorName = GetProcessorName()
+            CurrentStampname = Environment.GetEnvironmentVariable("WEBSITE_CURRENT_STAMPNAME") ?? "Unknown stampname"
         };
 
         return Ok(info);
@@ -42,7 +42,7 @@ public class PlatformController : ControllerBase
 
     private static string GetAppServiceVersion()
     {
-        var assemblyPath = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles")!, @"Reference Assemblies\Microsoft\IIS\Microsoft.Web.Hosting.dll");
+        var assemblyPath = Path.Combine(Environment.GetEnvironmentVariable("ProgramW6432")!, @"Reference Assemblies\Microsoft\IIS\Microsoft.Web.Hosting.dll");
 
         return FileVersionInfo.GetVersionInfo(assemblyPath).ProductVersion ?? "Unknown version";
     }
@@ -67,6 +67,13 @@ public class PlatformController : ControllerBase
                         .First().ToString();
     }
 
+    private static string GetProcessorName()
+    {
+        using var processorKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Default).OpenSubKey(@"HARDWARE\DESCRIPTION\System\CentralProcessor\0")!;
+
+        return (string)processorKey.GetValue("ProcessorNameString")!;
+    }
+
     private static DateTime? GetLastReimage()
     {
         var file = Directory.GetFiles($@"{Environment.GetEnvironmentVariable("SystemDrive")}\WebsitesInstall")
@@ -85,12 +92,5 @@ public class PlatformController : ControllerBase
                             .MaxBy(x => x.LastWriteTimeUtc);
 
         return file?.LastWriteTimeUtc;
-    }
-
-    private static string GetProcessorName()
-    {
-        using var processorKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Default).OpenSubKey(@"HARDWARE\DESCRIPTION\System\CentralProcessor\0")!;
-
-        return (string)processorKey.GetValue("ProcessorNameString")!;
     }
 }
