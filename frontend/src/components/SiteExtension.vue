@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+const props = defineProps<{ location: string }>()
+
 interface VersionInfo {
   version: string
 }
@@ -10,7 +12,7 @@ interface SiteExtension {
   versions: VersionInfo[]
 }
 
-const response = await fetch("https://app-graffias-japaneast.azurewebsites.net/api/siteextension")
+const response = await fetch(`https://app-graffias-${props.location}.azurewebsites.net/api/siteextension`)
 const json = await response.json()
 
 const siteExtensions = ref<SiteExtension[]>(json)

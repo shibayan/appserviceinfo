@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+const props = defineProps<{ location: string }>()
+
 interface Platform {
   osVersion: string
   appServiceVersion: string
@@ -12,7 +14,7 @@ interface Platform {
   currentStampname: string
 }
 
-const response = await fetch("https://app-graffias-japaneast.azurewebsites.net/api/platform")
+const response = await fetch(`https://app-graffias-${props.location}.azurewebsites.net/api/platform`)
 const json = await response.json()
 
 const platform = ref<Platform>(json)
