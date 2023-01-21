@@ -17,8 +17,8 @@ public class VersionInfo
     }
 
     [JsonIgnore]
-    public Version Version { get; set; }
+    public Version Version { get; }
 
     [JsonPropertyName("version")]
-    public string DisplayVersion { get; set; }
+    public string DisplayVersion { get; }
 }

@@ -25,7 +25,7 @@ public class PlatformController : ControllerBase
             MiddlewareModuleVersion = GetMiddlewareModuleVersion(),
             LastReimage = GetLastReimage(),
             LastRapidUpdate = GetLastRapidUpdate(),
-            CurrentStampname = Environment.GetEnvironmentVariable("WEBSITE_CURRENT_STAMPNAME"),
+            CurrentStampname = Environment.GetEnvironmentVariable("WEBSITE_CURRENT_STAMPNAME") ?? "Unknown stampname",
             ProcessorName = GetProcessorName()
         };
 
@@ -44,7 +44,7 @@ public class PlatformController : ControllerBase
     {
         var assemblyPath = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles")!, @"Reference Assemblies\Microsoft\IIS\Microsoft.Web.Hosting.dll");
 
-        return FileVersionInfo.GetVersionInfo(assemblyPath).ProductVersion;
+        return FileVersionInfo.GetVersionInfo(assemblyPath).ProductVersion ?? "Unknown version";
     }
 
     private static string GetKuduVersion()
@@ -52,7 +52,7 @@ public class PlatformController : ControllerBase
         var kuduDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)")!, @"SiteExtensions\Kudu");
 
         return Directory.EnumerateDirectories(kuduDirectory)
-                        .Select(Path.GetFileName)
+                        .Select(x => Path.GetFileName(x))
                         .OrderByDescending(x => x)
                         .First();
     }
@@ -91,6 +91,6 @@ public class PlatformController : ControllerBase
     {
         using var processorKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Default).OpenSubKey(@"HARDWARE\DESCRIPTION\System\CentralProcessor\0")!;
 
-        return (string)processorKey.GetValue("ProcessorNameString");
+        return (string)processorKey.GetValue("ProcessorNameString")!;
     }
 }
