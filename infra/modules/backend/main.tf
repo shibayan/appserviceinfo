@@ -18,6 +18,7 @@ resource "azurerm_windows_web_app" "default" {
   https_only              = true
 
   site_config {
+    always_on               = false
     http2_enabled           = true
     ftps_state              = "Disabled"
     minimum_tls_version     = "1.2"
