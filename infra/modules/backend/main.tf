@@ -31,6 +31,7 @@ resource "azurerm_windows_web_app" "default" {
 
     cors {
       allowed_origins = [
+        "http://localhost:5173",
         "https://appservice.info"
       ]
     }
