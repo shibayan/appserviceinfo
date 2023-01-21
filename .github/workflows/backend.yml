@@ -4,6 +4,7 @@ on:
   pull_request:
     branches: [ master ]
     paths:
+      - .github/workflows/backend.yml
       - backend/**
 
 env:
