@@ -28,5 +28,11 @@ resource "azurerm_windows_web_app" "default" {
       current_stack  = "dotnet"
       dotnet_version = "v7.0"
     }
+
+    cors {
+      allowed_origins = [
+        "https://appservice.info"
+      ]
+    }
   }
 }
