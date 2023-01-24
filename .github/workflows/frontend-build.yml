@@ -1,0 +1,28 @@
+name: Build frontend
+
+on:
+  pull_request:
+    branches: [ master ]
+    paths:
+      - .github/workflows/frontend-build.yml
+      - frontend/**
+
+env:
+  NODE_VERSION: 18.x
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ env.NODE_VERSION }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: npm
+
+    - name: npm ci and build
+      run: |
+        npm ci --prefix frontend
+        npm run build --prefix frontend
