@@ -43,7 +43,7 @@ const platform = ref<Platform>(json)
       <dt>Current Stampname</dt>
       <dd>{{ platform.currentStampname }}</dd>
       <dt>Machine Name</dt>
-      <dd>{{ platform.machineName }}({{ platform.machineName.startsWith("RD") ? "Legacy Worker" : "VMSS Worker" }})</dd>
+      <dd>{{ platform.machineName }} ({{ platform.machineName.startsWith("RD") ? "Legacy Worker" : "VMSS Worker" }})</dd>
     </dl>
   </div>
 </template>
