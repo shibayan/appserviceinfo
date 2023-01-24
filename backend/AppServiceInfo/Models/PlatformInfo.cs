@@ -19,4 +19,6 @@ public class PlatformInfo
     public required DateTime? LastRapidUpdate { get; init; }
 
     public required string CurrentStampname { get; init; }
+
+    public required string MachineName { get; set; }
 }
