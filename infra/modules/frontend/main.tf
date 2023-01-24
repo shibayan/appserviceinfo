@@ -19,7 +19,7 @@ resource "azurerm_dns_a_record" "default" {
 }
 
 resource "azurerm_dns_txt_record" "default" {
-  count               = azurerm_static_site_custom_domain.default.validation_token ? 1 : 0
+  count               = azurerm_static_site_custom_domain.default.validation_token != "" ? 1 : 0
   name                = "@"
   zone_name           = var.dns_zone_name
   resource_group_name = var.resource_group_name
