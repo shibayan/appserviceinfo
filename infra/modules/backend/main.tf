@@ -17,6 +17,10 @@ resource "azurerm_windows_web_app" "default" {
   client_affinity_enabled = false
   https_only              = true
 
+  app_settings = {
+    "WEBSITE_RUN_FROM_PACKAGE" = "1"
+  }
+
   site_config {
     always_on               = false
     http2_enabled           = true
