@@ -10,14 +10,29 @@ const currentLocation = ref<string>("japaneast")
 
 <template>
   <Suspense>
-    <Platform :location="currentLocation" />
+    <template #default>
+      <Platform :location="currentLocation" />
+    </template>
+    <template #fallback>
+      <span>Loading...</span>
+    </template>
   </Suspense>
   <hr />
   <Suspense>
-    <Runtime :location="currentLocation" />
+    <template #default>
+      <Runtime :location="currentLocation" />
+    </template>
+    <template #fallback>
+      <span>Loading...</span>
+    </template>
   </Suspense>
   <hr />
   <Suspense>
-    <SiteExtension :location="currentLocation" />
+    <template #default>
+      <SiteExtension :location="currentLocation" />
+    </template>
+    <template #fallback>
+      <span>Loading...</span>
+    </template>
   </Suspense>
 </template>
