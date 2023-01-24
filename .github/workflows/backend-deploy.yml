@@ -1,0 +1,59 @@
+name: Deploy backend
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - .github/workflows/backend-deploy.yml
+      - backend/**
+
+env:
+  DOTNET_VERSION: 7.0.x
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use .NET ${{ env.DOTNET_VERSION }}
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: dotnet publish
+      run: dotnet publish ./backend -c Release -r win-x86 --no-self-contained -o dist
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        path: dist
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: publish
+    environment: production
+    strategy:
+      matrix:
+        location: [japaneast, westus2, eastus2]
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Download artifact
+      uses: actions/download-artifact@v3
+      with:
+        path: dist
+
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: app-graffias-${{ matrix.location }}
+        package: dist

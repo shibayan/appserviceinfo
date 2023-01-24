@@ -1,10 +1,10 @@
-name: Build
+name: Build backend
 
 on:
   pull_request:
     branches: [ master ]
     paths:
-      - .github/workflows/backend.yml
+      - .github/workflows/backend-build.yml
       - backend/**
 
 env:
