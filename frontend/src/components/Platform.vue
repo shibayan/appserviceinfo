@@ -12,6 +12,7 @@ interface Platform {
   lastReimage: string
   lastRapidUpdate: string
   currentStampname: string
+  machineName: string
 }
 
 const response = await fetch(`https://app-graffias-${props.location}.azurewebsites.net/api/platform`)
@@ -41,6 +42,8 @@ const platform = ref<Platform>(json)
       <dd>{{ new Date(platform.lastRapidUpdate).toString() }}</dd>
       <dt>Current Stampname</dt>
       <dd>{{ platform.currentStampname }}</dd>
+      <dt>Machine Name</dt>
+      <dd>{{ platform.machineName }}({{ platform.machineName.startsWith("RD") ? "Legacy Worker" : "VMSS Worker" }})</dd>
     </dl>
   </div>
 </template>
