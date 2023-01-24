@@ -19,7 +19,7 @@ resource "azurerm_dns_a_record" "default" {
 }
 
 resource "azurerm_dns_txt_record" "default" {
-  name                = "_dnsauth"
+  name                = "@"
   zone_name           = var.dns_zone_name
   resource_group_name = var.resource_group_name
   ttl                 = 300
