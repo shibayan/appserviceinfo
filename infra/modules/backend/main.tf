@@ -36,5 +36,11 @@ resource "azurerm_windows_web_app" "default" {
         "https://appservice.info"
       ]
     }
+
+    virtual_application {
+      physical_path = "site\\wwwroot"
+      preload       = false
+      virtual_path  = "/"
+    }
   }
 }

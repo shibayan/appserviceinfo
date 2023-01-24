@@ -35,4 +35,5 @@ module "frontend" {
 
   location            = local.frontend_location
   resource_group_name = module.common.resource_group_name
+  dns_zone_name       = module.common.dns_zone_name
 }
