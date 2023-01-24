@@ -10,6 +10,14 @@ resource "azurerm_static_site_custom_domain" "default" {
   validation_type = "dns-txt-token"
 }
 
+resource "azurerm_dns_a_record" "default" {
+  name                = "@"
+  zone_name           = var.dns_zone_name
+  resource_group_name = var.resource_group_name
+  ttl                 = 3600
+  target_resource_id  = azurerm_static_site.default.id
+}
+
 resource "azurerm_dns_txt_record" "default" {
   name                = "_dnsauth"
   zone_name           = var.dns_zone_name
