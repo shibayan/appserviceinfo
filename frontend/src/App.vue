@@ -5,12 +5,12 @@ import Platform from './components/Platform.vue'
 import Runtime from './components/Runtime.vue'
 import SiteExtension from './components/SiteExtension.vue'
 
-const locations = ["japaneast", "westus2", "eastus2"]
+const locations = ["japaneast", "japanwest", "westus2", "eastus2", "centralus", "eastasia", "northeurope"]
 const currentLocation = ref<string>("japaneast")
 </script>
 
 <template>
-  <Suspense timeout="1000">
+  <Suspense timeout="500">
     <template #default>
       <Platform :location="currentLocation" :key="currentLocation" />
     </template>
@@ -19,7 +19,7 @@ const currentLocation = ref<string>("japaneast")
     </template>
   </Suspense>
   <hr />
-  <Suspense timeout="1000">
+  <Suspense timeout="500">
     <template #default>
       <Runtime :location="currentLocation" :key="currentLocation" />
     </template>
@@ -28,7 +28,7 @@ const currentLocation = ref<string>("japaneast")
     </template>
   </Suspense>
   <hr />
-  <Suspense timeout="1000">
+  <Suspense timeout="500">
     <template #default>
       <SiteExtension :location="currentLocation" :key="currentLocation" />
     </template>
