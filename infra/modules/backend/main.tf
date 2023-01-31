@@ -11,8 +11,7 @@ resource "azurerm_windows_web_app" "default" {
   name                = "app-graffias-${var.location}"
   location            = var.location
   resource_group_name = var.resource_group_name
-
-  service_plan_id = azurerm_service_plan.default.id
+  service_plan_id     = azurerm_service_plan.default.id
 
   client_affinity_enabled = false
   https_only              = true
@@ -36,7 +35,6 @@ resource "azurerm_windows_web_app" "default" {
     cors {
       allowed_origins = [
         "http://localhost:5173",
-        "https://gentle-smoke-0a4f64800.2.azurestaticapps.net",
         "https://appservice.info"
       ]
     }
