@@ -11,6 +11,7 @@ interface Platform {
   processorName: string
   lastReimage: string
   lastRapidUpdate: string
+  regionName: string
   currentStampname: string
   machineName: string
 }
@@ -41,7 +42,7 @@ const platform = ref<Platform>(json)
       <dt>Last Rapid Update</dt>
       <dd>{{ new Date(platform.lastRapidUpdate).toString() }}</dd>
       <dt>Current Stampname</dt>
-      <dd>{{ platform.currentStampname }}</dd>
+      <dd>{{ platform.currentStampname }} ({{ platform.regionName }})</dd>
       <dt>Machine Name</dt>
       <dd>{{ platform.machineName }} ({{ platform.machineName.startsWith("RD") ? "Legacy Worker" : "VMSS Worker" }})</dd>
     </dl>
