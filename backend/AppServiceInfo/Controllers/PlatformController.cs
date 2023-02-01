@@ -26,6 +26,7 @@ public class PlatformController : ControllerBase
             ProcessorName = GetProcessorName(),
             LastReimage = GetLastReimage(),
             LastRapidUpdate = GetLastRapidUpdate(),
+            RegionName = Environment.GetEnvironmentVariable("REGION_NAME") ?? "Unknown region",
             CurrentStampname = Environment.GetEnvironmentVariable("WEBSITE_CURRENT_STAMPNAME") ?? "Unknown stampname",
             MachineName = Environment.MachineName
         };
