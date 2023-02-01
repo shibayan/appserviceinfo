@@ -60,6 +60,7 @@ public class SiteExtensionController : ControllerBase
     private static IReadOnlyList<VersionInfo> GetSiteExtensionVersions(string directory)
     {
         return Directory.EnumerateDirectories(directory)
+                        .Where(x => !Path.GetFileName(x).StartsWith("_"))
                         .Select(x => new VersionInfo(Regex.Replace(Path.GetFileName(x), @"\-.*$", ""), Path.GetFileName(x)))
                         .OrderBy(x => x.Version)
                         .ToArray();
