@@ -5,7 +5,7 @@ import Platform from './components/Platform.vue'
 import Runtime from './components/Runtime.vue'
 import SiteExtension from './components/SiteExtension.vue'
 
-const locations = ["japaneast", "westus2", "eastus2", "centralus", "eastasia", "northeurope"]
+const locations = ["japaneast", "westus2", "eastus2", "centralus", "eastasia", "southeastasia", "northeurope", "westeurope"]
 const currentLocation = ref<string>("japaneast")
 </script>
 
