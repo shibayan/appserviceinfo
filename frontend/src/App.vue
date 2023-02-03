@@ -5,12 +5,18 @@ import Platform from './components/Platform.vue'
 import Runtime from './components/Runtime.vue'
 import SiteExtension from './components/SiteExtension.vue'
 
-const locations = ["japaneast", "westus2", "eastus2", "centralus", "eastasia", "southeastasia", "northeurope", "westeurope"]
+const geographies = [
+  { name: "Japan", locations: ["japaneast"] },
+  { name: "United States", locations: ["westus2", "eastus2", "centralus"] },
+  { name: "Asia Pacific", locations: ["eastasia", "southeastasia"] },
+  { name: "Europe", locations: ["northeurope", "westeurope"] }
+]
+
 const currentLocation = ref<string>("japaneast")
 </script>
 
 <template>
-  <Suspense timeout="500">
+  <Suspense timeout="300">
     <template #default>
       <Platform :location="currentLocation" :key="currentLocation" />
     </template>
@@ -19,7 +25,7 @@ const currentLocation = ref<string>("japaneast")
     </template>
   </Suspense>
   <hr />
-  <Suspense timeout="500">
+  <Suspense timeout="300">
     <template #default>
       <Runtime :location="currentLocation" :key="currentLocation" />
     </template>
@@ -28,7 +34,7 @@ const currentLocation = ref<string>("japaneast")
     </template>
   </Suspense>
   <hr />
-  <Suspense timeout="500">
+  <Suspense timeout="300">
     <template #default>
       <SiteExtension :location="currentLocation" :key="currentLocation" />
     </template>
@@ -42,7 +48,9 @@ const currentLocation = ref<string>("japaneast")
       <div class="control">
         <div class="select">
           <select v-model="currentLocation">
-            <option v-for="location in locations" :value="location">{{ location }}</option>
+            <optgroup v-for="geography in geographies" :label="geography.name">
+              <option v-for="location in geography.locations" :value="location">{{ location }}</option>
+            </optgroup>
           </select>
         </div>
       </div>
