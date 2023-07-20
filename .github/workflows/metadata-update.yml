@@ -8,6 +8,7 @@ on:
 jobs:
   update:
     runs-on: ubuntu-latest
+    environment: production
     strategy:
       matrix:
         location: [japaneast, westus2, eastus2, centralus, eastasia, southeastasia, northeurope, westeurope]
