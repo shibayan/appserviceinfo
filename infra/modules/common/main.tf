@@ -20,6 +20,8 @@ resource "azurerm_storage_account" "default" {
     cors_rule {
       allowed_methods    = ["GET"]
       allowed_origins    = ["https://appservice.info"]
+      allowed_headers    = ["*"]
+      exposed_headers    = ["*"]
       max_age_in_seconds = 600
     }
   }
