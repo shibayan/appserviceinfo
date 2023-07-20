@@ -21,7 +21,7 @@ interface Runtime {
   npm: VersionInfo[]
 }
 
-const response = await fetch(`https://app-graffias-${props.location}.azurewebsites.net/api/runtime`)
+const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${props.location}/runtime.json`)
 const json = await response.json()
 
 const runtime = ref<Runtime>(json)

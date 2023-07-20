@@ -16,7 +16,7 @@ const currentLocation = ref<string>("japaneast")
 </script>
 
 <template>
-  <Suspense timeout="300">
+  <Suspense timeout="250">
     <template #default>
       <Platform :location="currentLocation" :key="currentLocation" />
     </template>
@@ -25,7 +25,7 @@ const currentLocation = ref<string>("japaneast")
     </template>
   </Suspense>
   <hr />
-  <Suspense timeout="300">
+  <Suspense timeout="250">
     <template #default>
       <Runtime :location="currentLocation" :key="currentLocation" />
     </template>
@@ -34,7 +34,7 @@ const currentLocation = ref<string>("japaneast")
     </template>
   </Suspense>
   <hr />
-  <Suspense timeout="300">
+  <Suspense timeout="250">
     <template #default>
       <SiteExtension :location="currentLocation" :key="currentLocation" />
     </template>

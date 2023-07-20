@@ -12,7 +12,7 @@ interface SiteExtension {
   versions: VersionInfo[]
 }
 
-const response = await fetch(`https://app-graffias-${props.location}.azurewebsites.net/api/siteextension`)
+const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${props.location}/siteextension.json`)
 const json = await response.json()
 
 const siteExtensions = ref<SiteExtension[]>(json)

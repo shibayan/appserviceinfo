@@ -12,13 +12,6 @@ const geographies = [
 </script>
 
 <template>
-  <table class="table">
-    <thead>
-      <tr>
-        <th></th>
-      </tr>
-    </thead>
-  </table>
   <div v-for="geography in geographies">
     <h3 class="title is-3">{{ geography.name }}</h3>
     <Suspense v-for="location in geography.locations" timeout="300">

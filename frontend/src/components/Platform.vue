@@ -16,7 +16,7 @@ interface Platform {
   machineName: string
 }
 
-const response = await fetch(`https://app-graffias-${props.location}.azurewebsites.net/api/platform`)
+const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${props.location}/platform.json`)
 const json = await response.json()
 
 const platform = ref<Platform>(json)
