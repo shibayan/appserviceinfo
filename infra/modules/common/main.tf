@@ -18,7 +18,7 @@ resource "azurerm_storage_account" "default" {
 
   blob_properties {
     cors_rule {
-      allowed_methods    = ["GET"]
+      allowed_methods    = ["GET", "OPTIONS"]
       allowed_origins    = ["https://appservice.info"]
       allowed_headers    = ["*"]
       exposed_headers    = ["*"]
