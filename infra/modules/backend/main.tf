@@ -32,13 +32,6 @@ resource "azurerm_windows_web_app" "default" {
       dotnet_version = "v7.0"
     }
 
-    cors {
-      allowed_origins = [
-        "http://localhost:5173",
-        "https://appservice.info"
-      ]
-    }
-
     virtual_application {
       physical_path = "site\\wwwroot"
       preload       = false
