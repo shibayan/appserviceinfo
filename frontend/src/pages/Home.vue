@@ -9,7 +9,8 @@ const geographies = [
   { name: "Japan", locations: ["japaneast"] },
   { name: "United States", locations: ["westus2", "eastus2", "centralus"] },
   { name: "Asia Pacific", locations: ["eastasia", "southeastasia"] },
-  { name: "Europe", locations: ["northeurope", "westeurope"] }
+  { name: "Europe", locations: ["northeurope", "westeurope"] },
+  { name: "Korea", locations: ["koreacentral"] }
 ]
 
 const currentLocation = ref<string>("japaneast")
