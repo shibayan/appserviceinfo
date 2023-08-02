@@ -22,7 +22,7 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: dotnet publish
-      run: dotnet publish ./backend -c Release -r win-x86 --no-self-contained -o dist
+      run: dotnet publish ./backend/AppServiceInfo -c Release -r win-x86 --no-self-contained -o dist
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
