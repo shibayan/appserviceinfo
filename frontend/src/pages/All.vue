@@ -1,28 +1,16 @@
 <script setup lang="ts">
-import { ref, toHandlerKey } from 'vue'
 
-import Platform from '../components/Platform.vue'
+import PlatformTable from '../components/PlatformTable.vue'
 
-const geographies = [
-  { name: "Japan", locations: ["japaneast"] },
-  { name: "United States", locations: ["westus2", "eastus2", "centralus"] },
-  { name: "Asia Pacific", locations: ["eastasia", "southeastasia"] },
-  { name: "Europe", locations: ["northeurope", "westeurope"] },
-  { name: "Korea", locations: ["koreacentral"] }
-]
 </script>
 
 <template>
-  <div v-for="geography in geographies">
-    <h3 class="title is-3">{{ geography.name }}</h3>
-    <Suspense v-for="location in geography.locations" timeout="300">
-      <template #default>
-        <Platform :location="location" />
-      </template>
-      <template #fallback>
-        <span>Loading...</span>
-      </template>
-    </Suspense>
-    <hr />
-  </div>
+  <Suspense timeout="250">
+    <template #default>
+      <PlatformTable />
+    </template>
+    <template #fallback>
+      <span>Loading...</span>
+    </template>
+  </Suspense>
 </template>
