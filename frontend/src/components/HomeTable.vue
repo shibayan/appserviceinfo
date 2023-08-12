@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Platform, Runtime } from '../types/Models'
+import { Platform, Runtime, SiteExtension } from '../types/Models'
 
 function formatRelativeTime(value: string) {
   const date = new Date(value);
@@ -49,6 +49,15 @@ for (const location of locations) {
   const runtime = await response.json() as Runtime
 
   runtimeList.push(runtime);
+}
+
+const siteExtensionsList = Array<SiteExtension[]>();
+
+for (const location of locations) {
+  const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${location}/siteextension.json`)
+  const siteExtensions = await response.json() as SiteExtension[]
+
+  siteExtensionsList.push(siteExtensions);
 }
 </script>
 
@@ -137,6 +146,16 @@ for (const location of locations) {
           <th align="center">Node.js (x64)</th>
           <td v-for="runtime in runtimeList">
             <span v-for="item in runtime.node64.latestVersions" class="tag is-primary">{{ item.version }}</span>
+          </td>
+        </tr>
+        <tr>
+          <th align="center">Site Extensions</th>
+          <th :colspan="locations.length"></th>
+        </tr>
+        <tr>
+          <th align="center">Functions</th>
+          <td v-for="siteExtensions in siteExtensionsList">
+            <span v-for="item in siteExtensions.find(x => x.name === 'Functions')?.installed.latestVersions" class="tag is-primary">{{ item.version }}</span>
           </td>
         </tr>
       </tbody>
