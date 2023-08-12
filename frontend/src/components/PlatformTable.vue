@@ -65,7 +65,7 @@ for (const location of locations) {
           </th>
         </tr>
         <tr>
-          <th v-for="location in locations" align="center">{{ location }}</th>
+          <th v-for="location in locations" align="center"><RouterLink :to="{ name: 'Location', params: { location: location } }">{{ location }}</RouterLink></th>
         </tr>
       </thead>
       <tbody>
