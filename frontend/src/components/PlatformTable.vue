@@ -13,6 +13,28 @@ interface Platform {
   machineName: string
 }
 
+function formatRelativeTime(value: string) {
+  const date = new Date(value);
+  const diff = (Date.now() - date.getTime()) / 1000;
+
+  let relativeTime = "";
+
+  if (diff < 60) {
+    relativeTime = `${diff} second${diff === 1 ? "" : "s"} ago`
+  } else if (diff < 60 * 60) {
+    const relativeMinutes = Math.round(diff / 60);
+    relativeTime = `${relativeMinutes} minute${relativeMinutes === 1 ? "" : "s"} ago`;
+  } else if (diff < 60 * 60 * 24) {
+    const relativeHours = Math.round(diff / (60 * 60));
+    relativeTime = `${relativeHours} hour${relativeHours === 1 ? "" : "s"} ago`;
+  } else {
+    const relativeDays = Math.round(diff / (60 * 60 * 24));
+    relativeTime = `${relativeDays} day${relativeDays === 1 ? "" : "s"} ago`;
+  }
+
+  return `${date.toLocaleString()} (${relativeTime})`;
+}
+
 const geographies = [
   { name: "Japan", locations: ["japaneast"] },
   { name: "United States", locations: ["westus2", "eastus2", "centralus"] },
@@ -38,8 +60,9 @@ for (const location of locations) {
     <table class="table">
       <thead>
         <tr>
-          <th rowspan="2"></th>
-          <th v-for="geography in geographies" :colspan="geography.locations.length" align="center">{{ geography.name }}</th>
+          <th rowspan="2" align="center" style="vertical-align: middle;">Platform</th>
+          <th v-for="geography in geographies" :colspan="geography.locations.length" align="center">{{ geography.name }}
+          </th>
         </tr>
         <tr>
           <th v-for="location in locations" align="center">{{ location }}</th>
@@ -68,11 +91,11 @@ for (const location of locations) {
         </tr>
         <tr>
           <th align="center">Last Reimage</th>
-          <td v-for="platform in platformList">{{ new Date(platform.lastReimage).toString() }}</td>
+          <td v-for="platform in platformList">{{ formatRelativeTime(platform.lastReimage) }}</td>
         </tr>
         <tr>
           <th align="center">Last Rapid Update</th>
-          <td v-for="platform in platformList">{{ new Date(platform.lastRapidUpdate).toString() }}</td>
+          <td v-for="platform in platformList">{{ formatRelativeTime(platform.lastRapidUpdate) }}</td>
         </tr>
         <tr>
           <th align="center">Current Stampname</th>
