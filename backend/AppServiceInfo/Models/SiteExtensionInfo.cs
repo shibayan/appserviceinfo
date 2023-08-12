@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AppServiceInfo.Models;
+﻿namespace AppServiceInfo.Models;
 
 public class SiteExtensionInfo
 {
@@ -8,5 +6,5 @@ public class SiteExtensionInfo
 
     public required bool Enabled { get; init; }
 
-    public required IReadOnlyList<VersionInfo> Versions { get; init; }
+    public required VersionInfoList Installed { get; init; }
 }

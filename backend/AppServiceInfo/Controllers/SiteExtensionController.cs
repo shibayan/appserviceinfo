@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -25,9 +24,9 @@ public class SiteExtensionController : ControllerBase
                             {
                                 Name = Path.GetFileName(x),
                                 Enabled = IsSiteExtensionEnabled(x),
-                                Versions = GetSiteExtensionVersions(x)
+                                Installed = GetSiteExtensionVersions(x)
                             })
-                            .Where(x => x.Versions.Count > 0)
+                            .Where(x => x.Installed.AllVersions.Count > 0)
                             .ToArray();
 
         return Ok(list);
@@ -57,12 +56,14 @@ public class SiteExtensionController : ControllerBase
         return isEnabled;
     }
 
-    private static IReadOnlyList<VersionInfo> GetSiteExtensionVersions(string directory)
+    private static VersionInfoList GetSiteExtensionVersions(string directory)
     {
-        return Directory.EnumerateDirectories(directory)
-                        .Where(x => !Path.GetFileName(x).StartsWith("_"))
-                        .Select(x => new VersionInfo(Regex.Replace(Path.GetFileName(x), @"\-.*$", ""), Path.GetFileName(x)))
-                        .OrderBy(x => x.Version)
-                        .ToArray();
+        var list = Directory.EnumerateDirectories(directory)
+                            .Where(x => !Path.GetFileName(x).StartsWith("_"))
+                            .Select(x => new VersionInfo(Regex.Replace(Path.GetFileName(x), @"\-.*$", ""), Path.GetFileName(x)))
+                            .OrderBy(x => x.Version)
+                            .ToArray();
+
+        return new VersionInfoList(list);
     }
 }

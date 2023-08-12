@@ -1,28 +1,26 @@
-﻿using System.Collections.Generic;
-
-namespace AppServiceInfo.Models;
+﻿namespace AppServiceInfo.Models;
 
 public class RuntimeInfo
 {
-    public required IReadOnlyList<VersionInfo> Dotnet { get; init; }
+    public required VersionInfoList Dotnet { get; init; }
 
-    public required IReadOnlyList<VersionInfo> DotnetCore { get; init; }
+    public required VersionInfoList DotnetCore { get; init; }
 
-    public required IReadOnlyList<VersionInfo> DotnetCore64 { get; init; }
+    public required VersionInfoList DotnetCore64 { get; init; }
 
-    public required IReadOnlyList<VersionInfo> DotnetCoreSdk { get; init; }
+    public required VersionInfoList DotnetCoreSdk { get; init; }
 
-    public required IReadOnlyList<VersionInfo> DotnetCoreSdk64 { get; init; }
+    public required VersionInfoList DotnetCoreSdk64 { get; init; }
 
-    public required IReadOnlyList<VersionInfo> OracleJava { get; init; }
+    public required VersionInfoList OracleJava { get; init; }
 
-    public required IReadOnlyList<VersionInfo> AzulJava { get; init; }
+    public required VersionInfoList AzulJava { get; init; }
 
-    public required IReadOnlyList<VersionInfo> MicrosoftJava { get; init; }
+    public required VersionInfoList MicrosoftJava { get; init; }
 
-    public required IReadOnlyList<VersionInfo> Node { get; init; }
+    public required VersionInfoList Node { get; init; }
 
-    public required IReadOnlyList<VersionInfo> Node64 { get; init; }
+    public required VersionInfoList Node64 { get; init; }
 
-    public required IReadOnlyList<VersionInfo> Npm { get; init; }
+    public required VersionInfoList Npm { get; init; }
 }
