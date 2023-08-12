@@ -7,18 +7,23 @@ interface VersionInfo {
   version: string
 }
 
+interface VersionInfoList {
+  latestVersions: VersionInfo[]
+  allVersions: VersionInfo[]
+}
+
 interface Runtime {
-  dotnet: VersionInfo[]
-  dotnetCore: VersionInfo[]
-  dotnetCore64: VersionInfo[]
-  dotnetCoreSdk: VersionInfo[]
-  dotnetCoreSdk64: VersionInfo[]
-  oracleJava: VersionInfo[]
-  azulJava: VersionInfo[]
-  microsoftJava: VersionInfo[]
-  node: VersionInfo[]
-  node64: VersionInfo[]
-  npm: VersionInfo[]
+  dotnet: VersionInfoList
+  dotnetCore: VersionInfoList
+  dotnetCore64: VersionInfoList
+  dotnetCoreSdk: VersionInfoList
+  dotnetCoreSdk64: VersionInfoList
+  oracleJava: VersionInfoList
+  azulJava: VersionInfoList
+  microsoftJava: VersionInfoList
+  node: VersionInfoList
+  node64: VersionInfoList
+  npm: VersionInfoList
 }
 
 const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${props.location}/runtime.json`)
@@ -34,47 +39,47 @@ const runtime = ref<Runtime>(json)
     <dl>
       <dt>.NET Framework</dt>
       <dd>
-        <span v-for="item in runtime.dotnet" class="tag is-primary">{{ item.version }}</span>
+        <span v-for="item in runtime.dotnet.allVersions" class="tag is-primary">{{ item.version }}</span>
       </dd>
       <dt>.NET Core (x86)</dt>
       <dd>
-        <span v-for="item in runtime.dotnetCore" class="tag is-primary">{{ item.version }}</span>
+        <span v-for="item in runtime.dotnetCore.allVersions" class="tag is-primary">{{ item.version }}</span>
       </dd>
       <dt>.NET Core (x64)</dt>
       <dd>
-        <span v-for="item in runtime.dotnetCore64" class="tag is-primary">{{ item.version }}</span>
+        <span v-for="item in runtime.dotnetCore64.allVersions" class="tag is-primary">{{ item.version }}</span>
       </dd>
       <dt>.NET Core SDK (x86)</dt>
       <dd>
-        <span v-for="item in runtime.dotnetCoreSdk" class="tag is-primary">{{ item.version }}</span>
+        <span v-for="item in runtime.dotnetCoreSdk.allVersions" class="tag is-primary">{{ item.version }}</span>
       </dd>
       <dt>.NET Core SDK (x64)</dt>
       <dd>
-        <span v-for="item in runtime.dotnetCoreSdk64" class="tag is-primary">{{ item.version }}</span>
+        <span v-for="item in runtime.dotnetCoreSdk64.allVersions" class="tag is-primary">{{ item.version }}</span>
       </dd>
       <dt>Java (Oracle)</dt>
       <dd>
-        <span v-for="item in runtime.oracleJava" class="tag is-primary">{{ item.version }}</span>
+        <span v-for="item in runtime.oracleJava.allVersions" class="tag is-primary">{{ item.version }}</span>
       </dd>
       <dt>Java (Azul)</dt>
       <dd>
-        <span v-for="item in runtime.azulJava" class="tag is-primary">{{ item.version }}</span>
+        <span v-for="item in runtime.azulJava.allVersions" class="tag is-primary">{{ item.version }}</span>
       </dd>
       <dt>Java (Microsoft)</dt>
       <dd>
-        <span v-for="item in runtime.microsoftJava" class="tag is-primary">{{ item.version }}</span>
+        <span v-for="item in runtime.microsoftJava.allVersions" class="tag is-primary">{{ item.version }}</span>
       </dd>
       <dt>Node.js (x86)</dt>
       <dd>
-        <span v-for="item in runtime.node" class="tag is-primary">{{ item.version }}</span>
+        <span v-for="item in runtime.node.allVersions" class="tag is-primary">{{ item.version }}</span>
       </dd>
       <dt>Node.js (x64)</dt>
       <dd>
-        <span v-for="item in runtime.node64" class="tag is-primary">{{ item.version }}</span>
+        <span v-for="item in runtime.node64.allVersions" class="tag is-primary">{{ item.version }}</span>
       </dd>
       <dt>NPM</dt>
       <dd>
-        <span v-for="item in runtime.npm" class="tag is-primary">{{ item.version }}</span>
+        <span v-for="item in runtime.npm.allVersions" class="tag is-primary">{{ item.version }}</span>
       </dd>
     </dl>
   </div>
