@@ -36,7 +36,7 @@ public class RuntimeController : ControllerBase
         return Ok(data);
     }
 
-    private static IReadOnlyList<VersionInfo> GetDotnetVersions()
+    private static VersionInfoList GetDotnetVersions()
     {
         var list = new List<VersionInfo>();
 
@@ -59,13 +59,13 @@ public class RuntimeController : ControllerBase
 
         using (var ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\"))
         {
-            if (ndpKey?.GetValue("Release") != null)
+            if (ndpKey?.GetValue("Release") is not null)
             {
                 list.Add(new VersionInfo(GetDotnet45Version((int)ndpKey.GetValue("Release")!)));
             }
         }
 
-        return list;
+        return new VersionInfoList(list);
     }
 
     private static string GetDotnet45Version(int releaseKey)
@@ -86,7 +86,7 @@ public class RuntimeController : ControllerBase
         };
     }
 
-    private static IReadOnlyList<VersionInfo> GetDotnetCoreVersions()
+    private static VersionInfoList GetDotnetCoreVersions()
     {
         var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)")!, "dotnet", @"shared\Microsoft.NETCore.App");
 
@@ -95,10 +95,10 @@ public class RuntimeController : ControllerBase
                             .OrderBy(x => x.Version)
                             .ToArray();
 
-        return list;
+        return new VersionInfoList(list);
     }
 
-    private static IReadOnlyList<VersionInfo> GetDotnetCore64Versions()
+    private static VersionInfoList GetDotnetCore64Versions()
     {
         var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramW6432")!, "dotnet", @"shared\Microsoft.NETCore.App");
 
@@ -107,10 +107,10 @@ public class RuntimeController : ControllerBase
                             .OrderBy(x => x.Version)
                             .ToArray();
 
-        return list;
+        return new VersionInfoList(list);
     }
 
-    private static IReadOnlyList<VersionInfo> GetDotnetCoreSdkVersions()
+    private static VersionInfoList GetDotnetCoreSdkVersions()
     {
         var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)")!, "dotnet", "sdk");
 
@@ -120,10 +120,10 @@ public class RuntimeController : ControllerBase
                             .OrderBy(x => x.Version)
                             .ToArray();
 
-        return list;
+        return new VersionInfoList(list);
     }
 
-    private static IReadOnlyList<VersionInfo> GetDotnetCoreSdk64Versions()
+    private static VersionInfoList GetDotnetCoreSdk64Versions()
     {
         var dotnetCoreDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramW6432")!, "dotnet", "sdk");
 
@@ -133,16 +133,16 @@ public class RuntimeController : ControllerBase
                             .OrderBy(x => x.Version)
                             .ToArray();
 
-        return list;
+        return new VersionInfoList(list);
     }
 
-    private static IReadOnlyList<VersionInfo> GetOracleJavaVersions()
+    private static VersionInfoList GetOracleJavaVersions()
     {
         var javaDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramW6432")!, "Java");
 
         if (!Directory.Exists(javaDirectory))
         {
-            return Array.Empty<VersionInfo>();
+            return new VersionInfoList(Array.Empty<VersionInfo>());
         }
 
         var list = Directory.EnumerateDirectories(javaDirectory)
@@ -151,16 +151,16 @@ public class RuntimeController : ControllerBase
                             .OrderBy(x => x.Version)
                             .ToArray();
 
-        return list;
+        return new VersionInfoList(list);
     }
 
-    private static IReadOnlyList<VersionInfo> GetAzulJavaVersions()
+    private static VersionInfoList GetAzulJavaVersions()
     {
         var javaDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramW6432")!, "Java");
 
         if (!Directory.Exists(javaDirectory))
         {
-            return Array.Empty<VersionInfo>();
+            return new VersionInfoList(Array.Empty<VersionInfo>());
         }
 
         var list = Directory.EnumerateDirectories(javaDirectory)
@@ -174,16 +174,16 @@ public class RuntimeController : ControllerBase
                             .OrderBy(x => x.Version)
                             .ToArray();
 
-        return list;
+        return new VersionInfoList(list);
     }
 
-    private static IReadOnlyList<VersionInfo> GetMicrosoftJavaVersions()
+    private static VersionInfoList GetMicrosoftJavaVersions()
     {
         var javaDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramW6432")!, "Java");
 
         if (!Directory.Exists(javaDirectory))
         {
-            return Array.Empty<VersionInfo>();
+            return new VersionInfoList(Array.Empty<VersionInfo>());
         }
 
         var list = Directory.EnumerateDirectories(javaDirectory)
@@ -197,10 +197,10 @@ public class RuntimeController : ControllerBase
                             .OrderBy(x => x.Version)
                             .ToArray();
 
-        return list;
+        return new VersionInfoList(list);
     }
 
-    private static IReadOnlyList<VersionInfo> GetNodeVersions()
+    private static VersionInfoList GetNodeVersions()
     {
         var nodeDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)")!, "nodejs");
 
@@ -210,10 +210,10 @@ public class RuntimeController : ControllerBase
                             .OrderBy(x => x.Version)
                             .ToArray();
 
-        return list;
+        return new VersionInfoList(list);
     }
 
-    private static IReadOnlyList<VersionInfo> GetNode64Versions()
+    private static VersionInfoList GetNode64Versions()
     {
         var nodeDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramW6432")!, "nodejs");
 
@@ -223,10 +223,10 @@ public class RuntimeController : ControllerBase
                             .OrderBy(x => x.Version)
                             .ToArray();
 
-        return list;
+        return new VersionInfoList(list);
     }
 
-    private static IReadOnlyList<VersionInfo> GetNpmVersions()
+    private static VersionInfoList GetNpmVersions()
     {
         var npmDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)")!, "npm");
 
@@ -235,6 +235,6 @@ public class RuntimeController : ControllerBase
                             .OrderBy(x => x.Version)
                             .ToArray();
 
-        return list;
+        return new VersionInfoList(list);
     }
 }
