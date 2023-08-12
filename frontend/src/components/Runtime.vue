@@ -1,30 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { Runtime } from '../types/Models'
 
 const props = defineProps<{ location: string }>()
-
-interface VersionInfo {
-  version: string
-}
-
-interface VersionInfoList {
-  latestVersions: VersionInfo[]
-  allVersions: VersionInfo[]
-}
-
-interface Runtime {
-  dotnet: VersionInfoList
-  dotnetCore: VersionInfoList
-  dotnetCore64: VersionInfoList
-  dotnetCoreSdk: VersionInfoList
-  dotnetCoreSdk64: VersionInfoList
-  oracleJava: VersionInfoList
-  azulJava: VersionInfoList
-  microsoftJava: VersionInfoList
-  node: VersionInfoList
-  node64: VersionInfoList
-  npm: VersionInfoList
-}
 
 const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${props.location}/runtime.json`)
 const json = await response.json()

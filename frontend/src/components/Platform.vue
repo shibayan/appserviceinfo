@@ -1,20 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { Platform } from '../types/Models'
 
 const props = defineProps<{ location: string }>()
-
-interface Platform {
-  osVersion: string
-  appServiceVersion: string
-  kuduVersion: string
-  middlewareModuleVersion: string
-  processorName: string
-  lastReimage: string
-  lastRapidUpdate: string
-  regionName: string
-  currentStampname: string
-  machineName: string
-}
 
 const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${props.location}/platform.json`)
 const json = await response.json()
