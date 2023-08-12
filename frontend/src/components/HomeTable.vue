@@ -1,17 +1,5 @@
 <script setup lang="ts">
-
-interface Platform {
-  osVersion: string
-  appServiceVersion: string
-  kuduVersion: string
-  middlewareModuleVersion: string
-  processorName: string
-  lastReimage: string
-  lastRapidUpdate: string
-  regionName: string
-  currentStampname: string
-  machineName: string
-}
+import { Platform, Runtime } from '../types/Models'
 
 function formatRelativeTime(value: string) {
   const date = new Date(value);
@@ -53,6 +41,15 @@ for (const location of locations) {
 
   platformList.push(platform);
 }
+
+const runtimeList = Array<Runtime>();
+
+for (const location of locations) {
+  const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${location}/runtime.json`)
+  const runtime = await response.json() as Runtime
+
+  runtimeList.push(runtime);
+}
 </script>
 
 <template>
@@ -65,7 +62,9 @@ for (const location of locations) {
           </th>
         </tr>
         <tr>
-          <th v-for="location in locations" align="center"><RouterLink :to="{ name: 'Location', params: { location: location } }">{{ location }}</RouterLink></th>
+          <th v-for="location in locations" align="center">
+            <RouterLink :to="{ name: 'Location', params: { location: location } }">{{ location }}</RouterLink>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -105,6 +104,40 @@ for (const location of locations) {
           <th align="center">Machine Name</th>
           <td v-for="platform in platformList">{{ platform.machineName }} ({{ platform.machineName.startsWith("RD") ?
             "Legacy Worker" : "VMSS Worker" }})</td>
+        </tr>
+        <tr>
+          <th align="center">Runtime</th>
+          <th :colspan="locations.length"></th>
+        </tr>
+        <tr>
+          <th align="center">.NET Framework</th>
+          <td v-for="runtime in runtimeList">
+            <span v-for="item in runtime.dotnet.latestVersions" class="tag is-primary">{{ item.version }}</span>
+          </td>
+        </tr>
+        <tr>
+          <th align="center">.NET Core (x86)</th>
+          <td v-for="runtime in runtimeList">
+            <span v-for="item in runtime.dotnetCore.latestVersions" class="tag is-primary">{{ item.version }}</span>
+          </td>
+        </tr>
+        <tr>
+          <th align="center">.NET Core (x64)</th>
+          <td v-for="runtime in runtimeList">
+            <span v-for="item in runtime.dotnetCore64.latestVersions" class="tag is-primary">{{ item.version }}</span>
+          </td>
+        </tr>
+        <tr>
+          <th align="center">Node.js (x86)</th>
+          <td v-for="runtime in runtimeList">
+            <span v-for="item in runtime.node.latestVersions" class="tag is-primary">{{ item.version }}</span>
+          </td>
+        </tr>
+        <tr>
+          <th align="center">Node.js (x64)</th>
+          <td v-for="runtime in runtimeList">
+            <span v-for="item in runtime.node64.latestVersions" class="tag is-primary">{{ item.version }}</span>
+          </td>
         </tr>
       </tbody>
     </table>

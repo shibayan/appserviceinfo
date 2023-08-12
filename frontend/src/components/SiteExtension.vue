@@ -1,21 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { SiteExtension } from '../types/Models'
 
 const props = defineProps<{ location: string }>()
-
-interface VersionInfo {
-  version: string
-}
-
-interface VersionInfoList {
-  latestVersions: VersionInfo[]
-  allVersions: VersionInfo[]
-}
-
-interface SiteExtension {
-  name: string
-  installed: VersionInfoList
-}
 
 const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${props.location}/siteextension.json`)
 const json = await response.json()
