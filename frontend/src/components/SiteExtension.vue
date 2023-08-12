@@ -7,9 +7,14 @@ interface VersionInfo {
   version: string
 }
 
+interface VersionInfoList {
+  latestVersions: VersionInfo[]
+  allVersions: VersionInfo[]
+}
+
 interface SiteExtension {
   name: string
-  versions: VersionInfo[]
+  installed: VersionInfoList
 }
 
 const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${props.location}/siteextension.json`)
@@ -26,7 +31,7 @@ const siteExtensions = ref<SiteExtension[]>(json)
       <template v-for="item in siteExtensions">
         <dt>{{ item.name }}</dt>
         <dd>
-          <span v-for="ver in item.versions" class="tag is-primary">{{ ver.version }}</span>
+          <span v-for="ver in item.installed.allVersions" class="tag is-primary">{{ ver.version }}</span>
         </dd>
       </template>
     </dl>
