@@ -11,7 +11,7 @@ jobs:
     environment: production
     strategy:
       matrix:
-        location: [japaneast, westus2, eastus2, centralus, eastasia, southeastasia, northeurope, westeurope, koreacentral]
+        location: [japaneast, westus2, eastus2, centralus, eastasia, southeastasia, northeurope, westeurope, koreacentral, australiaeast]
     permissions:
       id-token: write
       contents: read
