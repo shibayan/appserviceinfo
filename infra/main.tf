@@ -9,8 +9,12 @@ terraform {
 }
 
 locals {
-  common_location   = "japaneast"
-  backend_locations = ["japaneast", "westus2", "eastus2", "centralus", "eastasia", "southeastasia", "northeurope", "westeurope", "koreacentral"]
+  common_location = "japaneast"
+
+  backend_locations = [
+    "japaneast", "westus2", "eastus2", "centralus", "eastasia",
+    "southeastasia", "northeurope", "westeurope", "koreacentral", "australiaeast"
+  ]
 
   frontend_location = "eastasia"
 }
