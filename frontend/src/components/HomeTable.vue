@@ -28,7 +28,8 @@ const geographies = [
   { name: "United States", locations: ["westus2", "eastus2", "centralus"] },
   { name: "Asia Pacific", locations: ["eastasia", "southeastasia"] },
   { name: "Europe", locations: ["northeurope", "westeurope"] },
-  { name: "Korea", locations: ["koreacentral"] }
+  { name: "Korea", locations: ["koreacentral"] },
+  { name: "Australia", locations: ["australiaeast"] }
 ]
 
 const locations = geographies.flatMap(x => x.locations);
@@ -155,7 +156,8 @@ for (const location of locations) {
         <tr>
           <th align="center">Functions</th>
           <td v-for="siteExtensions in siteExtensionsList">
-            <span v-for="item in siteExtensions.find(x => x.name === 'Functions')?.installed.latestVersions" class="tag is-primary">{{ item.version }}</span>
+            <span v-for="item in siteExtensions.find(x => x.name === 'Functions')?.installed.latestVersions"
+              class="tag is-primary">{{ item.version }}</span>
           </td>
         </tr>
       </tbody>
