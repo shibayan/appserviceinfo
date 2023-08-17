@@ -1,7 +1,5 @@
 <script setup lang="ts">
-
 import HomeTable from '../components/HomeTable.vue'
-
 </script>
 
 <template>
