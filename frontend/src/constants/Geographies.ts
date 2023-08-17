@@ -5,7 +5,9 @@ export class Geographies {
     { name: "Europe", locations: ["northeurope", "westeurope"] },
     { name: "Japan", locations: ["japaneast"] },
     { name: "Korea", locations: ["koreacentral"] },
-    { name: "Australia", locations: ["australiaeast"] }
+    { name: "Australia", locations: ["australiaeast"] },
+    { name: "France", locations: ["francecentral"] },
+    { name: "United Kingdom", locations: ["uksouth"] }
   ]
 
   static getGeographies() {
