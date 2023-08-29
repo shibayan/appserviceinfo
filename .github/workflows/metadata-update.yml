@@ -29,8 +29,14 @@ jobs:
         curl -o runtime.json https://app-graffias-${{ matrix.location }}.azurewebsites.net/api/runtime
         curl -o siteextension.json https://app-graffias-${{ matrix.location }}.azurewebsites.net/api/siteextension
 
+    - name: Gzip download metadata
+      run: |
+        gzip --best platform.json
+        gzip --best runtime.json
+        gzip --best siteextension.json
+
     - name: Upload metadata to Blob
       run: |
-        az storage blob upload --auth-mode login -f platform.json --account-name stgraffias -c metadata -n ${{ matrix.location }}/platform.json --overwrite
-        az storage blob upload --auth-mode login -f runtime.json --account-name stgraffias -c metadata -n ${{ matrix.location }}/runtime.json --overwrite
-        az storage blob upload --auth-mode login -f siteextension.json --account-name stgraffias -c metadata -n ${{ matrix.location }}/siteextension.json --overwrite
+        az storage blob upload --auth-mode login -f platform.json.gz --account-name stgraffias -c metadata -n ${{ matrix.location }}/platform.json --content-encoding gzip --content-type application/json --overwrite
+        az storage blob upload --auth-mode login -f runtime.json.gz --account-name stgraffias -c metadata -n ${{ matrix.location }}/runtime.json --content-encoding gzip --content-type application/json --overwrite
+        az storage blob upload --auth-mode login -f siteextension.json.gz --account-name stgraffias -c metadata -n ${{ matrix.location }}/siteextension.json --content-encoding gzip --content-type application/json --overwrite
