@@ -1,13 +1,9 @@
 export class Geographies {
   private static geographies = [
-    { name: "United States", locations: ["westus2", "eastus2", "centralus"] },
-    { name: "Asia Pacific", locations: ["eastasia", "southeastasia"] },
-    { name: "Europe", locations: ["northeurope", "westeurope"] },
-    { name: "Japan", locations: ["japaneast"] },
-    { name: "Korea", locations: ["koreacentral"] },
-    { name: "Australia", locations: ["australiaeast"] },
-    { name: "France", locations: ["francecentral"] },
-    { name: "United Kingdom", locations: ["uksouth"] }
+    { name: "Americas", locations: ["westus2", "eastus2", "centralus", "canadacentral"] },
+    { name: "Europe", locations: ["northeurope", "westeurope", "francecentral", "uksouth"] },
+    { name: "Middle East", locations: ["qatarcentral"] },
+    { name: "Asia Pacific", locations: ["eastasia", "southeastasia", "japaneast", "koreacentral", "australiaeast", "centralindia"] }
   ]
 
   static getGeographies() {
