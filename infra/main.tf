@@ -14,7 +14,7 @@ locals {
   backend_locations = [
     "japaneast", "westus2", "eastus2", "centralus", "eastasia",
     "southeastasia", "northeurope", "westeurope", "koreacentral", "australiaeast",
-    "francecentral", "uksouth"
+    "francecentral", "uksouth", "centralindia", "qatarcentral", "canadacentral"
   ]
 
   frontend_location = "eastasia"
