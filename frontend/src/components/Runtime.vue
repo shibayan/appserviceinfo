@@ -19,19 +19,19 @@ const runtime = ref<Runtime>(json)
       <dd>
         <span v-for="item in runtime.dotnet.allVersions" class="tag is-primary">{{ item.version }}</span>
       </dd>
-      <dt>.NET Core (x86)</dt>
+      <dt>.NET (x86)</dt>
       <dd>
         <span v-for="item in runtime.dotnetCore.allVersions" class="tag is-primary">{{ item.version }}</span>
       </dd>
-      <dt>.NET Core (x64)</dt>
+      <dt>.NET (x64)</dt>
       <dd>
         <span v-for="item in runtime.dotnetCore64.allVersions" class="tag is-primary">{{ item.version }}</span>
       </dd>
-      <dt>.NET Core SDK (x86)</dt>
+      <dt>.NET SDK (x86)</dt>
       <dd>
         <span v-for="item in runtime.dotnetCoreSdk.allVersions" class="tag is-primary">{{ item.version }}</span>
       </dd>
-      <dt>.NET Core SDK (x64)</dt>
+      <dt>.NET SDK (x64)</dt>
       <dd>
         <span v-for="item in runtime.dotnetCoreSdk64.allVersions" class="tag is-primary">{{ item.version }}</span>
       </dd>
