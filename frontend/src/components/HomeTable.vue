@@ -98,13 +98,13 @@ for (const location of locations) {
           </td>
         </tr>
         <tr>
-          <th align="center">.NET Core (x86)</th>
+          <th align="center">.NET (x86)</th>
           <td v-for="runtime in runtimeList">
             <span v-for="item in runtime.dotnetCore.latestVersions" class="tag is-primary">{{ item.version }}</span>
           </td>
         </tr>
         <tr>
-          <th align="center">.NET Core (x64)</th>
+          <th align="center">.NET (x64)</th>
           <td v-for="runtime in runtimeList">
             <span v-for="item in runtime.dotnetCore64.latestVersions" class="tag is-primary">{{ item.version }}</span>
           </td>
