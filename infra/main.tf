@@ -15,7 +15,7 @@ locals {
     "japaneast", "westus2", "eastus2", "centralus", "eastasia",
     "southeastasia", "northeurope", "westeurope", "koreacentral", "australiaeast",
     "francecentral", "uksouth", "centralindia", "qatarcentral", "canadacentral",
-    "uaenorth", "eastus2", "westus3", "southcentralus"
+    "uaenorth", "eastus", "westus3", "southcentralus"
   ]
 
   frontend_location = "eastasia"
