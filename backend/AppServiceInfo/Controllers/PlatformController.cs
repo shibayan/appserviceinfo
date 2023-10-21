@@ -54,14 +54,14 @@ public class PlatformController : ControllerBase
         var kuduDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)")!, @"SiteExtensions\Kudu");
 
         return Directory.EnumerateDirectories(kuduDirectory)
-                        .Select(x => Path.GetFileName(x))
+                        .Select(Path.GetFileName)
                         .OrderByDescending(x => x)
-                        .First();
+                        .First()!;
     }
 
     private static string GetMiddlewareModuleVersion()
     {
-        var middlewareDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)")!, @"MiddlewareModules");
+        var middlewareDirectory = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)")!, "MiddlewareModules");
 
         return Directory.EnumerateDirectories(middlewareDirectory)
                         .Select(x => new Version(Path.GetFileName(x)))

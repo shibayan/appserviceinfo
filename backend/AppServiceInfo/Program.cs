@@ -12,6 +12,10 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
+else
+{
+    app.UseHsts();
+}
 
 app.MapControllers();
 
