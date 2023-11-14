@@ -29,7 +29,7 @@ resource "azurerm_windows_web_app" "default" {
 
     application_stack {
       current_stack  = "dotnet"
-      dotnet_version = "v7.0"
+      dotnet_version = "v8.0"
     }
 
     virtual_application {
