@@ -3,22 +3,16 @@ using System.Text.Json.Serialization;
 
 namespace AppServiceInfo.Models;
 
-public class VersionInfo
+public class VersionInfo(string version, string displayVersion)
 {
     public VersionInfo(string version)
         : this(version, version)
     {
     }
 
-    public VersionInfo(string version, string displayVersion)
-    {
-        Version = new Version(version);
-        DisplayVersion = displayVersion;
-    }
-
     [JsonIgnore]
-    public Version Version { get; }
+    public Version Version { get; } = new(version);
 
     [JsonPropertyName("version")]
-    public string DisplayVersion { get; }
+    public string DisplayVersion { get; } = displayVersion;
 }
