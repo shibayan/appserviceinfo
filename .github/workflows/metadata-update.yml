@@ -25,9 +25,9 @@ jobs:
 
     - name: Download metadata
       run: |
-        curl -o platform.json https://app-graffias-${{ matrix.location }}.azurewebsites.net/api/platform
-        curl -o runtime.json https://app-graffias-${{ matrix.location }}.azurewebsites.net/api/runtime
-        curl -o siteextension.json https://app-graffias-${{ matrix.location }}.azurewebsites.net/api/siteextension
+        curl -f -o platform.json https://app-graffias-${{ matrix.location }}.azurewebsites.net/api/platform
+        curl -f -o runtime.json https://app-graffias-${{ matrix.location }}.azurewebsites.net/api/runtime
+        curl -f -o siteextension.json https://app-graffias-${{ matrix.location }}.azurewebsites.net/api/siteextension
 
     - name: Gzip download metadata
       run: |
