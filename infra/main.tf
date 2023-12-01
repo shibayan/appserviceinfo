@@ -17,10 +17,10 @@ locals {
   common_location = "japaneast"
 
   backend_locations = [
-    "japaneast", "westus2", "eastus2", "centralus", "eastasia",
-    "southeastasia", "northeurope", "westeurope", "koreacentral", "australiaeast",
-    "francecentral", "uksouth", "centralindia", "qatarcentral", "canadacentral",
-    "uaenorth", "eastus", "westus3", "southcentralus"
+    "brazilsouth", "canadacentral", "centralus", "eastus", "eastus2", "southcentralus", "westus2", "westus3",
+    "francecentral", "northeurope", "uksouth", "westeurope",
+    "qatarcentral", "uaenorth",
+    "australiaeast", "centralindia", "eastasia", "japaneast", "koreacentral", "southeastasia"
   ]
 
   frontend_location = "eastasia"
