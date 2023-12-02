@@ -10,27 +10,36 @@ const platformList = Array<Platform>();
 
 for (const location of locations) {
   const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${location}/platform.json`)
-  const platform = await response.json() as Platform
 
-  platformList.push(platform);
+  if (response.status === 404) {
+    platformList.push(new Platform());
+  } else {
+    platformList.push(await response.json() as Platform)
+  }
 }
 
 const runtimeList = Array<Runtime>();
 
 for (const location of locations) {
   const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${location}/runtime.json`)
-  const runtime = await response.json() as Runtime
 
-  runtimeList.push(runtime);
+  if (response.status === 404) {
+    runtimeList.push(new Runtime());
+  } else {
+    runtimeList.push(await response.json() as Runtime);
+  }
 }
 
 const siteExtensionsList = Array<SiteExtension[]>();
 
 for (const location of locations) {
   const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${location}/siteextension.json`)
-  const siteExtensions = await response.json() as SiteExtension[]
 
-  siteExtensionsList.push(siteExtensions);
+  if (response.status === 404) {
+    siteExtensionsList.push(Array<SiteExtension>());
+  } else {
+    siteExtensionsList.push(await response.json() as SiteExtension[])
+  }
 }
 </script>
 
