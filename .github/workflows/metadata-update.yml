@@ -17,13 +17,6 @@ jobs:
       id-token: write
       contents: read
     steps:
-    - name: Azure Login
-      uses: azure/login@v1
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
     - name: Download metadata
       run: |
         curl -f -o platform.json https://app-graffias-${{ matrix.location }}.azurewebsites.net/api/platform
@@ -35,6 +28,13 @@ jobs:
         gzip --best platform.json
         gzip --best runtime.json
         gzip --best siteextension.json
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
     - name: Upload metadata to Blob
       run: |
