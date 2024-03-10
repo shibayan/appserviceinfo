@@ -48,3 +48,13 @@ module "frontend" {
   resource_group_name = module.common.resource_group_name
   dns_zone_name       = module.common.dns_zone_name
 }
+
+import {
+  id = "/subscriptions/99432c87-a81e-4e52-97f8-ba85243d2e02/resourceGroups/rg-graffias/providers/Microsoft.Web/staticSites/stapp-graffias"
+  to = module.frontend.azurerm_static_web_app.default
+}
+
+import {
+  id = "/subscriptions/99432c87-a81e-4e52-97f8-ba85243d2e02/resourceGroups/rg-graffias/providers/Microsoft.Web/staticSites/stapp-graffias/customDomains/appservice.info"
+  to = module.frontend.azurerm_static_web_app_custom_domain.default
+}
