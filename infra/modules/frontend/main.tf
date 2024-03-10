@@ -28,19 +28,3 @@ resource "azurerm_dns_txt_record" "default" {
     value = azurerm_static_web_app_custom_domain.default.validation_token
   }
 }
-
-removed {
-  from = azurerm_static_site.default
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = azurerm_static_site_custom_domain.default
-
-  lifecycle {
-    destroy = false
-  }
-}
