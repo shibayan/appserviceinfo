@@ -46,7 +46,7 @@ public class PlatformController : ControllerBase
     {
         var assemblyPath = Path.Combine(Environment.GetEnvironmentVariable("ProgramW6432")!, @"Reference Assemblies\Microsoft\IIS\Microsoft.Web.Hosting.dll");
 
-        return FileVersionInfo.GetVersionInfo(assemblyPath).ProductVersion ?? "Unknown version";
+        return FileVersionInfo.GetVersionInfo(assemblyPath).FileVersion ?? "Unknown version";
     }
 
     private static string GetKuduVersion()
@@ -66,7 +66,8 @@ public class PlatformController : ControllerBase
         return Directory.EnumerateDirectories(middlewareDirectory)
                         .Select(x => new Version(Path.GetFileName(x)))
                         .OrderByDescending(x => x)
-                        .First().ToString();
+                        .First()
+                        .ToString();
     }
 
     private static string GetProcessorName()

@@ -4,7 +4,7 @@ import { SiteExtension } from '../types/Models'
 
 const props = defineProps<{ location: string }>()
 
-const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${props.location}/siteextension.json`)
+const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${props.location}/site-extension.json`)
 const json = await response.json()
 
 const siteExtensions = ref<SiteExtension[]>(json)
