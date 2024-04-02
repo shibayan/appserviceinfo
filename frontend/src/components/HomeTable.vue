@@ -33,7 +33,7 @@ for (const location of locations) {
 const siteExtensionsList = Array<SiteExtension[]>();
 
 for (const location of locations) {
-  const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${location}/siteextension.json`)
+  const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${location}/site-extension.json`)
 
   if (response.status === 404) {
     siteExtensionsList.push(Array<SiteExtension>());

@@ -142,7 +142,7 @@ public class RuntimeController : ControllerBase
 
         if (!Directory.Exists(javaDirectory))
         {
-            return new VersionInfoList(Array.Empty<VersionInfo>());
+            return new VersionInfoList([]);
         }
 
         var list = Directory.EnumerateDirectories(javaDirectory)
@@ -160,7 +160,7 @@ public class RuntimeController : ControllerBase
 
         if (!Directory.Exists(javaDirectory))
         {
-            return new VersionInfoList(Array.Empty<VersionInfo>());
+            return new VersionInfoList([]);
         }
 
         var list = Directory.EnumerateDirectories(javaDirectory)
@@ -183,7 +183,7 @@ public class RuntimeController : ControllerBase
 
         if (!Directory.Exists(javaDirectory))
         {
-            return new VersionInfoList(Array.Empty<VersionInfo>());
+            return new VersionInfoList([]);
         }
 
         var list = Directory.EnumerateDirectories(javaDirectory)
