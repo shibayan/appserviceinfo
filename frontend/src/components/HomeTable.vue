@@ -93,8 +93,7 @@ for (const location of locations) {
         </tr>
         <tr>
           <th align="center">Machine Name</th>
-          <td v-for="platform in platformList">{{ platform.machineName }} ({{ platform.machineName.startsWith("RD") ?
-            "Legacy Worker" : "VMSS Worker" }})</td>
+          <td v-for="platform in platformList">{{ platform.machineName.toUpperCase() }}</td>
         </tr>
         <tr>
           <th align="center">Runtime</th>
