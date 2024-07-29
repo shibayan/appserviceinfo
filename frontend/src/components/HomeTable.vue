@@ -92,10 +92,6 @@ for (const location of locations) {
           <td v-for="platform in platformList">{{ platform.currentStampname }}</td>
         </tr>
         <tr>
-          <th align="center">Machine Name</th>
-          <td v-for="platform in platformList">{{ platform.machineName.toUpperCase() }}</td>
-        </tr>
-        <tr>
           <th align="center">Runtime</th>
           <th :colspan="locations.length"></th>
         </tr>
