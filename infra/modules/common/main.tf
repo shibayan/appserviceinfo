@@ -17,6 +17,14 @@ resource "azurerm_storage_account" "default" {
   account_replication_type = "LRS"
 
   blob_properties {
+    delete_retention_policy {
+      days = 7
+    }
+
+    container_delete_retention_policy {
+      days    = 7
+    }
+
     cors_rule {
       allowed_methods    = ["GET", "OPTIONS"]
       allowed_origins    = ["https://appservice.info", "http://localhost:5173"]
