@@ -19,7 +19,7 @@ locals {
   backend_locations = [
     "brazilsouth", "canadacentral", "centralus", "eastus", "eastus2", "southcentralus", "westus2", "westus3",
     "francecentral", "northeurope", "norwayeast", "switzerlandnorth", "uksouth", "westeurope",
-    "qatarcentral", "uaenorth",
+    "qatarcentral", "uaenorth", "israelcentral",
     "australiaeast", "centralindia", "eastasia", "japaneast", "koreacentral", "southeastasia"
   ]
 
