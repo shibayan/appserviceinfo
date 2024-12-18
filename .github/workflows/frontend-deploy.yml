@@ -56,6 +56,4 @@ jobs:
         path: dist
 
     - name: Deploy to Static Web App
-      run: |
-        npm i -g @azure/static-web-apps-cli
-        swa deploy ./dist/ --env production --app-name stapp-graffias --no-use-keychain
+      run: npx -y @azure/static-web-apps-cli deploy ./dist/ --env production --app-name stapp-graffias --no-use-keychain
