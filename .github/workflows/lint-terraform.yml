@@ -1,0 +1,27 @@
+name: Lint terraform
+
+on:
+  pull_request:
+    branches: [ master ]
+    paths:
+      - .github/workflows/lint-terraform.yml
+      - infra/**
+
+jobs:
+  tflint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: terraform-linters/setup-tflint@v4
+      name: Setup TFLint
+      with:
+        tflint_version: latest
+
+    - name: Init TFLint
+      run: tflint --init
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
+    - name: Run TFLint
+      run: tflint -f compact
