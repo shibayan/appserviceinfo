@@ -7,6 +7,10 @@ on:
       - .github/workflows/lint-terraform.yml
       - infra/**
 
+defaults:
+  run:
+    working-directory: infra
+
 jobs:
   tflint:
     runs-on: ubuntu-latest
