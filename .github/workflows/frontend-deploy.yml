@@ -55,5 +55,11 @@ jobs:
         name: frontend
         path: dist
 
+    - name: Cache StaticSitesClient
+      uses: actions/cache@v4
+      with:
+        key: ${{ runner.arch }}-${{ runner.os }}-swa
+        path: ~/.swa
+
     - name: Deploy to Static Web App
       run: npx -y @azure/static-web-apps-cli deploy ./dist/ --env production --app-name stapp-graffias --no-use-keychain
