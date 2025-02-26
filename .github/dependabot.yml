@@ -5,15 +5,6 @@
 
 version: 2
 updates:
-  - package-ecosystem: "nuget"
-    directory: "/backend"
-    schedule:
-      interval: "weekly"
-    groups:
-      dependencies:
-        patterns:
-          - "*"
-
   - package-ecosystem: "npm"
     directory: "/frontend"
     schedule:
