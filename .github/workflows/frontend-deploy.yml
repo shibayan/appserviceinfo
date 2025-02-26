@@ -55,11 +55,19 @@ jobs:
         name: frontend
         path: dist
 
-    - name: Cache StaticSitesClient
+    - name: Cache SWA CLI
+      id: cache-swa-cli
       uses: actions/cache@v4
       with:
-        key: ${{ runner.arch }}-${{ runner.os }}-swa
-        path: ~/.swa
+        key: swa-${{ runner.arch }}-${{ runner.os }}
+        path: |
+          ~/.swa
+          /usr/local/bin/swa
+          /usr/local/lib/node_modules/@azure/static-web-apps-cli
+
+    - name: Install SWA CLI
+      if: steps.cache-swa-cli.outputs.cache-hit != 'true'
+      run: npm install -g @azure/static-web-apps-cli
 
     - name: Deploy to Static Web App
-      run: npx -y @azure/static-web-apps-cli deploy ./dist/ --env production --app-name stapp-graffias --no-use-keychain
+      run: swa deploy ./dist/ --env production --app-name stapp-graffias --no-use-keychain
