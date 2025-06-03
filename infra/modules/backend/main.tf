@@ -31,11 +31,5 @@ resource "azurerm_windows_web_app" "default" {
       current_stack  = "dotnet"
       dotnet_version = "v9.0"
     }
-
-    virtual_application {
-      physical_path = "site\\wwwroot"
-      preload       = false
-      virtual_path  = "/"
-    }
   }
 }
