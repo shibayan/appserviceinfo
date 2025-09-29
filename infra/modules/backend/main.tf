@@ -1,5 +1,5 @@
 resource "azurerm_service_plan" "default" {
-  name                = "plan-graffias-${var.location}"
+  name                = "asp-graffias-${var.location}"
   location            = var.location
   resource_group_name = var.resource_group_name
 
