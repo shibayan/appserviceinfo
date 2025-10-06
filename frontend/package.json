@@ -14,9 +14,9 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "6.0.1",
-    "typescript": "5.9.2",
-    "vite": "7.1.7",
-    "vue-tsc": "3.1.0"
+    "typescript": "5.9.3",
+    "vite": "7.1.9",
+    "vue-tsc": "3.1.1"
   },
   "volta": {
     "node": "22.19.0"
