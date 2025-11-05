@@ -7,9 +7,6 @@ on:
       - .github/workflows/frontend-build.yml
       - frontend/**
 
-env:
-  NODE_VERSION: 22.x
-
 jobs:
   build:
     runs-on: ubuntu-latest
