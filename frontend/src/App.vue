@@ -48,9 +48,7 @@ const isMenuActive = ref(false)
   <section class="section">
     <div class="container">
       <RouterView v-slot="{ Component }">
-        <transition name="fade" mode="out-in">
-          <component :is="Component" />
-        </transition>
+        <component :is="Component" />
       </RouterView>
     </div>
   </section>
