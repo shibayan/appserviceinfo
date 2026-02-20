@@ -1,14 +1,47 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue'
 import { Platform, Runtime, SiteExtension } from '../types/Models'
 import { formatRelativeTime } from '../utils/FormatDate'
 import { Geographies } from '../constants/Geographies'
 
 const geographies = Geographies.getGeographies();
-const locations = Geographies.getLocations();
+const allLocations = Geographies.getLocations();
+
+const selectedGeography = ref<string | null>(null);
+
+const filteredGeographies = computed(() => {
+  if (selectedGeography.value === null) return geographies;
+  return geographies.filter(g => g.name === selectedGeography.value);
+});
+
+const filteredLocations = computed(() => {
+  return filteredGeographies.value.flatMap(g => g.locations);
+});
+
+const filteredPlatformList = computed(() => {
+  return filteredLocations.value.map(loc => {
+    const idx = allLocations.indexOf(loc);
+    return platformList[idx];
+  });
+});
+
+const filteredRuntimeList = computed(() => {
+  return filteredLocations.value.map(loc => {
+    const idx = allLocations.indexOf(loc);
+    return runtimeList[idx];
+  });
+});
+
+const filteredSiteExtensionsList = computed(() => {
+  return filteredLocations.value.map(loc => {
+    const idx = allLocations.indexOf(loc);
+    return siteExtensionsList[idx];
+  });
+});
 
 const platformList = Array<Platform>();
 
-for (const location of locations) {
+for (const location of allLocations) {
   const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${location}/platform.json`)
 
   if (response.status === 404) {
@@ -20,7 +53,7 @@ for (const location of locations) {
 
 const runtimeList = Array<Runtime>();
 
-for (const location of locations) {
+for (const location of allLocations) {
   const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${location}/runtime.json`)
 
   if (response.status === 404) {
@@ -32,7 +65,7 @@ for (const location of locations) {
 
 const siteExtensionsList = Array<SiteExtension[]>();
 
-for (const location of locations) {
+for (const location of allLocations) {
   const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${location}/site-extension.json`)
 
   if (response.status === 404) {
@@ -51,6 +84,27 @@ const geographyColors: Record<string, string> = {
 </script>
 
 <template>
+  <div class="geography-tabs">
+    <div class="tabs is-boxed">
+      <ul>
+        <li :class="{ 'is-active': selectedGeography === null }">
+          <a @click="selectedGeography = null">
+            <span class="icon is-small"><i class="fa-solid fa-globe"></i></span>
+            <span>All</span>
+          </a>
+        </li>
+        <li v-for="geography in geographies" :key="geography.name"
+          :class="{ 'is-active': selectedGeography === geography.name }">
+          <a @click="selectedGeography = geography.name">
+            <span class="icon is-small"><i class="fa-solid fa-earth-americas" v-if="geography.name === 'Americas'"></i><i class="fa-solid fa-earth-europe" v-else-if="geography.name === 'Europe' || geography.name === 'Middle East'"></i><i class="fa-solid fa-earth-asia" v-else></i></span>
+            <span>{{ geography.name }}</span>
+            <span class="tag is-rounded is-small ml-1" :class="geographyColors[geography.name]">{{ geography.locations.length }}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
   <div class="table-container home-table-wrapper">
     <table class="table is-bordered is-hoverable is-fullwidth home-table">
       <thead>
@@ -61,13 +115,13 @@ const geographyColors: Record<string, string> = {
               <span>Region</span>
             </span>
           </th>
-          <th v-for="geography in geographies" :colspan="geography.locations.length"
+          <th v-for="geography in filteredGeographies" :key="geography.name" :colspan="geography.locations.length"
             class="has-text-centered geo-header" :class="geographyColors[geography.name]">
             {{ geography.name }}
           </th>
         </tr>
         <tr>
-          <th v-for="location in locations" class="has-text-centered location-header">
+          <th v-for="location in filteredLocations" :key="location" class="has-text-centered location-header">
             <RouterLink :to="{ name: 'Location', params: { location: location } }" class="location-link">
               {{ location }}
             </RouterLink>
@@ -76,7 +130,7 @@ const geographyColors: Record<string, string> = {
       </thead>
       <tbody>
         <tr class="section-row">
-          <th class="sticky-col" :colspan="locations.length + 1">
+          <th class="sticky-col" :colspan="filteredLocations.length + 1">
             <span class="icon-text">
               <span class="icon has-text-link"><i class="fa-solid fa-server"></i></span>
               <span>Platform</span>
@@ -85,40 +139,40 @@ const geographyColors: Record<string, string> = {
         </tr>
         <tr>
           <th class="sticky-col">OS Version</th>
-          <td v-for="platform in platformList" class="is-size-7">{{ platform.osVersion }}</td>
+          <td v-for="platform in filteredPlatformList" class="is-size-7">{{ platform.osVersion }}</td>
         </tr>
         <tr>
           <th class="sticky-col">App Service Version</th>
-          <td v-for="platform in platformList" class="is-size-7">{{ platform.appServiceVersion }}</td>
+          <td v-for="platform in filteredPlatformList" class="is-size-7">{{ platform.appServiceVersion }}</td>
         </tr>
         <tr>
           <th class="sticky-col">Kudu Version</th>
-          <td v-for="platform in platformList" class="is-size-7">{{ platform.kuduVersion }}</td>
+          <td v-for="platform in filteredPlatformList" class="is-size-7">{{ platform.kuduVersion }}</td>
         </tr>
         <tr>
           <th class="sticky-col">Middleware Module</th>
-          <td v-for="platform in platformList" class="is-size-7">{{ platform.middlewareModuleVersion }}</td>
+          <td v-for="platform in filteredPlatformList" class="is-size-7">{{ platform.middlewareModuleVersion }}</td>
         </tr>
         <tr>
           <th class="sticky-col">Processor Name</th>
-          <td v-for="platform in platformList" class="is-size-7">{{ platform.processorName }}</td>
+          <td v-for="platform in filteredPlatformList" class="is-size-7">{{ platform.processorName }}</td>
         </tr>
         <tr>
           <th class="sticky-col">Last Reimage</th>
-          <td v-for="platform in platformList" class="is-size-7">{{ formatRelativeTime(platform.lastReimage) }}</td>
+          <td v-for="platform in filteredPlatformList" class="is-size-7">{{ formatRelativeTime(platform.lastReimage) }}</td>
         </tr>
         <tr>
           <th class="sticky-col">Last Rapid Update</th>
-          <td v-for="platform in platformList" class="is-size-7">{{ formatRelativeTime(platform.lastRapidUpdate) }}
+          <td v-for="platform in filteredPlatformList" class="is-size-7">{{ formatRelativeTime(platform.lastRapidUpdate) }}
           </td>
         </tr>
         <tr>
           <th class="sticky-col">Stampname</th>
-          <td v-for="platform in platformList" class="is-size-7">{{ platform.currentStampname }}</td>
+          <td v-for="platform in filteredPlatformList" class="is-size-7">{{ platform.currentStampname }}</td>
         </tr>
 
         <tr class="section-row">
-          <th class="sticky-col" :colspan="locations.length + 1">
+          <th class="sticky-col" :colspan="filteredLocations.length + 1">
             <span class="icon-text">
               <span class="icon has-text-success"><i class="fa-solid fa-code"></i></span>
               <span>Runtime</span>
@@ -127,42 +181,42 @@ const geographyColors: Record<string, string> = {
         </tr>
         <tr>
           <th class="sticky-col">.NET Framework</th>
-          <td v-for="runtime in runtimeList">
+          <td v-for="runtime in filteredRuntimeList">
             <span v-for="item in runtime.dotnet.latestVersions" class="tag is-link is-light is-small">{{ item.version
               }}</span>
           </td>
         </tr>
         <tr>
           <th class="sticky-col">.NET (x86)</th>
-          <td v-for="runtime in runtimeList">
+          <td v-for="runtime in filteredRuntimeList">
             <span v-for="item in runtime.dotnetCore.latestVersions" class="tag is-link is-light is-small">{{
               item.version }}</span>
           </td>
         </tr>
         <tr>
           <th class="sticky-col">.NET (x64)</th>
-          <td v-for="runtime in runtimeList">
+          <td v-for="runtime in filteredRuntimeList">
             <span v-for="item in runtime.dotnetCore64.latestVersions" class="tag is-link is-light is-small">{{
               item.version }}</span>
           </td>
         </tr>
         <tr>
           <th class="sticky-col">Node.js (x86)</th>
-          <td v-for="runtime in runtimeList">
+          <td v-for="runtime in filteredRuntimeList">
             <span v-for="item in runtime.node.latestVersions" class="tag is-success is-light is-small">{{ item.version
               }}</span>
           </td>
         </tr>
         <tr>
           <th class="sticky-col">Node.js (x64)</th>
-          <td v-for="runtime in runtimeList">
+          <td v-for="runtime in filteredRuntimeList">
             <span v-for="item in runtime.node64.latestVersions" class="tag is-success is-light is-small">{{
               item.version }}</span>
           </td>
         </tr>
 
         <tr class="section-row">
-          <th class="sticky-col" :colspan="locations.length + 1">
+          <th class="sticky-col" :colspan="filteredLocations.length + 1">
             <span class="icon-text">
               <span class="icon has-text-warning-dark"><i class="fa-solid fa-puzzle-piece"></i></span>
               <span>Site Extensions</span>
@@ -171,7 +225,7 @@ const geographyColors: Record<string, string> = {
         </tr>
         <tr>
           <th class="sticky-col">Functions</th>
-          <td v-for="siteExtensions in siteExtensionsList">
+          <td v-for="siteExtensions in filteredSiteExtensionsList">
             <span v-for="item in siteExtensions.find(x => x.name === 'Functions')?.installed.latestVersions"
               class="tag is-warning is-light is-small">{{ item.version }}</span>
           </td>
@@ -182,15 +236,47 @@ const geographyColors: Record<string, string> = {
 </template>
 
 <style scoped>
+.geography-tabs {
+  margin-bottom: 0;
+}
+
+.geography-tabs .tabs {
+  margin-bottom: 0;
+}
+
+.geography-tabs .tabs ul {
+  border-bottom-color: #dbdbdb;
+}
+
+.geography-tabs .tabs li a {
+  border-bottom-color: #dbdbdb;
+  padding: 0.5em 1em;
+  font-size: 0.9rem;
+}
+
+.geography-tabs .tabs li.is-active a {
+  border-bottom-color: #0078d4;
+  color: #0078d4;
+  font-weight: 600;
+}
+
 .home-table-wrapper {
-  border-radius: 8px;
+  border-radius: 0 0 8px 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   overflow-x: auto;
 }
 
 .home-table {
   margin-bottom: 0 !important;
+}
+
+.home-table thead th {
   white-space: nowrap;
+}
+
+.home-table td,
+.home-table thead th:not(.sticky-col) {
+  min-width: 120px;
 }
 
 .home-table thead th {
@@ -254,5 +340,11 @@ const geographyColors: Record<string, string> = {
 
 .home-table td {
   vertical-align: middle;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.home-table td .tag {
+  margin: 1px;
 }
 </style>

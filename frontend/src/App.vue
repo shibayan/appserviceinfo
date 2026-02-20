@@ -30,21 +30,6 @@ const isMenuActive = ref(false)
     </div>
   </nav>
 
-  <section class="hero is-link is-small">
-    <div class="hero-body">
-      <div class="container">
-        <p class="title is-4">
-          <span class="icon-text">
-            <span class="icon"><i class="fa-solid fa-cloud"></i></span>
-            <span>Azure App Service Platform &amp; Runtime Information</span>
-          </span>
-        </p>
-        <p class="subtitle is-6">Real-time platform details, runtime versions, and site extension information across
-          all Azure regions</p>
-      </div>
-    </div>
-  </section>
-
   <section class="section">
     <div class="container">
       <RouterView v-slot="{ Component }">
@@ -99,14 +84,11 @@ body {
 
 .section {
   flex: 1;
+  padding-top: 4.25rem;
 }
 
 .navbar.is-dark {
   background-color: var(--azure-dark);
-}
-
-.hero.is-link {
-  background: linear-gradient(135deg, var(--azure-blue), #005a9e);
 }
 
 .footer {
