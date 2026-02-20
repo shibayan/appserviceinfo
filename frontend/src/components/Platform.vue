@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { Platform } from '../types/Models'
+import { formatRelativeTime } from '../utils/FormatDate'
 
 const props = defineProps<{ location: string }>()
 
@@ -11,28 +12,103 @@ const platform = ref<Platform>(json)
 </script>
 
 <template>
-  <h4 class="title is-4">Platform</h4>
-
-  <div class="content">
-    <dl>
-      <dt>OS Version</dt>
-      <dd>{{ platform.osVersion }}</dd>
-      <dt>App Service Version</dt>
-      <dd>{{ platform.appServiceVersion }}</dd>
-      <dt>Kudu Version</dt>
-      <dd>{{ platform.kuduVersion }}</dd>
-      <dt>Middleware Module Version</dt>
-      <dd>{{ platform.middlewareModuleVersion }}</dd>
-      <dt>Processor Name</dt>
-      <dd>{{ platform.processorName }}</dd>
-      <dt>Last Reimage</dt>
-      <dd>{{ new Date(platform.lastReimage).toString() }}</dd>
-      <dt>Last Rapid Update</dt>
-      <dd>{{ new Date(platform.lastRapidUpdate).toString() }}</dd>
-      <dt>Current Stampname</dt>
-      <dd>{{ platform.currentStampname }} ({{ platform.regionName }})</dd>
-      <dt>Machine Name</dt>
-      <dd>{{ platform.machineName.toUpperCase() }}</dd>
-    </dl>
+  <div class="card">
+    <div class="card-header">
+      <p class="card-header-title">
+        <span class="icon mr-2 has-text-link"><i class="fa-solid fa-server"></i></span>
+        Platform
+      </p>
+    </div>
+    <div class="card-content">
+      <div class="columns is-multiline">
+        <div class="column is-6">
+          <div class="detail-item">
+            <span class="detail-label">OS Version</span>
+            <span class="detail-value">{{ platform.osVersion }}</span>
+          </div>
+        </div>
+        <div class="column is-6">
+          <div class="detail-item">
+            <span class="detail-label">App Service Version</span>
+            <span class="detail-value">{{ platform.appServiceVersion }}</span>
+          </div>
+        </div>
+        <div class="column is-6">
+          <div class="detail-item">
+            <span class="detail-label">Kudu Version</span>
+            <span class="detail-value">{{ platform.kuduVersion }}</span>
+          </div>
+        </div>
+        <div class="column is-6">
+          <div class="detail-item">
+            <span class="detail-label">Middleware Module Version</span>
+            <span class="detail-value">{{ platform.middlewareModuleVersion }}</span>
+          </div>
+        </div>
+        <div class="column is-6">
+          <div class="detail-item">
+            <span class="detail-label">Processor Name</span>
+            <span class="detail-value">{{ platform.processorName }}</span>
+          </div>
+        </div>
+        <div class="column is-6">
+          <div class="detail-item">
+            <span class="detail-label">Current Stampname</span>
+            <span class="detail-value">{{ platform.currentStampname }} <span class="tag is-light is-small">{{ platform.regionName }}</span></span>
+          </div>
+        </div>
+        <div class="column is-6">
+          <div class="detail-item">
+            <span class="detail-label">Last Reimage</span>
+            <span class="detail-value">{{ formatRelativeTime(platform.lastReimage) }}</span>
+          </div>
+        </div>
+        <div class="column is-6">
+          <div class="detail-item">
+            <span class="detail-label">Last Rapid Update</span>
+            <span class="detail-value">{{ formatRelativeTime(platform.lastRapidUpdate) }}</span>
+          </div>
+        </div>
+        <div class="column is-6">
+          <div class="detail-item">
+            <span class="detail-label">Machine Name</span>
+            <span class="detail-value"><code>{{ platform.machineName.toUpperCase() }}</code></span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid #eee;
+}
+
+.card-header {
+  border-bottom: 2px solid #f0f7ff;
+}
+
+.detail-item {
+  padding: 0.5rem 0;
+}
+
+.detail-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.25rem;
+}
+
+.detail-value {
+  display: block;
+  font-size: 0.95rem;
+  color: #1f2937;
+  word-break: break-word;
+}
+</style>

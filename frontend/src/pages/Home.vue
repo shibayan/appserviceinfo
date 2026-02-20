@@ -8,7 +8,7 @@ import HomeTable from '../components/HomeTable.vue'
       <HomeTable />
     </template>
     <template #fallback>
-      <span>Loading...</span>
+      <div class="loading-spinner"></div>
     </template>
   </Suspense>
 </template>
