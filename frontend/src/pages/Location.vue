@@ -3,6 +3,7 @@ import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router';
 
 import Platform from '../components/Platform.vue'
+import RegionInfo from '../components/RegionInfo.vue'
 import Runtime from '../components/Runtime.vue'
 import SiteExtension from '../components/SiteExtension.vue'
 
@@ -29,6 +30,9 @@ watch(route, to => currentLocation.value = to.params.location as string)
   </h2>
 
   <div class="columns is-multiline">
+    <div class="column is-12">
+      <RegionInfo :location="currentLocation" :key="currentLocation" />
+    </div>
     <div class="column is-12">
       <Suspense timeout="250">
         <template #default>
