@@ -12,7 +12,7 @@ export const locationData: Record<string, LocationInfo> = {
   eastus: { displayName: "East US", address: "Virginia, United States", latitude: 37.3719, longitude: -79.8164 },
   eastus2: { displayName: "East US 2", address: "Virginia, United States", latitude: 36.6681, longitude: -78.3889 },
   westus3: { displayName: "West US 3", address: "Phoenix, Arizona, United States", latitude: 33.4484, longitude: -112.0740 },
-  francecentral: { displayName: "France Central", address: "Paris, France", latitude: 46.3772, longitude: 2.3730 },
+  francecentral: { displayName: "France Central", address: "Paris, France", latitude: 48.8566, longitude: 2.3522 },
   northeurope: { displayName: "North Europe", address: "Dublin, Ireland", latitude: 53.3478, longitude: -6.2597 },
   norwayeast: { displayName: "Norway East", address: "Oslo, Norway", latitude: 59.9139, longitude: 10.7522 },
   switzerlandnorth: { displayName: "Switzerland North", address: "Zurich, Switzerland", latitude: 47.4682, longitude: 8.4371 },

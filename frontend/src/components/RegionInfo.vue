@@ -56,6 +56,7 @@ const mapsLink = computed(() => {
             class="map-frame"
             title="Region location map"
             loading="lazy"
+            allow="fullscreen"
           ></iframe>
         </div>
       </div>
