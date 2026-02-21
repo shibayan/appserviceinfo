@@ -1,31 +1,34 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { useRoute } from 'vue-router';
 
 import Platform from '../components/Platform.vue'
 import RegionInfo from '../components/RegionInfo.vue'
 import Runtime from '../components/Runtime.vue'
 import SiteExtension from '../components/SiteExtension.vue'
+import { locationData } from '../constants/Locations'
 
 const route = useRoute();
 
 const currentLocation = ref<string>(route.params.location as string)
 
 watch(route, to => currentLocation.value = to.params.location as string)
+
+const locationDisplayName = computed(() => locationData[currentLocation.value]?.displayName || currentLocation.value)
 </script>
 
 <template>
   <nav class="breadcrumb" aria-label="breadcrumbs">
     <ul>
       <li><RouterLink to="/"><span class="icon is-small"><i class="fa-solid fa-house"></i></span><span>Home</span></RouterLink></li>
-      <li class="is-active"><a href="#" aria-current="page">{{ currentLocation }}</a></li>
+      <li class="is-active"><a href="#" aria-current="page">{{ locationDisplayName }}</a></li>
     </ul>
   </nav>
 
   <h2 class="title is-3 mb-5">
     <span class="icon-text">
       <span class="icon has-text-link"><i class="fa-solid fa-location-dot"></i></span>
-      <span>{{ currentLocation }}</span>
+      <span>{{ locationDisplayName }}</span>
     </span>
   </h2>
 
