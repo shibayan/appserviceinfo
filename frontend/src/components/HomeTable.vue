@@ -1,12 +1,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { Platform, Runtime, SiteExtension } from '../types/Models'
+import { Platform, Runtime, SiteExtension, createEmptyPlatform, createEmptyRuntime } from '../types/Models'
 import { formatRelativeTime } from '../utils/FormatDate'
-import { Geographies } from '../constants/Geographies'
-import { locationData } from '../constants/Locations'
-
-const geographies = Geographies.getGeographies();
-const allLocations = Geographies.getLocations();
+import { geographies, allRegions, regionData } from '../constants/Regions'
 
 const selectedGeography = ref<string | null>(null);
 
@@ -15,66 +11,46 @@ const filteredGeographies = computed(() => {
   return geographies.filter(g => g.name === selectedGeography.value);
 });
 
-const filteredLocations = computed(() => {
-  return filteredGeographies.value.flatMap(g => g.locations);
+const filteredRegions = computed(() => {
+  return filteredGeographies.value.flatMap(g => g.regions);
 });
 
 const filteredPlatformList = computed(() => {
-  return filteredLocations.value.map(loc => {
-    const idx = allLocations.indexOf(loc);
-    return platformList[idx];
-  });
+  return filteredRegions.value.map(region => platformMap.get(region) ?? createEmptyPlatform());
 });
 
 const filteredRuntimeList = computed(() => {
-  return filteredLocations.value.map(loc => {
-    const idx = allLocations.indexOf(loc);
-    return runtimeList[idx];
-  });
+  return filteredRegions.value.map(region => runtimeMap.get(region) ?? createEmptyRuntime());
 });
 
 const filteredSiteExtensionsList = computed(() => {
-  return filteredLocations.value.map(loc => {
-    const idx = allLocations.indexOf(loc);
-    return siteExtensionsList[idx];
-  });
+  return filteredRegions.value.map(region => siteExtensionsMap.get(region) ?? []);
 });
 
-const platformList = Array<Platform>();
+const [platformEntries, runtimeEntries, siteExtensionEntries] = await Promise.all([
+  Promise.all(
+    allRegions.map(async (region): Promise<[string, Platform]> => {
+      const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${region}/platform.json`)
+      return [region, response.status === 404 ? createEmptyPlatform() : await response.json() as Platform]
+    })
+  ),
+  Promise.all(
+    allRegions.map(async (region): Promise<[string, Runtime]> => {
+      const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${region}/runtime.json`)
+      return [region, response.status === 404 ? createEmptyRuntime() : await response.json() as Runtime]
+    })
+  ),
+  Promise.all(
+    allRegions.map(async (region): Promise<[string, SiteExtension[]]> => {
+      const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${region}/site-extension.json`)
+      return [region, response.status === 404 ? [] : await response.json() as SiteExtension[]]
+    })
+  ),
+])
 
-for (const location of allLocations) {
-  const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${location}/platform.json`)
-
-  if (response.status === 404) {
-    platformList.push(new Platform());
-  } else {
-    platformList.push(await response.json() as Platform)
-  }
-}
-
-const runtimeList = Array<Runtime>();
-
-for (const location of allLocations) {
-  const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${location}/runtime.json`)
-
-  if (response.status === 404) {
-    runtimeList.push(new Runtime());
-  } else {
-    runtimeList.push(await response.json() as Runtime);
-  }
-}
-
-const siteExtensionsList = Array<SiteExtension[]>();
-
-for (const location of allLocations) {
-  const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${location}/site-extension.json`)
-
-  if (response.status === 404) {
-    siteExtensionsList.push(Array<SiteExtension>());
-  } else {
-    siteExtensionsList.push(await response.json() as SiteExtension[])
-  }
-}
+const platformMap = new Map<string, Platform>(platformEntries)
+const runtimeMap = new Map<string, Runtime>(runtimeEntries)
+const siteExtensionsMap = new Map<string, SiteExtension[]>(siteExtensionEntries)
 
 const geographyColors: Record<string, string> = {
   'Americas': 'is-info',
@@ -99,7 +75,7 @@ const geographyColors: Record<string, string> = {
           <a @click="selectedGeography = geography.name">
             <span class="icon is-small"><i class="fa-solid fa-earth-americas" v-if="geography.name === 'Americas'"></i><i class="fa-solid fa-earth-europe" v-else-if="geography.name === 'Europe' || geography.name === 'Middle East'"></i><i class="fa-solid fa-earth-asia" v-else></i></span>
             <span>{{ geography.name }}</span>
-            <span class="tag is-rounded is-small ml-1" :class="geographyColors[geography.name]">{{ geography.locations.length }}</span>
+            <span class="tag is-rounded is-small ml-1" :class="geographyColors[geography.name]">{{ geography.regions.length }}</span>
           </a>
         </li>
       </ul>
@@ -116,22 +92,22 @@ const geographyColors: Record<string, string> = {
               <span>Region</span>
             </span>
           </th>
-          <th v-for="geography in filteredGeographies" :key="geography.name" :colspan="geography.locations.length"
+          <th v-for="geography in filteredGeographies" :key="geography.name" :colspan="geography.regions.length"
             class="has-text-centered geo-header" :class="geographyColors[geography.name]">
             {{ geography.name }}
           </th>
         </tr>
         <tr>
-          <th v-for="location in filteredLocations" :key="location" class="has-text-centered location-header">
-            <RouterLink :to="{ name: 'Location', params: { location: location } }" class="location-link">
-              {{ locationData[location]?.displayName || location }}
+          <th v-for="region in filteredRegions" :key="region" class="has-text-centered region-header">
+            <RouterLink :to="{ name: 'Region', params: { region: region } }" class="region-link">
+              {{ regionData[region]?.displayName || region }}
             </RouterLink>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr class="section-row">
-          <th class="sticky-col" :colspan="filteredLocations.length + 1">
+          <th class="sticky-col" :colspan="filteredRegions.length + 1">
             <span class="icon-text">
               <span class="icon has-text-link"><i class="fa-solid fa-server"></i></span>
               <span>Platform</span>
@@ -140,40 +116,40 @@ const geographyColors: Record<string, string> = {
         </tr>
         <tr>
           <th class="sticky-col">OS Version</th>
-          <td v-for="platform in filteredPlatformList" class="is-size-7">{{ platform.osVersion }}</td>
+          <td v-for="(platform, i) in filteredPlatformList" :key="filteredRegions[i] + '-os'" class="is-size-7">{{ platform.osVersion }}</td>
         </tr>
         <tr>
           <th class="sticky-col">App Service Version</th>
-          <td v-for="platform in filteredPlatformList" class="is-size-7">{{ platform.appServiceVersion }}</td>
+          <td v-for="(platform, i) in filteredPlatformList" :key="filteredRegions[i] + '-as'" class="is-size-7">{{ platform.appServiceVersion }}</td>
         </tr>
         <tr>
           <th class="sticky-col">Kudu Version</th>
-          <td v-for="platform in filteredPlatformList" class="is-size-7">{{ platform.kuduVersion }}</td>
+          <td v-for="(platform, i) in filteredPlatformList" :key="filteredRegions[i] + '-kudu'" class="is-size-7">{{ platform.kuduVersion }}</td>
         </tr>
         <tr>
           <th class="sticky-col">Middleware Module</th>
-          <td v-for="platform in filteredPlatformList" class="is-size-7">{{ platform.middlewareModuleVersion }}</td>
+          <td v-for="(platform, i) in filteredPlatformList" :key="filteredRegions[i] + '-mw'" class="is-size-7">{{ platform.middlewareModuleVersion }}</td>
         </tr>
         <tr>
           <th class="sticky-col">Processor Name</th>
-          <td v-for="platform in filteredPlatformList" class="is-size-7">{{ platform.processorName }}</td>
+          <td v-for="(platform, i) in filteredPlatformList" :key="filteredRegions[i] + '-cpu'" class="is-size-7">{{ platform.processorName }}</td>
         </tr>
         <tr>
           <th class="sticky-col">Last Reimage</th>
-          <td v-for="platform in filteredPlatformList" class="is-size-7">{{ formatRelativeTime(platform.lastReimage) }}</td>
+          <td v-for="(platform, i) in filteredPlatformList" :key="filteredRegions[i] + '-ri'" class="is-size-7">{{ formatRelativeTime(platform.lastReimage) }}</td>
         </tr>
         <tr>
           <th class="sticky-col">Last Rapid Update</th>
-          <td v-for="platform in filteredPlatformList" class="is-size-7">{{ formatRelativeTime(platform.lastRapidUpdate) }}
+          <td v-for="(platform, i) in filteredPlatformList" :key="filteredRegions[i] + '-ru'" class="is-size-7">{{ formatRelativeTime(platform.lastRapidUpdate) }}
           </td>
         </tr>
         <tr>
           <th class="sticky-col">Stampname</th>
-          <td v-for="platform in filteredPlatformList" class="is-size-7">{{ platform.currentStampname }}</td>
+          <td v-for="(platform, i) in filteredPlatformList" :key="filteredRegions[i] + '-stamp'" class="is-size-7">{{ platform.currentStampname }}</td>
         </tr>
 
         <tr class="section-row">
-          <th class="sticky-col" :colspan="filteredLocations.length + 1">
+          <th class="sticky-col" :colspan="filteredRegions.length + 1">
             <span class="icon-text">
               <span class="icon has-text-success"><i class="fa-solid fa-code"></i></span>
               <span>Runtime</span>
@@ -182,42 +158,42 @@ const geographyColors: Record<string, string> = {
         </tr>
         <tr>
           <th class="sticky-col">.NET Framework</th>
-          <td v-for="runtime in filteredRuntimeList">
-            <span v-for="item in runtime.dotnet.latestVersions" class="tag is-link is-light is-small">{{ item.version
+          <td v-for="(runtime, i) in filteredRuntimeList" :key="filteredRegions[i] + '-dotnet'">
+            <span v-for="item in runtime.dotnet.latestVersions" :key="item.version" class="tag is-link is-light is-small">{{ item.version
               }}</span>
           </td>
         </tr>
         <tr>
           <th class="sticky-col">.NET (x86)</th>
-          <td v-for="runtime in filteredRuntimeList">
-            <span v-for="item in runtime.dotnetCore.latestVersions" class="tag is-link is-light is-small">{{
+          <td v-for="(runtime, i) in filteredRuntimeList" :key="filteredRegions[i] + '-dotnetcore'">
+            <span v-for="item in runtime.dotnetCore.latestVersions" :key="item.version" class="tag is-link is-light is-small">{{
               item.version }}</span>
           </td>
         </tr>
         <tr>
           <th class="sticky-col">.NET (x64)</th>
-          <td v-for="runtime in filteredRuntimeList">
-            <span v-for="item in runtime.dotnetCore64.latestVersions" class="tag is-link is-light is-small">{{
+          <td v-for="(runtime, i) in filteredRuntimeList" :key="filteredRegions[i] + '-dotnetcore64'">
+            <span v-for="item in runtime.dotnetCore64.latestVersions" :key="item.version" class="tag is-link is-light is-small">{{
               item.version }}</span>
           </td>
         </tr>
         <tr>
           <th class="sticky-col">Node.js (x86)</th>
-          <td v-for="runtime in filteredRuntimeList">
-            <span v-for="item in runtime.node.latestVersions" class="tag is-success is-light is-small">{{ item.version
+          <td v-for="(runtime, i) in filteredRuntimeList" :key="filteredRegions[i] + '-node'">
+            <span v-for="item in runtime.node.latestVersions" :key="item.version" class="tag is-success is-light is-small">{{ item.version
               }}</span>
           </td>
         </tr>
         <tr>
           <th class="sticky-col">Node.js (x64)</th>
-          <td v-for="runtime in filteredRuntimeList">
-            <span v-for="item in runtime.node64.latestVersions" class="tag is-success is-light is-small">{{
+          <td v-for="(runtime, i) in filteredRuntimeList" :key="filteredRegions[i] + '-node64'">
+            <span v-for="item in runtime.node64.latestVersions" :key="item.version" class="tag is-success is-light is-small">{{
               item.version }}</span>
           </td>
         </tr>
 
         <tr class="section-row">
-          <th class="sticky-col" :colspan="filteredLocations.length + 1">
+          <th class="sticky-col" :colspan="filteredRegions.length + 1">
             <span class="icon-text">
               <span class="icon has-text-warning-dark"><i class="fa-solid fa-puzzle-piece"></i></span>
               <span>Site Extensions</span>
@@ -226,8 +202,8 @@ const geographyColors: Record<string, string> = {
         </tr>
         <tr>
           <th class="sticky-col">Functions</th>
-          <td v-for="siteExtensions in filteredSiteExtensionsList">
-            <span v-for="item in siteExtensions.find(x => x.name === 'Functions')?.installed.latestVersions"
+          <td v-for="(siteExtensions, i) in filteredSiteExtensionsList" :key="filteredRegions[i] + '-func'">
+            <span v-for="item in siteExtensions.find(x => x.name === 'Functions')?.installed.latestVersions" :key="item.version"
               class="tag is-warning is-light is-small">{{ item.version }}</span>
           </td>
         </tr>
@@ -308,18 +284,18 @@ const geographyColors: Record<string, string> = {
   letter-spacing: 0.02em;
 }
 
-.location-header {
+.region-header {
   font-size: 0.8rem;
   font-weight: 500;
 }
 
-.location-link {
+.region-link {
   color: var(--azure-blue, #0078d4);
   text-decoration: none;
   transition: color 0.15s;
 }
 
-.location-link:hover {
+.region-link:hover {
   color: #005a9e;
   text-decoration: underline;
 }

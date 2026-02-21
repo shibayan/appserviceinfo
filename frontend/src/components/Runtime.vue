@@ -2,9 +2,9 @@
 import { ref } from 'vue'
 import { Runtime } from '../types/Models'
 
-const props = defineProps<{ location: string }>()
+const props = defineProps<{ region: string }>()
 
-const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${props.location}/runtime.json`)
+const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${props.region}/runtime.json`)
 const json = await response.json()
 
 const runtime = ref<Runtime>(json)
@@ -29,31 +29,31 @@ const runtime = ref<Runtime>(json)
       <div class="runtime-row">
         <span class="runtime-label">.NET Framework</span>
         <div class="runtime-tags">
-          <span v-for="item in runtime.dotnet.allVersions" class="tag is-link is-light">{{ item.version }}</span>
+          <span v-for="item in runtime.dotnet.allVersions" :key="item.version" class="tag is-link is-light">{{ item.version }}</span>
         </div>
       </div>
       <div class="runtime-row">
         <span class="runtime-label">.NET (x86)</span>
         <div class="runtime-tags">
-          <span v-for="item in runtime.dotnetCore.allVersions" class="tag is-link is-light">{{ item.version }}</span>
+          <span v-for="item in runtime.dotnetCore.allVersions" :key="item.version" class="tag is-link is-light">{{ item.version }}</span>
         </div>
       </div>
       <div class="runtime-row">
         <span class="runtime-label">.NET (x64)</span>
         <div class="runtime-tags">
-          <span v-for="item in runtime.dotnetCore64.allVersions" class="tag is-link is-light">{{ item.version }}</span>
+          <span v-for="item in runtime.dotnetCore64.allVersions" :key="item.version" class="tag is-link is-light">{{ item.version }}</span>
         </div>
       </div>
       <div class="runtime-row">
         <span class="runtime-label">.NET SDK (x86)</span>
         <div class="runtime-tags">
-          <span v-for="item in runtime.dotnetCoreSdk.allVersions" class="tag is-info is-light">{{ item.version }}</span>
+          <span v-for="item in runtime.dotnetCoreSdk.allVersions" :key="item.version" class="tag is-info is-light">{{ item.version }}</span>
         </div>
       </div>
       <div class="runtime-row">
         <span class="runtime-label">.NET SDK (x64)</span>
         <div class="runtime-tags">
-          <span v-for="item in runtime.dotnetCoreSdk64.allVersions" class="tag is-info is-light">{{ item.version }}</span>
+          <span v-for="item in runtime.dotnetCoreSdk64.allVersions" :key="item.version" class="tag is-info is-light">{{ item.version }}</span>
         </div>
       </div>
 
@@ -67,19 +67,19 @@ const runtime = ref<Runtime>(json)
       <div class="runtime-row">
         <span class="runtime-label">Java (Oracle)</span>
         <div class="runtime-tags">
-          <span v-for="item in runtime.oracleJava.allVersions" class="tag is-danger is-light">{{ item.version }}</span>
+          <span v-for="item in runtime.oracleJava.allVersions" :key="item.version" class="tag is-danger is-light">{{ item.version }}</span>
         </div>
       </div>
       <div class="runtime-row">
         <span class="runtime-label">Java (Azul)</span>
         <div class="runtime-tags">
-          <span v-for="item in runtime.azulJava.allVersions" class="tag is-danger is-light">{{ item.version }}</span>
+          <span v-for="item in runtime.azulJava.allVersions" :key="item.version" class="tag is-danger is-light">{{ item.version }}</span>
         </div>
       </div>
       <div class="runtime-row">
         <span class="runtime-label">Java (Microsoft)</span>
         <div class="runtime-tags">
-          <span v-for="item in runtime.microsoftJava.allVersions" class="tag is-danger is-light">{{ item.version }}</span>
+          <span v-for="item in runtime.microsoftJava.allVersions" :key="item.version" class="tag is-danger is-light">{{ item.version }}</span>
         </div>
       </div>
 
@@ -93,19 +93,19 @@ const runtime = ref<Runtime>(json)
       <div class="runtime-row">
         <span class="runtime-label">Node.js (x86)</span>
         <div class="runtime-tags">
-          <span v-for="item in runtime.node.allVersions" class="tag is-success is-light">{{ item.version }}</span>
+          <span v-for="item in runtime.node.allVersions" :key="item.version" class="tag is-success is-light">{{ item.version }}</span>
         </div>
       </div>
       <div class="runtime-row">
         <span class="runtime-label">Node.js (x64)</span>
         <div class="runtime-tags">
-          <span v-for="item in runtime.node64.allVersions" class="tag is-success is-light">{{ item.version }}</span>
+          <span v-for="item in runtime.node64.allVersions" :key="item.version" class="tag is-success is-light">{{ item.version }}</span>
         </div>
       </div>
       <div class="runtime-row">
         <span class="runtime-label">NPM</span>
         <div class="runtime-tags">
-          <span v-for="item in runtime.npm.allVersions" class="tag is-success is-light">{{ item.version }}</span>
+          <span v-for="item in runtime.npm.allVersions" :key="item.version" class="tag is-success is-light">{{ item.version }}</span>
         </div>
       </div>
     </div>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { locationData } from '../constants/Locations'
+import { regionData } from '../constants/Regions'
 
-const props = defineProps<{ location: string }>()
+const props = defineProps<{ region: string }>()
 
-const info = computed(() => locationData[props.location])
+const info = computed(() => regionData[props.region])
 
 const mapSrc = computed(() => {
   if (!info.value) return ''

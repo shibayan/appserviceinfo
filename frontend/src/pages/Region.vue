@@ -1,45 +1,43 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue'
+import { computed } from 'vue'
 import { useRoute } from 'vue-router';
 
 import Platform from '../components/Platform.vue'
 import RegionInfo from '../components/RegionInfo.vue'
 import Runtime from '../components/Runtime.vue'
 import SiteExtension from '../components/SiteExtension.vue'
-import { locationData } from '../constants/Locations'
+import { regionData } from '../constants/Regions'
 
 const route = useRoute();
 
-const currentLocation = ref<string>(route.params.location as string)
+const currentRegion = computed(() => route.params.region as string)
 
-watch(route, to => currentLocation.value = to.params.location as string)
-
-const locationDisplayName = computed(() => locationData[currentLocation.value]?.displayName || currentLocation.value)
+const regionDisplayName = computed(() => regionData[currentRegion.value]?.displayName || currentRegion.value)
 </script>
 
 <template>
   <nav class="breadcrumb" aria-label="breadcrumbs">
     <ul>
       <li><RouterLink to="/"><span class="icon is-small"><i class="fa-solid fa-house"></i></span><span>Home</span></RouterLink></li>
-      <li class="is-active"><a href="#" aria-current="page">{{ locationDisplayName }}</a></li>
+      <li class="is-active"><a href="#" aria-current="page">{{ regionDisplayName }}</a></li>
     </ul>
   </nav>
 
   <h2 class="title is-3 mb-5">
     <span class="icon-text">
       <span class="icon has-text-link"><i class="fa-solid fa-location-dot"></i></span>
-      <span>{{ locationDisplayName }}</span>
+      <span>{{ regionDisplayName }}</span>
     </span>
   </h2>
 
   <div class="columns is-multiline">
     <div class="column is-12">
-      <RegionInfo :location="currentLocation" :key="currentLocation" />
+      <RegionInfo :region="currentRegion" :key="currentRegion" />
     </div>
     <div class="column is-12">
       <Suspense timeout="250">
         <template #default>
-          <Platform :location="currentLocation" :key="currentLocation" />
+          <Platform :region="currentRegion" :key="currentRegion" />
         </template>
         <template #fallback>
           <div class="card">
@@ -54,7 +52,7 @@ const locationDisplayName = computed(() => locationData[currentLocation.value]?.
     <div class="column is-12">
       <Suspense timeout="250">
         <template #default>
-          <Runtime :location="currentLocation" :key="currentLocation" />
+          <Runtime :region="currentRegion" :key="currentRegion" />
         </template>
         <template #fallback>
           <div class="card">
@@ -69,7 +67,7 @@ const locationDisplayName = computed(() => locationData[currentLocation.value]?.
     <div class="column is-12">
       <Suspense timeout="250">
         <template #default>
-          <SiteExtension :location="currentLocation" :key="currentLocation" />
+          <SiteExtension :region="currentRegion" :key="currentRegion" />
         </template>
         <template #fallback>
           <div class="card">
