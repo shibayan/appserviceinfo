@@ -7,9 +7,9 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../pages/Home.vue'),
   },
   {
-    path: '/locations/:location',
-    name: 'Location',
-    component: () => import('../pages/Location.vue'),
+    path: '/regions/:region',
+    name: 'Region',
+    component: () => import('../pages/Region.vue'),
   }
 ];
 

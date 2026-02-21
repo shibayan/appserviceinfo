@@ -2,11 +2,11 @@
 import { ref } from 'vue'
 import { Platform } from '../types/Models'
 import { formatRelativeTime } from '../utils/FormatDate'
-import { locationData } from '../constants/Locations'
+import { regionData } from '../constants/Regions'
 
-const props = defineProps<{ location: string }>()
+const props = defineProps<{ region: string }>()
 
-const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${props.location}/platform.json`)
+const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${props.region}/platform.json`)
 const json = await response.json()
 
 const platform = ref<Platform>(json)
@@ -55,7 +55,7 @@ const platform = ref<Platform>(json)
         <div class="column is-6">
           <div class="detail-item">
             <span class="detail-label">Current Stampname</span>
-            <span class="detail-value">{{ platform.currentStampname }} <span class="tag is-light is-small">{{ locationData[props.location]?.displayName || props.location }}</span></span>
+            <span class="detail-value">{{ platform.currentStampname }} <span class="tag is-light is-small">{{ regionData[props.region]?.displayName || props.region }}</span></span>
           </div>
         </div>
         <div class="column is-6">

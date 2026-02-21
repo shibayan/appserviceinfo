@@ -2,9 +2,9 @@
 import { ref } from 'vue'
 import { SiteExtension } from '../types/Models'
 
-const props = defineProps<{ location: string }>()
+const props = defineProps<{ region: string }>()
 
-const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${props.location}/site-extension.json`)
+const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${props.region}/site-extension.json`)
 const json = await response.json()
 
 const siteExtensions = ref<SiteExtension[]>(json)
@@ -19,10 +19,10 @@ const siteExtensions = ref<SiteExtension[]>(json)
       </p>
     </div>
     <div class="card-content">
-      <div v-for="item in siteExtensions" class="extension-row">
+      <div v-for="item in siteExtensions" :key="item.name" class="extension-row">
         <span class="extension-name">{{ item.name }}</span>
         <div class="extension-tags">
-          <span v-for="ver in item.installed.allVersions" class="tag is-warning is-light">{{ ver.version }}</span>
+          <span v-for="ver in item.installed.allVersions" :key="ver.version" class="tag is-warning is-light">{{ ver.version }}</span>
         </div>
       </div>
       <p v-if="siteExtensions.length === 0" class="has-text-grey-light has-text-centered">
