@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { Platform } from '../types/Models'
 import { formatRelativeTime } from '../utils/FormatDate'
+import { locationData } from '../constants/Locations'
 
 const props = defineProps<{ location: string }>()
 
@@ -54,7 +55,7 @@ const platform = ref<Platform>(json)
         <div class="column is-6">
           <div class="detail-item">
             <span class="detail-label">Current Stampname</span>
-            <span class="detail-value">{{ platform.currentStampname }} <span class="tag is-light is-small">{{ platform.regionName }}</span></span>
+            <span class="detail-value">{{ platform.currentStampname }} <span class="tag is-light is-small">{{ locationData[props.location]?.displayName || props.location }}</span></span>
           </div>
         </div>
         <div class="column is-6">

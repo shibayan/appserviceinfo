@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import { Platform, Runtime, SiteExtension } from '../types/Models'
 import { formatRelativeTime } from '../utils/FormatDate'
 import { Geographies } from '../constants/Geographies'
+import { locationData } from '../constants/Locations'
 
 const geographies = Geographies.getGeographies();
 const allLocations = Geographies.getLocations();
@@ -123,7 +124,7 @@ const geographyColors: Record<string, string> = {
         <tr>
           <th v-for="location in filteredLocations" :key="location" class="has-text-centered location-header">
             <RouterLink :to="{ name: 'Location', params: { location: location } }" class="location-link">
-              {{ location }}
+              {{ locationData[location]?.displayName || location }}
             </RouterLink>
           </th>
         </tr>
