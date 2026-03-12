@@ -1,5 +1,10 @@
 export function formatRelativeTime(value: string) {
+    if (!value) return '';
+
     const date = new Date(value);
+
+    if (isNaN(date.getTime())) return '';
+
     const diff = (Date.now() - date.getTime()) / 1000;
 
     let relativeTime = "";

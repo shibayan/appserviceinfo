@@ -7,9 +7,12 @@ import { regionData } from '../constants/Regions'
 const props = defineProps<{ region: string }>()
 
 const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${props.region}/platform.json`)
-const json = await response.json()
 
-const platform = ref<Platform>(json)
+if (!response.ok) {
+  throw new Error(`Failed to load platform data (${response.status})`)
+}
+
+const platform = ref<Platform>(await response.json())
 </script>
 
 <template>
@@ -82,16 +85,6 @@ const platform = ref<Platform>(json)
 </template>
 
 <style scoped>
-.card {
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  border: 1px solid #eee;
-}
-
-.card-header {
-  border-bottom: 2px solid #f0f7ff;
-}
-
 .detail-item {
   padding: 0.5rem 0;
 }

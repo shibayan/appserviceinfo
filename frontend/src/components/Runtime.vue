@@ -5,9 +5,12 @@ import { Runtime } from '../types/Models'
 const props = defineProps<{ region: string }>()
 
 const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${props.region}/runtime.json`)
-const json = await response.json()
 
-const runtime = ref<Runtime>(json)
+if (!response.ok) {
+  throw new Error(`Failed to load runtime data (${response.status})`)
+}
+
+const runtime = ref<Runtime>(await response.json())
 </script>
 
 <template>
@@ -113,16 +116,6 @@ const runtime = ref<Runtime>(json)
 </template>
 
 <style scoped>
-.card {
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  border: 1px solid #eee;
-}
-
-.card-header {
-  border-bottom: 2px solid #f0f7ff;
-}
-
 .runtime-category {
   font-size: 0.9rem;
   font-weight: 700;

@@ -5,9 +5,12 @@ import { SiteExtension } from '../types/Models'
 const props = defineProps<{ region: string }>()
 
 const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${props.region}/site-extension.json`)
-const json = await response.json()
 
-const siteExtensions = ref<SiteExtension[]>(json)
+if (!response.ok) {
+  throw new Error(`Failed to load site extension data (${response.status})`)
+}
+
+const siteExtensions = ref<SiteExtension[]>(await response.json())
 </script>
 
 <template>
@@ -33,16 +36,6 @@ const siteExtensions = ref<SiteExtension[]>(json)
 </template>
 
 <style scoped>
-.card {
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  border: 1px solid #eee;
-}
-
-.card-header {
-  border-bottom: 2px solid #f0f7ff;
-}
-
 .extension-row {
   display: flex;
   align-items: flex-start;

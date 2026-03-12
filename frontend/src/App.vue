@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const isMenuActive = ref(false)
+const currentYear = computed(() => new Date().getFullYear())
 </script>
 
 <template>
@@ -46,7 +47,7 @@ const isMenuActive = ref(false)
             <strong>App Service Info</strong> &mdash; Azure App Service platform and runtime monitoring
           </p>
           <p class="mt-2 has-text-grey">
-            &copy; 2025 <a href="https://shibayan.jp" class="has-text-grey-dark">@shibayan</a>
+            &copy; {{ currentYear }} <a href="https://shibayan.jp" class="has-text-grey-dark">@shibayan</a>
           </p>
         </div>
         <div class="column is-narrow">
@@ -98,6 +99,16 @@ body {
 
 .tag {
   margin: 0.15em;
+}
+
+.card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid #eee;
+}
+
+.card-header {
+  border-bottom: 2px solid #f0f7ff;
 }
 
 .fade-enter-active,

@@ -1,7 +1,7 @@
 {
-  "name": "appserviceinfo",
+  "name": "appservice.info",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,16 +9,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "bulma": "1.0.4",
     "vue": "3.5.30",
     "vue-router": "5.0.3"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "6.0.4",
+    "@vitejs/plugin-vue": "6.0.5",
     "typescript": "5.9.3",
-    "vite": "7.3.1",
+    "vite": "8.0.0",
     "vue-tsc": "3.2.5"
   },
   "volta": {
-    "node": "24.11.0"
+    "node": "24.14.0"
   }
 }

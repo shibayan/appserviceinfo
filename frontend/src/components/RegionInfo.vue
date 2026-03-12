@@ -56,7 +56,7 @@ const mapsLink = computed(() => {
             class="map-frame"
             title="Region location map"
             loading="lazy"
-            allow="fullscreen"
+            sandbox="allow-scripts allow-same-origin"
           ></iframe>
         </div>
       </div>
@@ -65,16 +65,6 @@ const mapsLink = computed(() => {
 </template>
 
 <style scoped>
-.card {
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  border: 1px solid #eee;
-}
-
-.card-header {
-  border-bottom: 2px solid #f0f7ff;
-}
-
 .detail-item {
   padding: 0.5rem 0;
 }
