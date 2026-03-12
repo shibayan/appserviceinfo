@@ -31,19 +31,19 @@ const [platformEntries, runtimeEntries, siteExtensionEntries] = await Promise.al
   Promise.all(
     allRegions.map(async (region): Promise<[string, Platform]> => {
       const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${region}/platform.json`)
-      return [region, response.status === 404 ? createEmptyPlatform() : await response.json() as Platform]
+      return [region, response.ok ? await response.json() as Platform : createEmptyPlatform()]
     })
   ),
   Promise.all(
     allRegions.map(async (region): Promise<[string, Runtime]> => {
       const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${region}/runtime.json`)
-      return [region, response.status === 404 ? createEmptyRuntime() : await response.json() as Runtime]
+      return [region, response.ok ? await response.json() as Runtime : createEmptyRuntime()]
     })
   ),
   Promise.all(
     allRegions.map(async (region): Promise<[string, SiteExtension[]]> => {
       const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${region}/site-extension.json`)
-      return [region, response.status === 404 ? [] : await response.json() as SiteExtension[]]
+      return [region, response.ok ? await response.json() as SiteExtension[] : []]
     })
   ),
 ])
@@ -53,10 +53,10 @@ const runtimeMap = new Map<string, Runtime>(runtimeEntries)
 const siteExtensionsMap = new Map<string, SiteExtension[]>(siteExtensionEntries)
 
 const geographyColors: Record<string, string> = {
-  'Americas': 'is-info',
-  'Europe': 'is-success',
-  'Middle East': 'is-warning',
-  'Asia Pacific': 'is-danger'
+  'Americas': 'geo-americas',
+  'Europe': 'geo-europe',
+  'Middle East': 'geo-middleeast',
+  'Asia Pacific': 'geo-asiapacific'
 }
 </script>
 
@@ -323,5 +323,26 @@ const geographyColors: Record<string, string> = {
 
 .home-table td .tag {
   margin: 1px;
+}
+
+/* Geography color definitions */
+.geo-americas {
+  background-color: #d83b01 !important;
+  color: #fff !important;
+}
+
+.geo-europe {
+  background-color: #0052cc !important;
+  color: #fff !important;
+}
+
+.geo-middleeast {
+  background-color: #c88a00 !important;
+  color: #fff !important;
+}
+
+.geo-asiapacific {
+  background-color: #00837b !important;
+  color: #fff !important;
 }
 </style>

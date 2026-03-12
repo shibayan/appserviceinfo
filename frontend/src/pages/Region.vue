@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, onErrorCaptured } from 'vue'
 import { useRoute } from 'vue-router';
 
 import Platform from '../components/Platform.vue'
@@ -13,6 +13,14 @@ const route = useRoute();
 const currentRegion = computed(() => route.params.region as string)
 
 const regionDisplayName = computed(() => regionData[currentRegion.value]?.displayName || currentRegion.value)
+
+const errors = ref<Record<string, string>>({})
+
+onErrorCaptured((err, instance) => {
+  const name = instance?.$options.__name || 'unknown'
+  errors.value[name] = err instanceof Error ? err.message : String(err)
+  return false
+})
 </script>
 
 <template>
@@ -48,6 +56,10 @@ const regionDisplayName = computed(() => regionData[currentRegion.value]?.displa
           </div>
         </template>
       </Suspense>
+      <div v-if="errors['Platform']" class="notification is-warning is-light mt-2">
+        <span class="icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
+        Failed to load platform data.
+      </div>
     </div>
     <div class="column is-12">
       <Suspense timeout="250">
@@ -63,6 +75,10 @@ const regionDisplayName = computed(() => regionData[currentRegion.value]?.displa
           </div>
         </template>
       </Suspense>
+      <div v-if="errors['Runtime']" class="notification is-warning is-light mt-2">
+        <span class="icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
+        Failed to load runtime data.
+      </div>
     </div>
     <div class="column is-12">
       <Suspense timeout="250">
@@ -78,6 +94,10 @@ const regionDisplayName = computed(() => regionData[currentRegion.value]?.displa
           </div>
         </template>
       </Suspense>
+      <div v-if="errors['SiteExtension']" class="notification is-warning is-light mt-2">
+        <span class="icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
+        Failed to load site extension data.
+      </div>
     </div>
   </div>
 </template>
