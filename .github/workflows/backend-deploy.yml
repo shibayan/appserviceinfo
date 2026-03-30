@@ -55,7 +55,7 @@ jobs:
         path: dist
 
     - name: Deploy to Azure Web App
-      uses: azure/webapps-deploy@84a80cfe7e9889f35148ed88c307e6e93bf02578 # v3.0.7
+      uses: azure/webapps-deploy@02a81bead70021f5284939794bcec79c271ab383 # v3.0.8
       with:
         app-name: app-graffias-${{ matrix.location }}
         package: dist
