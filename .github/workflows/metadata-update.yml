@@ -38,16 +38,6 @@ jobs:
 
     - name: Upload metadata to Blob
       run: |
-        for i in 1 2 3; do
-          if az storage blob upload --auth-mode login -f platform.json.gz --account-name stgraffias -c metadata -n ${{ matrix.location }}/platform.json --content-encoding gzip --content-type application/json --overwrite &&
-             az storage blob upload --auth-mode login -f runtime.json.gz --account-name stgraffias -c metadata -n ${{ matrix.location }}/runtime.json --content-encoding gzip --content-type application/json --overwrite &&
-             az storage blob upload --auth-mode login -f site-extension.json.gz --account-name stgraffias -c metadata -n ${{ matrix.location }}/site-extension.json --content-encoding gzip --content-type application/json --overwrite; then
-            break
-          fi
-          if [ $i -eq 3 ]; then
-            echo "All 3 attempts failed"
-            exit 1
-          fi
-          echo "Attempt $i/3 failed, retrying in 30 seconds..."
-          sleep 30
-        done
+        az storage blob upload --auth-mode login -f platform.json.gz --account-name stgraffias -c metadata -n ${{ matrix.location }}/platform.json --content-encoding gzip --content-type application/json --overwrite
+        az storage blob upload --auth-mode login -f runtime.json.gz --account-name stgraffias -c metadata -n ${{ matrix.location }}/runtime.json --content-encoding gzip --content-type application/json --overwrite
+        az storage blob upload --auth-mode login -f site-extension.json.gz --account-name stgraffias -c metadata -n ${{ matrix.location }}/site-extension.json --content-encoding gzip --content-type application/json --overwrite
