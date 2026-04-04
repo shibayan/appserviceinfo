@@ -25,3 +25,19 @@ export function formatRelativeTime(value: string) {
 
     return `${date.toLocaleString()} (${relativeTime})`;
   }
+
+export function getUpdatedAt(response: Response): string {
+  const lastModified = response.headers.get('Last-Modified')
+
+  if (!lastModified) return ''
+
+  const parsed = new Date(lastModified)
+
+  return Number.isNaN(parsed.getTime()) ? '' : parsed.toISOString()
+}
+
+export function getNewestTimestamp(values: string[]): string {
+  return values
+    .filter(Boolean)
+    .sort((left, right) => new Date(right).getTime() - new Date(left).getTime())[0] ?? ''
+}
