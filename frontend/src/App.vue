@@ -22,6 +22,10 @@ const currentYear = computed(() => new Date().getFullYear())
       </div>
       <div class="navbar-menu" :class="{ 'is-active': isMenuActive }">
         <div class="navbar-end">
+          <RouterLink class="navbar-item" to="/timeline">
+            <span class="icon"><i class="fa-solid fa-timeline"></i></span>
+            <span>Timeline</span>
+          </RouterLink>
           <a class="navbar-item" href="https://github.com/shibayan/appserviceinfo" target="_blank" rel="noopener">
             <span class="icon"><i class="fa-brands fa-github"></i></span>
             <span>GitHub</span>

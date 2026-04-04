@@ -7,6 +7,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../pages/Home.vue'),
   },
   {
+    path: '/timeline',
+    name: 'Timeline',
+    component: () => import('../pages/Timeline.vue'),
+  },
+  {
     path: '/regions/:region',
     name: 'Region',
     component: () => import('../pages/Region.vue'),

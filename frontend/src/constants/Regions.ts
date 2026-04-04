@@ -47,3 +47,10 @@ export const geographies: Geography[] = geographyOrder.map(name => ({
   name,
   regions: allRegions.filter(r => regionData[r].geography === name)
 }))
+
+export const geographyColors: Record<string, string> = {
+  'Americas': 'geo-americas',
+  'Europe': 'geo-europe',
+  'Middle East': 'geo-middleeast',
+  'Asia Pacific': 'geo-asiapacific'
+}

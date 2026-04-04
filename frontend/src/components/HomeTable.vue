@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { Platform, Runtime, SiteExtension, createEmptyPlatform, createEmptyRuntime } from '../types/Models'
-import { formatRelativeTime } from '../utils/FormatDate'
-import { geographies, allRegions, regionData } from '../constants/Regions'
+import { createEmptyPlatform, createEmptyRuntime } from '../types/Models'
+import { formatRelativeTime, getNewestTimestamp } from '../utils/FormatDate'
+import { geographies, regionData, geographyColors } from '../constants/Regions'
+import { fetchRegionData } from '../composables/useRegionData'
+
+const emit = defineEmits<{
+  snapshotResolved: [value: string]
+}>()
 
 const selectedGeography = ref<string | null>(null);
 
@@ -27,36 +32,12 @@ const filteredSiteExtensionsList = computed(() => {
   return filteredRegions.value.map(region => siteExtensionsMap.get(region) ?? []);
 });
 
-const [platformEntries, runtimeEntries, siteExtensionEntries] = await Promise.all([
-  Promise.all(
-    allRegions.map(async (region): Promise<[string, Platform]> => {
-      const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${region}/platform.json`)
-      return [region, response.ok ? await response.json() as Platform : createEmptyPlatform()]
-    })
-  ),
-  Promise.all(
-    allRegions.map(async (region): Promise<[string, Runtime]> => {
-      const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${region}/runtime.json`)
-      return [region, response.ok ? await response.json() as Runtime : createEmptyRuntime()]
-    })
-  ),
-  Promise.all(
-    allRegions.map(async (region): Promise<[string, SiteExtension[]]> => {
-      const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${region}/site-extension.json`)
-      return [region, response.ok ? await response.json() as SiteExtension[] : []]
-    })
-  ),
-])
+const { platformMap, runtimeMap, siteExtensionsMap, platformUpdatedAtMap } = await fetchRegionData()
 
-const platformMap = new Map<string, Platform>(platformEntries)
-const runtimeMap = new Map<string, Runtime>(runtimeEntries)
-const siteExtensionsMap = new Map<string, SiteExtension[]>(siteExtensionEntries)
+const snapshotUpdatedAt = getNewestTimestamp([...platformUpdatedAtMap.values()])
 
-const geographyColors: Record<string, string> = {
-  'Americas': 'geo-americas',
-  'Europe': 'geo-europe',
-  'Middle East': 'geo-middleeast',
-  'Asia Pacific': 'geo-asiapacific'
+if (snapshotUpdatedAt) {
+  emit('snapshotResolved', snapshotUpdatedAt)
 }
 </script>
 
