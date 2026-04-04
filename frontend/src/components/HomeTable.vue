@@ -9,28 +9,28 @@ const emit = defineEmits<{
   snapshotResolved: [value: string]
 }>()
 
-const selectedGeography = ref<string | null>(null);
+const selectedGeography = ref<string | null>(null)
 
 const filteredGeographies = computed(() => {
-  if (selectedGeography.value === null) return geographies;
-  return geographies.filter(g => g.name === selectedGeography.value);
-});
+  if (selectedGeography.value === null) return geographies
+  return geographies.filter(g => g.name === selectedGeography.value)
+})
 
 const filteredRegions = computed(() => {
-  return filteredGeographies.value.flatMap(g => g.regions);
-});
+  return filteredGeographies.value.flatMap(g => g.regions)
+})
 
 const filteredPlatformList = computed(() => {
-  return filteredRegions.value.map(region => platformMap.get(region) ?? createEmptyPlatform());
-});
+  return filteredRegions.value.map(region => platformMap.get(region) ?? createEmptyPlatform())
+})
 
 const filteredRuntimeList = computed(() => {
-  return filteredRegions.value.map(region => runtimeMap.get(region) ?? createEmptyRuntime());
-});
+  return filteredRegions.value.map(region => runtimeMap.get(region) ?? createEmptyRuntime())
+})
 
 const filteredSiteExtensionsList = computed(() => {
-  return filteredRegions.value.map(region => siteExtensionsMap.get(region) ?? []);
-});
+  return filteredRegions.value.map(region => siteExtensionsMap.get(region) ?? [])
+})
 
 const { platformMap, runtimeMap, siteExtensionsMap, platformUpdatedAtMap } = await fetchRegionData()
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, onErrorCaptured } from 'vue'
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router'
 
 import Platform from '../components/Platform.vue'
 import RegionInfo from '../components/RegionInfo.vue'
@@ -8,7 +8,7 @@ import Runtime from '../components/Runtime.vue'
 import SiteExtension from '../components/SiteExtension.vue'
 import { regionData } from '../constants/Regions'
 
-const route = useRoute();
+const route = useRoute()
 
 const currentRegion = computed(() => route.params.region as string)
 

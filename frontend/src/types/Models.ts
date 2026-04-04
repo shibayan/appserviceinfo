@@ -43,16 +43,16 @@ const emptyVersionInfoList: VersionInfoList = { latestVersions: [], allVersions:
 
 export function createEmptyPlatform(): Platform {
   return {
-    osVersion: "",
-    appServiceVersion: "",
-    kuduVersion: "",
-    middlewareModuleVersion: "",
-    processorName: "",
-    lastReimage: "",
-    lastRapidUpdate: "",
-    regionName: "",
-    currentStampname: "",
-    machineName: "",
+    osVersion: '',
+    appServiceVersion: '',
+    kuduVersion: '',
+    middlewareModuleVersion: '',
+    processorName: '',
+    lastReimage: '',
+    lastRapidUpdate: '',
+    regionName: '',
+    currentStampname: '',
+    machineName: '',
   }
 }
 
