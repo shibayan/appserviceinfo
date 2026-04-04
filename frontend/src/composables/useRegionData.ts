@@ -22,19 +22,19 @@ export async function fetchRegionData(): Promise<RegionData> {
         }
 
         return [region, await response.json() as Platform, getUpdatedAt(response)]
-      })
+      }),
     ),
     Promise.all(
       allRegions.map(async (region): Promise<[string, Runtime]> => {
         const response = await fetch(`${METADATA_BASE_URL}/${region}/runtime.json`)
         return [region, response.ok ? await response.json() as Runtime : createEmptyRuntime()]
-      })
+      }),
     ),
     Promise.all(
       allRegions.map(async (region): Promise<[string, SiteExtension[]]> => {
         const response = await fetch(`${METADATA_BASE_URL}/${region}/site-extension.json`)
         return [region, response.ok ? await response.json() as SiteExtension[] : []]
-      })
+      }),
     ),
   ])
 
