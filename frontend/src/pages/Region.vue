@@ -24,25 +24,31 @@ onErrorCaptured((err, instance) => {
 </script>
 
 <template>
-  <nav class="breadcrumb" aria-label="breadcrumbs">
-    <ul>
-      <li><RouterLink to="/"><span class="icon is-small"><i class="fa-solid fa-house"></i></span><span>Home</span></RouterLink></li>
-      <li class="is-active"><a href="#" aria-current="page">{{ regionDisplayName }}</a></li>
-    </ul>
+  <nav aria-label="breadcrumbs" class="mb-4">
+    <ol class="flex items-center gap-2">
+      <li>
+        <RouterLink to="/" class="text-azure hover:underline inline-flex items-center gap-1">
+          <span class="inline-flex items-center justify-center w-4 h-4"><i class="fa-solid fa-house"></i></span>
+          <span>Home</span>
+        </RouterLink>
+      </li>
+      <li class="text-gray-400">/</li>
+      <li class="text-gray-600">{{ regionDisplayName }}</li>
+    </ol>
   </nav>
 
-  <h2 class="title is-3 mb-5">
-    <span class="icon-text">
-      <span class="icon has-text-link"><i class="fa-solid fa-location-dot"></i></span>
+  <h2 class="text-[2rem] font-extrabold leading-[1.125] mb-6">
+    <span class="inline-flex items-center gap-1">
+      <span class="inline-flex items-center justify-center w-6 h-6 text-blue-600"><i class="fa-solid fa-location-dot"></i></span>
       <span>{{ regionDisplayName }}</span>
     </span>
   </h2>
 
-  <div class="columns is-multiline">
-    <div class="column is-12">
+  <div class="flex flex-col gap-6">
+    <div>
       <RegionInfo :region="currentRegion" :key="currentRegion" />
     </div>
-    <div class="column is-12">
+    <div>
       <Suspense timeout="250">
         <template #default>
           <Platform :region="currentRegion" :key="currentRegion" />
@@ -50,18 +56,18 @@ onErrorCaptured((err, instance) => {
         <template #fallback>
           <div class="card">
             <div class="card-header">
-              <p class="card-header-title"><span class="icon mr-2"><i class="fa-solid fa-server"></i></span>Platform</p>
+              <p class="card-header-title"><span class="inline-flex items-center justify-center w-5 h-5 mr-2"><i class="fa-solid fa-server"></i></span>Platform</p>
             </div>
             <div class="card-content"><div class="loading-spinner"></div></div>
           </div>
         </template>
       </Suspense>
-      <div v-if="errors['Platform']" class="notification is-warning is-light mt-2">
-        <span class="icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
+      <div v-if="errors['Platform']" class="notification notification-warning mt-2">
+        <span class="inline-flex items-center justify-center w-5 h-5"><i class="fa-solid fa-triangle-exclamation"></i></span>
         Failed to load platform data.
       </div>
     </div>
-    <div class="column is-12">
+    <div>
       <Suspense timeout="250">
         <template #default>
           <Runtime :region="currentRegion" :key="currentRegion" />
@@ -69,18 +75,18 @@ onErrorCaptured((err, instance) => {
         <template #fallback>
           <div class="card">
             <div class="card-header">
-              <p class="card-header-title"><span class="icon mr-2"><i class="fa-solid fa-code"></i></span>Runtime</p>
+              <p class="card-header-title"><span class="inline-flex items-center justify-center w-5 h-5 mr-2"><i class="fa-solid fa-code"></i></span>Runtime</p>
             </div>
             <div class="card-content"><div class="loading-spinner"></div></div>
           </div>
         </template>
       </Suspense>
-      <div v-if="errors['Runtime']" class="notification is-warning is-light mt-2">
-        <span class="icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
+      <div v-if="errors['Runtime']" class="notification notification-warning mt-2">
+        <span class="inline-flex items-center justify-center w-5 h-5"><i class="fa-solid fa-triangle-exclamation"></i></span>
         Failed to load runtime data.
       </div>
     </div>
-    <div class="column is-12">
+    <div>
       <Suspense timeout="250">
         <template #default>
           <SiteExtension :region="currentRegion" :key="currentRegion" />
@@ -88,14 +94,14 @@ onErrorCaptured((err, instance) => {
         <template #fallback>
           <div class="card">
             <div class="card-header">
-              <p class="card-header-title"><span class="icon mr-2"><i class="fa-solid fa-puzzle-piece"></i></span>Site Extensions</p>
+              <p class="card-header-title"><span class="inline-flex items-center justify-center w-5 h-5 mr-2"><i class="fa-solid fa-puzzle-piece"></i></span>Site Extensions</p>
             </div>
             <div class="card-content"><div class="loading-spinner"></div></div>
           </div>
         </template>
       </Suspense>
-      <div v-if="errors['SiteExtension']" class="notification is-warning is-light mt-2">
-        <span class="icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
+      <div v-if="errors['SiteExtension']" class="notification notification-warning mt-2">
+        <span class="inline-flex items-center justify-center w-5 h-5"><i class="fa-solid fa-triangle-exclamation"></i></span>
         Failed to load site extension data.
       </div>
     </div>

@@ -24,13 +24,13 @@ const mapsLink = computed(() => {
   <div v-if="info" class="card">
     <div class="card-header">
       <p class="card-header-title">
-        <span class="icon mr-2 has-text-link"><i class="fa-solid fa-map-location-dot"></i></span>
+        <span class="inline-flex items-center justify-center w-5 h-5 mr-2 text-blue-600"><i class="fa-solid fa-map-location-dot"></i></span>
         Location
       </p>
     </div>
     <div class="card-content">
-      <div class="columns">
-        <div class="column is-4">
+      <div class="flex flex-col md:flex-row gap-6">
+        <div class="md:w-1/3">
           <div class="detail-item">
             <span class="detail-label">Region Name</span>
             <span class="detail-value">{{ info.displayName }}</span>
@@ -44,13 +44,14 @@ const mapsLink = computed(() => {
             <span class="detail-value">{{ info.latitude }}, {{ info.longitude }}</span>
           </div>
           <div class="detail-item mt-4">
-            <a :href="mapsLink" target="_blank" rel="noopener" class="button is-small is-light">
-              <span class="icon is-small"><i class="fa-solid fa-up-right-from-square"></i></span>
+            <a :href="mapsLink" target="_blank" rel="noopener"
+              class="inline-flex items-center gap-1.5 rounded bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs px-3 py-1.5 no-underline">
+              <span class="inline-flex items-center justify-center w-4 h-4"><i class="fa-solid fa-up-right-from-square"></i></span>
               <span>Open in OpenStreetMap</span>
             </a>
           </div>
         </div>
-        <div class="column is-8">
+        <div class="md:w-2/3">
           <iframe
             :src="mapSrc"
             class="map-frame"

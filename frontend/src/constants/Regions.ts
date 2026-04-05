@@ -49,8 +49,8 @@ export const geographies: Geography[] = geographyOrder.map(name => ({
 }))
 
 export const geographyColors: Record<string, string> = {
-  'Americas': 'geo-americas',
-  'Europe': 'geo-europe',
-  'Middle East': 'geo-middleeast',
-  'Asia Pacific': 'geo-asiapacific',
+  'Americas': 'bg-[#d83b01] text-white',
+  'Europe': 'bg-[#0052cc] text-white',
+  'Middle East': 'bg-[#c88a00] text-white',
+  'Asia Pacific': 'bg-[#00837b] text-white',
 }

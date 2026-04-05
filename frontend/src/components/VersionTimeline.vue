@@ -102,47 +102,43 @@ const snapshotUpdatedAt = computed(() => {
 </script>
 
 <template>
-  <div class="timeline-page">
-    <div class="level timeline-header">
-      <div class="level-left">
-        <div>
-          <div class="title-row mb-2">
-            <h1 class="title mb-0 timeline-title">
-              <span class="icon-text timeline-title-text">
-                <span class="icon has-text-info timeline-title-icon"><i class="fa-solid fa-timeline"></i></span>
-                <span>Version Timeline</span>
-              </span>
-            </h1>
-            <span v-if="snapshotUpdatedAt" class="tag is-info is-light is-medium snapshot-badge">
-              Snapshot {{ formatRelativeTime(snapshotUpdatedAt) }}
+  <div class="flex flex-col gap-4">
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 timeline-header">
+      <div>
+        <div class="title-row mb-2">
+          <h1 class="text-[1.72rem] font-extrabold leading-[1.08] tracking-[-0.015em]">
+            <span class="inline-flex items-center gap-0.5">
+              <span class="inline-flex items-center justify-center w-[1.35rem] h-[1.35rem] text-[1.16rem] text-blue-500"><i class="fa-solid fa-timeline"></i></span>
+              <span>Version Timeline</span>
             </span>
-          </div>
-          <p class="subtitle is-6 mb-0 timeline-subtitle">
-            Latest regional metadata snapshots, ordered by the selected update signal.
-          </p>
+          </h1>
+          <span v-if="snapshotUpdatedAt" class="tag tag-md tag-info snapshot-badge">
+            Snapshot {{ formatRelativeTime(snapshotUpdatedAt) }}
+          </span>
         </div>
+        <p class="text-gray-500 text-[0.98rem] leading-[1.45]">
+          Latest regional metadata snapshots, ordered by the selected update signal.
+        </p>
       </div>
 
-      <div class="level-right">
-        <div class="field sort-field">
-          <label class="label is-small mb-0 sort-label">Sort By</label>
-          <div class="control sort-radio-group" role="radiogroup" aria-label="Sort timeline by">
-            <label class="sort-radio-option" :class="{ 'is-active': sortKey === 'lastRapidUpdate' }">
-              <input v-model="sortKey" type="radio" name="timeline-sort" value="lastRapidUpdate">
-              <span>Rapid Update</span>
-            </label>
-            <label class="sort-radio-option" :class="{ 'is-active': sortKey === 'lastReimage' }">
-              <input v-model="sortKey" type="radio" name="timeline-sort" value="lastReimage">
-              <span>Reimage</span>
-            </label>
-          </div>
+      <div class="sort-field">
+        <label class="text-sm font-semibold text-gray-500 whitespace-nowrap">Sort By</label>
+        <div class="sort-radio-group" role="radiogroup" aria-label="Sort timeline by">
+          <label class="sort-radio-option" :class="{ 'is-active': sortKey === 'lastRapidUpdate' }">
+            <input v-model="sortKey" type="radio" name="timeline-sort" value="lastRapidUpdate">
+            <span>Rapid Update</span>
+          </label>
+          <label class="sort-radio-option" :class="{ 'is-active': sortKey === 'lastReimage' }">
+            <input v-model="sortKey" type="radio" name="timeline-sort" value="lastReimage">
+            <span>Reimage</span>
+          </label>
         </div>
       </div>
     </div>
 
-    <div class="card timeline-card">
+    <div class="card">
       <div class="card-content">
-      <div v-if="timelineEntries.length" class="timeline-list">
+      <div v-if="timelineEntries.length" class="flex flex-col gap-4">
         <article v-for="entry in timelineEntries" :key="entry.region" class="timeline-item">
           <div class="timeline-marker">
             <span class="timeline-dot"></span>
@@ -154,18 +150,18 @@ const snapshotUpdatedAt = computed(() => {
                   {{ entry.displayName }}
                 </RouterLink>
               </div>
-              <span class="tag is-rounded" :class="geographyColors[entry.geography] || 'is-light'">
+              <span class="tag tag-rounded" :class="geographyColors[entry.geography] || 'tag-light'">
                 {{ entry.geography }}
               </span>
             </div>
 
-            <div class="timeline-version-tags">
-              <span v-if="entry.appServiceVersion" class="tag is-link is-light">App Service {{ entry.appServiceVersion }}</span>
-              <span v-if="entry.kuduVersion" class="tag is-link is-light">Kudu {{ entry.kuduVersion }}</span>
-              <span v-if="entry.middlewareModuleVersion" class="tag is-info is-light">Middleware {{ entry.middlewareModuleVersion }}</span>
-              <span v-if="entry.dotnetVersion" class="tag is-success is-light">.NET {{ entry.dotnetVersion }}</span>
-              <span v-if="entry.nodeVersion" class="tag is-success is-light">Node.js {{ entry.nodeVersion }}</span>
-              <span v-if="entry.functionsVersion" class="tag is-warning is-light">Functions {{ entry.functionsVersion }}</span>
+            <div class="flex flex-wrap gap-1.5 mb-3">
+              <span v-if="entry.appServiceVersion" class="tag tag-link">App Service {{ entry.appServiceVersion }}</span>
+              <span v-if="entry.kuduVersion" class="tag tag-link">Kudu {{ entry.kuduVersion }}</span>
+              <span v-if="entry.middlewareModuleVersion" class="tag tag-info">Middleware {{ entry.middlewareModuleVersion }}</span>
+              <span v-if="entry.dotnetVersion" class="tag tag-success">.NET {{ entry.dotnetVersion }}</span>
+              <span v-if="entry.nodeVersion" class="tag tag-success">Node.js {{ entry.nodeVersion }}</span>
+              <span v-if="entry.functionsVersion" class="tag tag-warning">Functions {{ entry.functionsVersion }}</span>
             </div>
 
             <div class="timeline-meta">
@@ -176,7 +172,7 @@ const snapshotUpdatedAt = computed(() => {
         </article>
       </div>
 
-      <p v-else class="has-text-grey-light has-text-centered py-5">
+      <p v-else class="text-gray-400 text-center py-6">
         No timeline data is available.
       </p>
       </div>
@@ -185,42 +181,11 @@ const snapshotUpdatedAt = computed(() => {
 </template>
 
 <style scoped>
-.timeline-page {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
 .title-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.45rem;
-}
-
-h1.timeline-title.title {
-  font-size: 1.72rem !important;
-  line-height: 1.08 !important;
-  letter-spacing: -0.015em;
-}
-
-.timeline-title-text {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.12rem;
-}
-
-.timeline-title-icon {
-  margin-right: 0 !important;
-  width: 1.35rem;
-  height: 1.35rem;
-  min-width: 1.35rem;
-  font-size: 1.16rem !important;
-}
-
-.timeline-header {
-  align-items: flex-end;
-  margin-bottom: 0;
 }
 
 .snapshot-badge {
@@ -231,26 +196,11 @@ h1.timeline-title.title {
   line-height: 1.2;
 }
 
-.timeline-subtitle {
-  color: #6b7280;
-  font-size: 0.98rem;
-  line-height: 1.45;
-}
-
 .sort-field {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
   margin-right: 0.75rem;
-  margin-bottom: 0;
-}
-
-.sort-field .label {
-  color: #6b7280;
-}
-
-.sort-label {
-  white-space: nowrap;
 }
 
 .sort-radio-group {
@@ -288,16 +238,6 @@ h1.timeline-title.title {
   background: #ffffff;
   color: #0078d4;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-.timeline-card {
-  overflow: hidden;
-}
-
-.timeline-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
 }
 
 .timeline-item {
@@ -361,13 +301,6 @@ h1.timeline-title.title {
   text-decoration: underline;
 }
 
-.timeline-version-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-  margin-bottom: 0.75rem;
-}
-
 .timeline-meta {
   display: flex;
   flex-wrap: wrap;
@@ -382,36 +315,9 @@ h1.timeline-title.title {
   gap: 0.25rem;
 }
 
-.geo-americas {
-  background-color: #d83b01 !important;
-  color: #fff !important;
-}
-
-.geo-europe {
-  background-color: #0052cc !important;
-  color: #fff !important;
-}
-
-.geo-middleeast {
-  background-color: #c88a00 !important;
-  color: #fff !important;
-}
-
-.geo-asiapacific {
-  background-color: #00837b !important;
-  color: #fff !important;
-}
-
 @media (max-width: 768px) {
   .timeline-header {
     align-items: stretch;
-  }
-
-  .timeline-header .level-right {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
   }
 
   .sort-field {
@@ -422,8 +328,7 @@ h1.timeline-title.title {
     margin-right: 0;
   }
 
-  .sort-radio-group,
-  .timeline-header .level-right {
+  .sort-radio-group {
     width: 100%;
   }
 
@@ -445,15 +350,8 @@ h1.timeline-title.title {
     align-items: flex-start;
   }
 
-  h1.timeline-title.title {
+  h1 {
     font-size: 1.5rem !important;
-  }
-
-  .timeline-title-icon {
-    width: 1.18rem;
-    height: 1.18rem;
-    min-width: 1.18rem;
-    font-size: 1.02rem !important;
   }
 
   .timeline-panel-header {
