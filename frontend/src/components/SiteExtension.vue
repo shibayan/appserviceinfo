@@ -17,7 +17,7 @@ const siteExtensions = ref<SiteExtension[]>(await response.json())
   <div class="card">
     <div class="card-header">
       <p class="card-header-title">
-        <span class="icon mr-2 has-text-warning-dark"><i class="fa-solid fa-puzzle-piece"></i></span>
+        <span class="inline-flex items-center justify-center w-5 h-5 mr-2 text-amber-700"><i class="fa-solid fa-puzzle-piece"></i></span>
         Site Extensions
       </p>
     </div>
@@ -25,10 +25,10 @@ const siteExtensions = ref<SiteExtension[]>(await response.json())
       <div v-for="item in siteExtensions" :key="item.name" class="extension-row">
         <span class="extension-name">{{ item.name }}</span>
         <div class="extension-tags">
-          <span v-for="ver in item.installed.allVersions" :key="ver.version" class="tag is-warning is-light">{{ ver.version }}</span>
+          <span v-for="ver in item.installed.allVersions" :key="ver.version" class="tag tag-warning">{{ ver.version }}</span>
         </div>
       </div>
-      <p v-if="siteExtensions.length === 0" class="has-text-grey-light has-text-centered">
+      <p v-if="siteExtensions.length === 0" class="text-gray-400 text-center">
         No site extensions installed
       </p>
     </div>

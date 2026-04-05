@@ -19,8 +19,8 @@ onErrorCaptured(() => {
       <div class="loading-spinner"></div>
     </template>
   </Suspense>
-  <div v-if="loadError" class="notification is-warning is-light mt-4">
-    <span class="icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
+  <div v-if="loadError" class="notification notification-warning mt-4">
+    <span class="inline-flex items-center justify-center w-5 h-5"><i class="fa-solid fa-triangle-exclamation"></i></span>
     Failed to load timeline data. Please try again later.
   </div>
 </template>
