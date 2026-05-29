@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { SiteExtension } from '../types/Models'
+import { metadataUrl } from '../constants/Metadata'
 
 const props = defineProps<{ region: string }>()
 
-const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${props.region}/site-extension.json`)
+const response = await fetch(metadataUrl(props.region, 'site-extension'))
 
 if (!response.ok) {
   throw new Error(`Failed to load site extension data (${response.status})`)

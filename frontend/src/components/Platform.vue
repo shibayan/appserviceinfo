@@ -3,10 +3,11 @@ import { ref } from 'vue'
 import { Platform } from '../types/Models'
 import { formatRelativeTime } from '../utils/FormatDate'
 import { regionData } from '../constants/Regions'
+import { metadataUrl } from '../constants/Metadata'
 
 const props = defineProps<{ region: string }>()
 
-const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${props.region}/platform.json`)
+const response = await fetch(metadataUrl(props.region, 'platform'))
 
 if (!response.ok) {
   throw new Error(`Failed to load platform data (${response.status})`)

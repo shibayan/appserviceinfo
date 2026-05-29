@@ -22,7 +22,7 @@ resource "azurerm_storage_account" "default" {
     }
 
     container_delete_retention_policy {
-      days    = 7
+      days = 7
     }
 
     cors_rule {
@@ -37,6 +37,6 @@ resource "azurerm_storage_account" "default" {
 
 resource "azurerm_storage_container" "default" {
   name                  = "metadata"
-  storage_account_id  = azurerm_storage_account.default.id
+  storage_account_id    = azurerm_storage_account.default.id
   container_access_type = "blob"
 }
