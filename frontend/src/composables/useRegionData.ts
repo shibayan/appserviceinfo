@@ -1,8 +1,7 @@
 import { Platform, Runtime, SiteExtension, createEmptyPlatform, createEmptyRuntime } from '../types/Models'
 import { allRegions } from '../constants/Regions'
+import { metadataUrl } from '../constants/Metadata'
 import { getUpdatedAt } from '../utils/FormatDate'
-
-const METADATA_BASE_URL = 'https://stgraffias.blob.core.windows.net/metadata'
 
 export type RegionData = {
   platformMap: Map<string, Platform>
@@ -11,31 +10,48 @@ export type RegionData = {
   platformUpdatedAtMap: Map<string, string>
 }
 
+// A single unreachable region (network error / invalid JSON) must not fail the whole
+// snapshot, so each fetch degrades to empty data instead of rejecting.
+async function fetchPlatform(region: string): Promise<[string, Platform, string]> {
+  try {
+    const response = await fetch(metadataUrl(region, 'platform'))
+
+    if (!response.ok) {
+      return [region, createEmptyPlatform(), '']
+    }
+
+    return [region, await response.json() as Platform, getUpdatedAt(response)]
+  }
+  catch {
+    return [region, createEmptyPlatform(), '']
+  }
+}
+
+async function fetchRuntime(region: string): Promise<[string, Runtime]> {
+  try {
+    const response = await fetch(metadataUrl(region, 'runtime'))
+    return [region, response.ok ? await response.json() as Runtime : createEmptyRuntime()]
+  }
+  catch {
+    return [region, createEmptyRuntime()]
+  }
+}
+
+async function fetchSiteExtensions(region: string): Promise<[string, SiteExtension[]]> {
+  try {
+    const response = await fetch(metadataUrl(region, 'site-extension'))
+    return [region, response.ok ? await response.json() as SiteExtension[] : []]
+  }
+  catch {
+    return [region, []]
+  }
+}
+
 export async function fetchRegionData(): Promise<RegionData> {
   const [platformEntries, runtimeEntries, siteExtensionEntries] = await Promise.all([
-    Promise.all(
-      allRegions.map(async (region): Promise<[string, Platform, string]> => {
-        const response = await fetch(`${METADATA_BASE_URL}/${region}/platform.json`)
-
-        if (!response.ok) {
-          return [region, createEmptyPlatform(), '']
-        }
-
-        return [region, await response.json() as Platform, getUpdatedAt(response)]
-      }),
-    ),
-    Promise.all(
-      allRegions.map(async (region): Promise<[string, Runtime]> => {
-        const response = await fetch(`${METADATA_BASE_URL}/${region}/runtime.json`)
-        return [region, response.ok ? await response.json() as Runtime : createEmptyRuntime()]
-      }),
-    ),
-    Promise.all(
-      allRegions.map(async (region): Promise<[string, SiteExtension[]]> => {
-        const response = await fetch(`${METADATA_BASE_URL}/${region}/site-extension.json`)
-        return [region, response.ok ? await response.json() as SiteExtension[] : []]
-      }),
-    ),
+    Promise.all(allRegions.map(fetchPlatform)),
+    Promise.all(allRegions.map(fetchRuntime)),
+    Promise.all(allRegions.map(fetchSiteExtensions)),
   ])
 
   return {

@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { Runtime } from '../types/Models'
+import { metadataUrl } from '../constants/Metadata'
 
 const props = defineProps<{ region: string }>()
 
-const response = await fetch(`https://stgraffias.blob.core.windows.net/metadata/${props.region}/runtime.json`)
+const response = await fetch(metadataUrl(props.region, 'runtime'))
 
 if (!response.ok) {
   throw new Error(`Failed to load runtime data (${response.status})`)
