@@ -15,6 +15,8 @@ resource "azurerm_storage_account" "default" {
   account_tier             = "Standard"
   account_kind             = "StorageV2"
   account_replication_type = "LRS"
+  
+  allow_nested_items_to_be_public = true
 
   blob_properties {
     delete_retention_policy {
