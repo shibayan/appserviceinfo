@@ -53,7 +53,7 @@ jobs:
         path: dist
 
     - name: Deploy to Static Web App
-      uses: shibayan/swa-deploy@99edc127c2495f29f88abcf990b36d736dfe1c76 # v1.3.2
+      uses: shibayan/swa-deploy@3b08af5cfe2b5b1dba05d2efc268e12f63049a5e # v1.3.3
       with:
         app-name: stapp-graffias
         app-location: ./dist
